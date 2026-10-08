@@ -14,13 +14,15 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | --- | --- |
 | `index.html` | The long-form case study: problem, research review, define, information architecture, wireframes, identity and motion system, prototype, testing plan, reflection, references |
 | `prototype.html` | The interactive prototype, onboarding through to the steadiness view. Works on its own and on a phone |
-| `assets/tokens.css` | Design tokens shared by both pages: color, type, shape, motion |
-| `assets/lottie/keel-settle.json` | Hand-authored Lottie animation: a boat rocks and settles level |
+| `assets/tokens.css` | Mineral & Ember design tokens shared by both pages: brand primitives, a semantic layer, a full dark theme, shape and motion |
+| `assets/lottie/keel-settle.json`, `keel-settle-dark.json` | Hand-authored Lottie animation, one file per theme with identical keyframes: a boat rocks and settles level |
 | `assets/vendor/lottie.min.js` | lottie-web 5.12.2 |
 | `assets/img/` | Before and after screenshots used in the case study |
-| `source/gen_lottie.py` | Generates the Lottie JSON. Source of truth for the animation |
-| `source/contrast_audit.py` | WCAG 2.1 contrast audit of every text, control and border pairing |
-| `source/weight_check.py` | Measures the 60/30/10 color split from real screenshots |
+| `source/gen_lottie.py` | Generates both Lottie files. Source of truth for the animation |
+| `source/svg_tokens.py` | Rewrites hardcoded SVG colors into token classes so artwork follows the theme |
+| `source/contrast_audit.py` | WCAG 2.1/2.2 AA contrast audit of every text, control, chart and border pairing, both themes |
+| `source/weight_check.py` | Measures the 60/30/10 color split from real screenshots (`--dark` for the dark theme) |
+| `docs/stillform/` | STILLFORM upgrade notes, starting with the Phase 0 audit |
 
 ## Run it
 
@@ -52,7 +54,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 - The cited research and competitor positioning, linked in the case study’s references
 - The prototype’s logic: the reading, the purchase check and the goal preview all compute live
-- The contrast audit (19 pairings, 0 failing) and the 60/30/10 measurements, with the scripts that produced them
+- The contrast audit (68 pairings across light and dark, 0 failing) and the 60/30/10 measurements, with the scripts that produced them
 - The Lottie animation, written by hand against the Lottie schema and rendered frame by frame for review
 - The design changes listed in section 8 of the case study, which came from my own review of rendered screens
 
@@ -69,12 +71,17 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 ## Design notes in brief
 
-- **Palette:** warm off-white canvas, stone structural surface, deep warm ink, and one terracotta accent that only appears where there’s something to act on
+- **Palette, Mineral & Ember:** Porcelain Clay `#F6F3ED` canvas (60), Mineral Stone `#E6E2D9` surfaces (30), Volcanic Ink `#252A28` and Weathered Slate `#656B66` type, and one Oxidized Ember `#B94F36` accent (10) that only appears where there’s something to act on. Dark mode uses Basalt `#202725` with layered charcoal surfaces, Chalk `#F4F0E7` type and a lifted ember `#E07F60`
+- **Accessible derivatives:** where a brand value fails WCAG as given, a derived token takes that role instead of the brand hex changing: white labels on ember (Chalk is 4.36:1), `#9E412B` for ember text and focus (the brand hex is 4.48:1 as text), `#555B56` slate inside stone surfaces (the brand slate is 4.22:1 there)
+- **Status colors:** positive, negative (oxblood, distinct from ember), warning and info, in both themes, always paired with words
 - **Type:** Fraunces for headlines and the reading’s date, Archivo for UI and body
 - **Motif:** a waterline (always payday), a hull resting on it, and a weighted keel whose depth means room past payday. Used for the brand mark, the reading, loading, goal progress, section breaks and the tab icon
 - **Motion:** calm and decelerating. Screens and sheets use a 420ms settle curve, and the reading uses a damped spring. No shakes, flashes or success bursts
-- **Accessibility:** WCAG 2.1 AA contrast on all text and controls, keyboard focus rings, switches with `role="switch"`, live regions for reading changes, and full `prefers-reduced-motion` support
+- **Theme:** follows the OS by default; the case study has a toggle, remembered per browser, that also drives the embedded prototype and swaps the Lottie files
+- **Accessibility:** WCAG 2.2 AA contrast on all text, controls and chart marks in both themes, keyboard focus rings, switches with `role="switch"`, live regions for reading changes, and full `prefers-reduced-motion` support
 
 ## Status
 
-Version 1 is complete: case study, prototype, identity, animation and audits. A second pass, the STILLFORM direction, is in progress. It covers a revised palette and type system, dark mode, an equilibrium illustration, a Lottie library, Rive specifications, a motion lab, a design system page and cross-channel work. Each step will land as its own merge into `main`.
+- **v1:** case study, prototype, identity, animation and audits
+- **STILLFORM, color refinement (done):** Mineral & Ember palette, semantic tokens, dark theme, recolored Lottie, re-run audits. Layout, type and spacing deliberately unchanged
+- **STILLFORM, next:** see `docs/stillform/00-audit.md` for the remaining scope (equilibrium illustration, Lottie library, Rive specification, motion lab, design system page, cross-channel work). Each step lands as its own merge into `main`

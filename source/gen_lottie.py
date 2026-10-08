@@ -1,7 +1,7 @@
 """
 Keel: hand-authored Lottie (Bodymovin) animation.
 
-Writes ../assets/lottie/keel-settle.json
+Writes ../assets/lottie/keel-settle.json (light) and keel-settle-dark.json (dark)
 
 There is no After Effects + Bodymovin export path in the environment this was
 built in, so the file is keyframed directly against the Lottie schema. This
@@ -14,16 +14,21 @@ rocks with decaying amplitude, and settles level, then holds. It plays once
 and stays still on its last frame, because the point of the illustration is
 the stillness at the end, not the rocking.
 
-Palette (exactly three colors, all from the Keel tokens):
-  ink    #241A13
-  accent #E2603D
-  stone  #DED3C3
+Palette: exactly three colors per theme, all from the Mineral & Ember tokens.
+  light: Volcanic Ink #252A28, Oxidized Ember #B94F36, deep Mineral #DCD7CC
+  dark:  Chalk #F4F0E7, lifted Ember #E07F60, deep Basalt #353E3A
+Lottie colors are baked into the file, so each theme gets its own JSON with
+identical keyframes and timing; the page swaps files when the theme changes.
 """
 import json
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "..", "assets", "lottie", "keel-settle.json")
+OUT_DIR = os.path.join(HERE, "..", "assets", "lottie")
+THEMES = {
+    "keel-settle.json":      ("#252A28", "#B94F36", "#DCD7CC"),
+    "keel-settle-dark.json": ("#F4F0E7", "#E07F60", "#353E3A"),
+}
 
 W, H = 480, 320
 FPS = 60
@@ -38,9 +43,6 @@ def rgb(hexstr):
     return [round(int(h[i:i + 2], 16) / 255, 4) for i in (0, 2, 4)] + [1]
 
 
-INK = rgb("#241A13")
-ACCENT = rgb("#E2603D")
-STONE = rgb("#DED3C3")
 
 # Pendulum-like ease: slow out of each extreme, slow into the next.
 SWING_OUT = {"x": [0.45], "y": [0]}
@@ -140,91 +142,98 @@ def bob_kfs():
     return [(t, [PIVOT[0], PIVOT[1] + dy, 0]) for t, dy in BOB]
 
 
-boat_ks = {
-    "o": static(100),
-    "r": animated(ROCK, 1),
-    "p": animated(bob_kfs(), 3),
-    "a": static([PIVOT[0], PIVOT[1], 0]),
-    "s": static([125, 125, 100]),
-}
+def build(INK, ACCENT, STONE):
+    boat_ks = {
+        "o": static(100),
+        "r": animated(ROCK, 1),
+        "p": animated(bob_kfs(), 3),
+        "a": static([PIVOT[0], PIVOT[1], 0]),
+        "s": static([125, 125, 100]),
+    }
 
-hull = group("Hull", [
-    path(
-        v=[[178, 181], [302, 181], [272, 207], [208, 207]],
-        i=[[2, 12], [0, 0], [12, 0], [0, 0]],
-        o=[[0, 0], [-2, 12], [0, 0], [-12, 0]],
-    ),
-    fill(ACCENT),
-])
+    hull = group("Hull", [
+        path(
+            v=[[178, 181], [302, 181], [272, 207], [208, 207]],
+            i=[[2, 12], [0, 0], [12, 0], [0, 0]],
+            o=[[0, 0], [-2, 12], [0, 0], [-12, 0]],
+        ),
+        fill(ACCENT),
+    ])
 
-keel_fin = group("Keel fin", [
-    path(v=[[233, 205], [247, 205], [244, 240], [236, 240]]),
-    fill(INK),
-])
+    keel_fin = group("Keel fin", [
+        path(v=[[233, 205], [247, 205], [244, 240], [236, 240]]),
+        fill(INK),
+    ])
 
-ballast = group("Ballast bulb", [ellipse((240, 244), (30, 13)), fill(INK)])
+    ballast = group("Ballast bulb", [ellipse((240, 244), (30, 13)), fill(INK)])
 
-mast = group("Mast", [
-    path(v=[[240, 186], [240, 98]], closed=False),
-    stroke(INK, 3),
-])
+    mast = group("Mast", [
+        path(v=[[240, 186], [240, 98]], closed=False),
+        stroke(INK, 3),
+    ])
 
-sail = group("Sail", [
-    path(v=[[247, 106], [247, 177], [298, 177]]),
-    fill(STONE),
-    stroke(INK, 2.5),
-])
+    sail = group("Sail", [
+        path(v=[[247, 106], [247, 177], [298, 177]]),
+        fill(STONE),
+        stroke(INK, 2.5),
+    ])
 
-pennant = group("Pennant", [
-    path(v=[[241, 99], [258, 103.5], [241, 108]]),
-    fill(ACCENT),
-])
+    pennant = group("Pennant", [
+        path(v=[[241, 99], [258, 103.5], [241, 108]]),
+        fill(ACCENT),
+    ])
 
-# Shapes later in the list render underneath earlier ones.
-boat = layer("Boat", 2, [pennant, sail, mast, hull, keel_fin, ballast], boat_ks)
+    # Shapes later in the list render underneath earlier ones.
+    boat = layer("Boat", 2, [pennant, sail, mast, hull, keel_fin, ballast], boat_ks)
 
-# ---------------------------------------------------------------- the water
-waterline = layer("Waterline", 1, [group("Line", [
-    path(v=[[0, 198], [480, 198]], closed=False),
-    stroke(INK, 2),
-])])
-
-
-def ripple(name, ind, y, x0, x1, t0):
-    """A short stroke that draws outward and fades as the boat pushes water.
-    Later ripples are shorter and fainter."""
-    draw = animated([(t0, 0), (t0 + 36, 100)], 1)
-    fade = animated([(t0 + 10, 0), (t0 + 24, 55), (t0 + 64, 0)], 1)
-    return layer(name, ind, [group(name, [
-        path(v=[[x0, y], [x1, y]], closed=False),
-        trim(0, draw),
-        stroke(INK, 2, fade),
+    # ---------------------------------------------------------------- the water
+    waterline = layer("Waterline", 1, [group("Line", [
+        path(v=[[0, 198], [480, 198]], closed=False),
+        stroke(INK, 2),
     ])])
 
 
-ripples = [
-    ripple("Ripple L1", 3, 212, 196, 132, 2),
-    ripple("Ripple R1", 4, 212, 284, 348, 2),
-    ripple("Ripple L2", 5, 224, 204, 160, 46),
-    ripple("Ripple R2", 6, 224, 276, 320, 46),
-    ripple("Ripple L3", 7, 212, 200, 176, 90),
-    ripple("Ripple R3", 8, 212, 280, 304, 90),
-]
+    def ripple(name, ind, y, x0, x1, t0):
+        """A short stroke that draws outward and fades as the boat pushes water.
+        Later ripples are shorter and fainter."""
+        draw = animated([(t0, 0), (t0 + 36, 100)], 1)
+        fade = animated([(t0 + 10, 0), (t0 + 24, 55), (t0 + 64, 0)], 1)
+        return layer(name, ind, [group(name, [
+            path(v=[[x0, y], [x1, y]], closed=False),
+            trim(0, draw),
+            stroke(INK, 2, fade),
+        ])])
 
-water = layer("Water", 20, [group("Water body", [
-    path(v=[[0, 198], [480, 198], [480, 320], [0, 320]]),
-    fill(STONE),
-])])
 
-# Lottie draws layer[0] on top. The boat sits in front of the waterline so
-# the line passes behind the hull instead of slicing through it.
-anim = {
-    "v": "5.12.2", "fr": FPS, "ip": 0, "op": END, "w": W, "h": H,
-    "nm": "keel-settle", "ddd": 0, "assets": [],
-    "layers": [boat, waterline] + ripples + [water],
-}
+    ripples = [
+        ripple("Ripple L1", 3, 212, 196, 132, 2),
+        ripple("Ripple R1", 4, 212, 284, 348, 2),
+        ripple("Ripple L2", 5, 224, 204, 160, 46),
+        ripple("Ripple R2", 6, 224, 276, 320, 46),
+        ripple("Ripple L3", 7, 212, 200, 176, 90),
+        ripple("Ripple R3", 8, 212, 280, 304, 90),
+    ]
 
-os.makedirs(os.path.dirname(OUT), exist_ok=True)
-with open(OUT, "w") as f:
-    json.dump(anim, f, separators=(",", ":"))
-print("wrote", os.path.normpath(OUT), os.path.getsize(OUT), "bytes")
+    water = layer("Water", 20, [group("Water body", [
+        path(v=[[0, 198], [480, 198], [480, 320], [0, 320]]),
+        fill(STONE),
+    ])])
+
+    # Lottie draws layer[0] on top. The boat sits in front of the waterline so
+    # the line passes behind the hull instead of slicing through it.
+    anim = {
+        "v": "5.12.2", "fr": FPS, "ip": 0, "op": END, "w": W, "h": H,
+        "nm": "keel-settle", "ddd": 0, "assets": [],
+        "layers": [boat, waterline] + ripples + [water],
+    }
+
+    return anim
+
+
+os.makedirs(OUT_DIR, exist_ok=True)
+for name, (ink, accent, stone) in THEMES.items():
+    anim = build(rgb(ink), rgb(accent), rgb(stone))
+    out = os.path.join(OUT_DIR, name)
+    with open(out, "w") as f:
+        json.dump(anim, f, separators=(",", ":"))
+    print("wrote", os.path.normpath(out), os.path.getsize(out), "bytes")

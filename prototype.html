@@ -8,7 +8,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/tokens.css">
+<script>
+  // Theme before first paint: ?theme= wins, then the saved choice, else the OS.
+  (function () {
+    var t = new URLSearchParams(location.search).get('theme');
+    try { t = t || localStorage.getItem('keel-theme'); } catch (e) {}
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -63,15 +72,20 @@
     transition: transform var(--dur-press) var(--ease-settle), background-color var(--dur-press) var(--ease-settle);
   }
   .btn:active { transform: translateY(1px); }
-  .btn-primary { background: var(--accent); color: var(--ink); border-color: rgba(36,26,19,.16); }
-  .btn-primary:hover { background: #E66B4A; }
-  .btn-quiet { background: transparent; color: var(--ink); border-color: var(--control); }
-  .btn-quiet:hover { background: var(--surface); }
-  .btn-text { background: none; border: 0; color: var(--accent-ink); font-weight: 600; cursor: pointer; padding: 10px 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { background: var(--accent-pressed); }
+  .btn:disabled { background: var(--disabled-bg); color: var(--disabled-ink); border-color: transparent; cursor: not-allowed; }
+  .btn-quiet { background: var(--secondary-bg); color: var(--ink); border-color: var(--secondary-border); }
+  .btn-quiet:hover { background: var(--surface-2); }
+  .btn-text { background: none; border: 0; color: var(--ink); font-weight: 600; cursor: pointer; padding: 10px 8px; border-radius: var(--r-sm); text-decoration: underline; text-decoration-color: var(--accent-ink); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .btn-text:hover { background: var(--tertiary-hover); }
   .btn-block { width: 100%; }
   .foot { margin-top: auto; padding-top: 24px; display: grid; gap: 12px; }
 
   /* ---------- surfaces ---------- */
+  /* inside stone surfaces, slate text steps darker to keep 4.5:1, and secondary buttons sit on canvas */
+  .panel, .rows { --ink-2: var(--ink-2-on-surface); --ink-3: var(--ink-2-on-surface); --secondary-bg: var(--canvas); }
   .panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); }
   .rows { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
   .row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-top: 1px solid var(--rule); min-height: 56px; }
@@ -81,15 +95,15 @@
   .row .amt { font-variant-numeric: tabular-nums; font-weight: 500; }
   button.row { width: 100%; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: left; cursor: pointer; }
   button.row:first-child { border-top: 0; }
-  button.row:hover { background: rgba(36,26,19,.035); }
+  button.row:hover { background: var(--tertiary-hover); }
   .section-label { font-size: 15px; font-weight: 600; margin: 28px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
   .section-label span { font-weight: 400; color: var(--ink-3); font-size: 13.5px; }
 
   /* ---------- switch ---------- */
   .switch { width: 46px; height: 28px; border-radius: 14px; border: 1px solid var(--control); background: var(--canvas); position: relative; cursor: pointer; flex: none; transition: background-color var(--dur-press) var(--ease-settle); }
   .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 10px; background: var(--ink-2); transition: transform var(--dur-move) var(--ease-settle), background-color var(--dur-press); }
-  .switch[aria-checked="true"] { background: var(--accent); border-color: rgba(36,26,19,.58); }
-  .switch[aria-checked="true"]::after { transform: translateX(18px); background: var(--ink); }
+  .switch[aria-checked="true"] { background: var(--accent); border-color: var(--control); }
+  .switch[aria-checked="true"]::after { transform: translateX(18px); background: var(--on-accent); }
 
   /* ---------- welcome ---------- */
   .welcome-art { width: calc(100% + 44px); margin: 8px -22px 0; aspect-ratio: 3 / 2; }
@@ -101,7 +115,7 @@
   /* ---------- chips ---------- */
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { min-height: 44px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--control); background: var(--surface); cursor: pointer; font-weight: 500; font-variant-numeric: tabular-nums; }
-  .chip[aria-pressed="true"] { background: var(--accent); color: var(--ink); border-color: rgba(36,26,19,.58); font-weight: 600; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
   fieldset { border: 0; padding: 0; margin: 22px 0 0; }
   legend { font-weight: 600; margin-bottom: 10px; padding: 0; }
 
@@ -171,7 +185,7 @@
   .weightbar i + i { border-left: 2px solid var(--canvas); }
   .legend { display: flex; flex-wrap: wrap; gap: 8px; }
   .day-head { font-size: 13.5px; color: var(--ink-3); margin: 20px 0 8px; }
-  .cat-dot { width: 10px; height: 10px; border-radius: 2px; flex: none; border: 1px solid rgba(36,26,19,.25); }
+  .cat-dot { width: 10px; height: 10px; border-radius: 2px; flex: none; border: 1px solid var(--control); }
 
   /* ---------- goals ---------- */
   .goal { padding: 18px; }
@@ -181,14 +195,14 @@
   .goal .nums b { font-family: var(--serif); font-size: 28px; font-weight: 500; }
 
   /* ---------- sheet ---------- */
-  .scrim { position: absolute; inset: 0; background: rgba(36,26,19,.32); opacity: 0; pointer-events: none; transition: opacity var(--dur-move) var(--ease-settle); z-index: 10; }
+  .scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity var(--dur-move) var(--ease-settle); z-index: 10; }
   .scrim.on { opacity: 1; pointer-events: auto; }
   .sheet {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 11;
     background: var(--canvas); border-top: 1px solid var(--hairline); border-radius: var(--r-lg) var(--r-lg) 0 0;
     padding: 10px 22px calc(26px + env(safe-area-inset-bottom));
     transform: translateY(105%); transition: transform var(--dur-move) var(--ease-settle);
-    box-shadow: 0 -12px 32px -16px rgba(36,26,19,.25);
+    box-shadow: var(--lift);
   }
   .sheet.on { transform: none; }
   .sheet .grab { width: 36px; height: 4px; border-radius: 2px; background: var(--surface-2); margin: 0 auto 16px; }
@@ -209,10 +223,10 @@
   <defs>
     <!-- Brand mark: hull on a waterline, keel below. The same construction as the reading. -->
     <symbol id="mark" viewBox="0 0 32 32">
-      <path d="M4 15h24" stroke="#241A13" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#E2603D"/>
-      <path d="M15 17.5h2l-.4 7h-1.2z" fill="#241A13"/>
-      <ellipse cx="16" cy="25.2" rx="3" ry="1.5" fill="#241A13"/>
+      <path class="s-ink" d="M4 15h24" stroke-width="1.6" stroke-linecap="round"/>
+      <path class="f-hull" d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z"/>
+      <path class="f-ink" d="M15 17.5h2l-.4 7h-1.2z"/>
+      <ellipse class="f-ink" cx="16" cy="25.2" rx="3" ry="1.5"/>
     </symbol>
     <symbol id="i-steady" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M6 9.5h12c-.5 2.2-1.8 3.3-3.6 3.3H9.6C7.8 12.8 6.5 11.7 6 9.5z"/><path d="M12 13v6"/><path d="M10.5 19.5h3"/></g></symbol>
     <symbol id="i-activity" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></g></symbol>
@@ -285,14 +299,14 @@
   <!-- 5. Taking a reading -->
   <section class="screen taking" data-screen="taking" aria-live="polite">
     <svg viewBox="0 0 220 120" aria-hidden="true">
-      <rect x="10" y="62" width="200" height="58" fill="#DED3C3"/>
-      <path class="wl" d="M10 62h200" stroke="#241A13" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <rect class="f-water" x="10" y="62" width="200" height="58"/>
+      <path class="wl s-ink" d="M10 62h200" stroke-width="2" stroke-linecap="round" fill="none"/>
       <g class="hull-g">
-        <path d="M76 50h68c-2 9-8 15-16 15H92c-8 0-14-6-16-15z" fill="#E2603D"/>
+        <path class="f-hull" d="M76 50h68c-2 9-8 15-16 15H92c-8 0-14-6-16-15z"/>
       </g>
       <g class="fin">
-        <path d="M106 64h8l-1.5 30h-5z" fill="#241A13"/>
-        <ellipse cx="110" cy="96" rx="11" ry="5" fill="#241A13"/>
+        <path class="f-ink" d="M106 64h8l-1.5 30h-5z"/>
+        <ellipse class="f-ink" cx="110" cy="96" rx="11" ry="5"/>
       </g>
     </svg>
     <h2 style="margin-top:18px">Taking your first reading</h2>
@@ -313,18 +327,18 @@
       <p class="sub" id="r-sub"></p>
       <svg class="keelviz" id="keelviz" viewBox="0 0 340 156" role="img" aria-labelledby="kv-desc">
         <desc id="kv-desc">Keel depth shows how many days past payday you are covered.</desc>
-        <rect x="0" y="34" width="340" height="122" fill="#DED3C3"/>
-        <g id="kv-ticks" font-family="Archivo, sans-serif" font-size="12.5" fill="#5C4D41"></g>
-        <path d="M0 34h340" stroke="#241A13" stroke-width="1.5"/>
+        <rect class="f-water" x="0" y="34" width="340" height="122"/>
+        <g class="f-ink2s" id="kv-ticks" font-family="Archivo, sans-serif" font-size="12.5"></g>
+        <path class="s-ink" d="M0 34h340" stroke-width="1.5"/>
         <g id="kv-ghost" opacity="0">
-          <path id="kv-ghost-fin" fill="none" stroke="#5C4D41" stroke-width="1.25" stroke-dasharray="3 3"/>
-          <text id="kv-ghost-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5" fill="#5C4D41">Now</text>
-          <text id="kv-new-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600" fill="#241A13"></text>
+          <path class="s-ink2s" id="kv-ghost-fin" fill="none" stroke-width="1.25" stroke-dasharray="3 3"/>
+          <text class="f-ink2s" id="kv-ghost-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5">Now</text>
+          <text class="f-ink" id="kv-new-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600"></text>
         </g>
         <g id="kv-boat">
-          <path id="kv-fin" fill="#241A13"/>
-          <ellipse id="kv-bulb" cx="120" rx="13" ry="5.5" fill="#241A13"/>
-          <path d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" fill="#E2603D"/>
+          <path class="f-ink" id="kv-fin"/>
+          <ellipse class="f-ink" id="kv-bulb" cx="120" rx="13" ry="5.5"/>
+          <path class="f-hull" d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z"/>
         </g>
       </svg>
       <dl class="facts">
@@ -367,10 +381,10 @@
       <p class="meta">For the brakes, before winter</p>
       <svg class="ballast" id="ballast" viewBox="0 0 300 64" role="img" aria-labelledby="ballast-desc">
         <desc id="ballast-desc">Progress toward 1,000 dollars.</desc>
-        <rect x="0" y="22" width="300" height="34" rx="6" fill="#DED3C3"/>
-        <rect id="ballast-fill" x="0" y="22" width="114" height="34" rx="6" fill="#241A13"/>
-        <path d="M0 22h300" stroke="#241A13" stroke-width="1.5"/>
-        <path id="ballast-mark" d="M114 8v48" stroke="#E2603D" stroke-width="3" stroke-linecap="round"/>
+        <rect class="f-water" x="0" y="22" width="300" height="34" rx="6"/>
+        <rect class="f-ballast" id="ballast-fill" x="0" y="22" width="114" height="34" rx="6"/>
+        <path class="s-ink" d="M0 22h300" stroke-width="1.5"/>
+        <path class="s-hull" id="ballast-mark" d="M114 8v48" stroke-width="3" stroke-linecap="round"/>
       </svg>
       <div class="nums"><div><b id="goal-saved">$380</b><div class="meta">saved</div></div><div style="text-align:right"><b>$1,000</b><div class="meta">goal</div></div></div>
       <div class="foot" style="padding-top:18px">
@@ -429,7 +443,7 @@
     { d: 'Fri, Oct 2', name: 'Northside Grocer', cat: 'Groceries', amt: 54.30 }
   ];
   // Category tints: one ink family stepped in lightness, so the accent stays the only hue.
-  var CATS = { 'Groceries': '#241A13', 'Eating out': '#5C4D41', 'Getting around': '#8E7E70', 'Health': '#B5A797', 'Everything else': '#CFC3B3' };
+  var CATS = { 'Groceries': 'var(--data-1)', 'Eating out': 'var(--data-2)', 'Getting around': 'var(--data-3)', 'Health': 'var(--data-4)', 'Everything else': 'var(--data-5)' };
 
   // ------------------------------------------------------------ helpers
   var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -494,11 +508,11 @@
     return 'M' + (x - 5) + ' ' + KV.top + 'h10l-2 ' + (yFor(days) - KV.top) + 'h-6z';
   }
   function drawTicks() {
-    var out = '<path d="M226 ' + KV.zero + 'V' + yFor(14) + '" stroke="#5C4D41" stroke-width="1"/>';
+    var out = '<path class="s-ink2s" d="M226 ' + KV.zero + 'V' + yFor(14) + '" stroke-width="1"/>';
     [[0, 'Payday'], [3, '+3 days'], [7, '+1 week'], [14, '+2 weeks']].forEach(function (t) {
       var y = yFor(t[0]);
-      out += '<path d="M220 ' + y + 'h6" stroke="#5C4D41" stroke-width="1"/>' +
-             '<text x="234" y="' + (y + 4) + '"' + (t[0] === 0 ? ' font-weight="600" fill="#241A13"' : '') + '>' + t[1] + '</text>';
+      out += '<path class="s-ink2s" d="M220 ' + y + 'h6" stroke-width="1"/>' +
+             '<text x="234" y="' + (y + 4) + '"' + (t[0] === 0 ? ' class="f-ink" font-weight="600"' : '') + '>' + t[1] + '</text>';
     });
     $('#kv-ticks').innerHTML = out;
   }
@@ -610,12 +624,12 @@
     var sum = TX.reduce(function (s, t) { return s + t.amt; }, 0);
     var cats = Object.keys(CATS);
     $('#weightbar').innerHTML = cats.map(function (c) {
-      var col = activeCat && activeCat !== c ? '#E3DACD' : (activeCat === c ? '#E2603D' : CATS[c]);
+      var col = activeCat && activeCat !== c ? 'var(--data-muted)' : (activeCat === c ? 'var(--data-highlight)' : CATS[c]);
       return '<i style="width:' + (totals[c] / sum * 100).toFixed(2) + '%;background:' + col + '"></i>';
     }).join('');
     $('#cat-filter').innerHTML = cats.map(function (c) {
       return '<button class="chip" aria-pressed="' + (activeCat === c) + '" data-cat="' + c + '" style="display:inline-flex;align-items:center;gap:8px;min-height:40px">' +
-        '<span class="cat-dot" style="background:' + (activeCat === c ? '#E2603D' : CATS[c]) + '"></span>' + c + ' <span class="num" style="opacity:.8">' + Math.round(totals[c] / sum * 100) + '%</span></button>';
+        '<span class="cat-dot" style="background:' + (activeCat === c ? 'var(--on-accent)' : CATS[c]) + '"></span>' + c + ' <span class="num" style="opacity:.8">' + Math.round(totals[c] / sum * 100) + '%</span></button>';
     }).join('');
     var list = TX.filter(function (t) { return !activeCat || t.cat === activeCat; });
     var html = '', lastDay = null, open = false;
@@ -728,13 +742,29 @@
     takingTimer = setTimeout(function () { go('home', { fromTaking: true }); }, reduced() ? 600 : 2300);
   }
 
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function illoPath() { return isDark() ? 'assets/lottie/keel-settle-dark.json' : 'assets/lottie/keel-settle.json'; }
+  function setTheme(t) {
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    else document.documentElement.removeAttribute('data-theme');
+    // Lottie colors are baked in, so swap to the matching file and hold the settled frame.
+    if (welcomeAnim) {
+      welcomeAnim.destroy(); welcomeAnim = null;
+      if (current === 'welcome') playWelcome(true);
+    }
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { setTheme(document.documentElement.getAttribute('data-theme')); });
+
   var welcomeAnim = null;
-  function playWelcome() {
+  function playWelcome(hold) {
     if (!window.lottie) return;
     if (!welcomeAnim) {
-      welcomeAnim = lottie.loadAnimation({ container: $('#welcome-art'), renderer: 'svg', loop: false, autoplay: false, path: 'assets/lottie/keel-settle.json',
+      welcomeAnim = lottie.loadAnimation({ container: $('#welcome-art'), renderer: 'svg', loop: false, autoplay: false, path: illoPath(),
         rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
-      welcomeAnim.addEventListener('DOMLoaded', function () { reduced() ? welcomeAnim.goToAndStop(welcomeAnim.totalFrames - 1, true) : welcomeAnim.goToAndPlay(0, true); });
+      welcomeAnim.addEventListener('DOMLoaded', function () { (reduced() || hold) ? welcomeAnim.goToAndStop(welcomeAnim.totalFrames - 1, true) : welcomeAnim.goToAndPlay(0, true); });
     } else if (!reduced()) welcomeAnim.goToAndPlay(0, true);
   }
 
@@ -766,6 +796,7 @@
   window.addEventListener('message', function (e) {
     var d = e.data || {};
     if (d.keel === 'go' && d.name) go(d.name, { silent: true });
+    if (d.keel === 'theme') setTheme(d.value);
     if (d.keel === 'whatif') { go('home', { silent: true }); $('#wi-amt').value = d.amount; runWhatIf(d.amount); }
   });
 

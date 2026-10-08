@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>.l{stroke:#252A28}.k{fill:#252A28}@media (prefers-color-scheme:dark){.l{stroke:#F4F0E7}.k{fill:#F4F0E7}}</style>
+  <path class="l" d="M4 15h24" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#B94F36"/>
+  <path class="k" d="M15 17.5h2l-.4 7h-1.2z"/>
+  <ellipse class="k" cx="16" cy="25.2" rx="3" ry="1.5"/>
+</svg>

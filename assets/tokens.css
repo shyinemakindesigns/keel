@@ -1,48 +1,235 @@
-/* Keel design tokens.
+/* Keel design tokens: Mineral & Ember (creative direction: STILLFORM)
    Shared by the case study (index.html) and the prototype (prototype.html).
-   Contrast ratios are WCAG 2.1, computed with source/contrast_audit.py.  */
+
+   Two tiers, one system:
+     1. Brand primitives  (--color-*)   the named palette, never used directly by components
+     2. Semantic tokens   (--canvas, --ink, --accent, --positive ...)  what components use
+   Dark mode redefines only the semantic tier.
+
+   Every ratio quoted here is WCAG 2.1, produced by source/contrast_audit.py.        */
 
 :root {
-  /* Surfaces: 60 / 30 / 10 */
-  --canvas:   #F6F1EA;  /* 60: warm off-white page */
-  --surface:  #EAE1D4;  /* 30: stone, one step up: panels, rows, nav */
-  --surface-2:#DED3C3;  /* deeper stone: water, pressed states, wells (no small text on it) */
+  /* ---------------------------------------------------------- 1. brand primitives */
+  --color-brand-primary:         #B94F36; /* Oxidized Ember */
+  --color-background-primary:    #F6F3ED; /* Porcelain Clay */
+  --color-background-secondary:  #E6E2D9; /* Mineral Stone */
+  --color-text-primary:          #252A28; /* Volcanic Ink */
+  --color-text-secondary:        #656B66; /* Weathered Slate */
+  --color-background-dark:       #202725; /* Basalt */
+  --color-text-dark:             #F4F0E7; /* Chalk */
 
-  /* Ink */
-  --ink:   #241A13;     /* 15.2:1 on canvas, 13.2:1 on surface */
-  --ink-2: #5C4D41;     /* 7.2:1 on canvas, 6.3:1 on surface */
-  --ink-3: #6A5B4E;     /* 5.8:1 on canvas, 5.0:1 on surface: captions, metadata */
+  /* accessible derivatives of the primitives */
+  --color-mineral-deep:          #DCD7CC; /* water band, wells */
+  --color-slate-deep:            #555B56; /* slate that passes on Mineral Stone */
+  --color-ember-text:            #9E412B; /* ember for text and focus: brand hex is 4.48:1 on porcelain */
+  --color-ember-hover:           #A4452F;
+  --color-ember-pressed:         #8F3C29;
+  --color-basalt-raised:         #2A322F;
+  --color-basalt-deep:           #353E3A;
+  --color-chalk-muted:           #B3B6AE;
+  --color-ember-lifted:          #E07F60; /* ember on basalt: brand hex is 3.07:1 there */
 
-  /* The one accent. Two roles, one hue. */
-  --accent:     #E2603D; /* fills: buttons, hull, active tab. Ink label on it: 4.85:1 */
-  --accent-ink: #A3381A; /* text-safe accent for links and inline emphasis: 6.0:1 canvas, 5.2:1 surface */
+  /* ---------------------------------------------------------- 2. semantic, light */
+  color-scheme: light;
 
-  /* Lines */
-  --hairline:   rgba(36, 26, 19, 0.12); /* decorative edges of raised surfaces (1.4.11 exempt, surface fill already separates) */
-  --rule:       rgba(36, 26, 19, 0.18); /* row dividers in lists */
-  --control:    rgba(36, 26, 19, 0.58); /* boundaries of inputs and toggles: 3.7:1, meets 1.4.11 */
-  --focus:      #A3381A;                /* focus ring, 6.0:1 on canvas */
+  /* surfaces: 60 / 30 / 10 */
+  --canvas:    var(--color-background-primary);   /* 60 */
+  --surface:   var(--color-background-secondary); /* 30: panels, rows, nav surfaces, forms */
+  --surface-2: var(--color-mineral-deep);         /* water, wells. Only --ink and --ink-2-on-surface text */
 
-  /* Shadow: only after a border, always soft */
-  --lift: 0 1px 2px rgba(36, 26, 19, 0.05), 0 8px 24px -12px rgba(36, 26, 19, 0.14);
+  /* text */
+  --ink:   var(--color-text-primary);   /* 13.2:1 on canvas, 11.3:1 on surface */
+  --ink-2: var(--color-text-secondary); /* 4.9:1 on canvas. Swaps to --ink-on-surface-2 inside surfaces */
+  --ink-3: var(--color-text-secondary);
+  --ink-2-on-surface: var(--color-slate-deep); /* 5.4:1 on surface, 4.9:1 on surface-2 */
 
-  /* Shape */
+  /* the accent: one hue, distinct roles */
+  --accent:         var(--color-brand-primary);  /* fills: primary buttons, hull, active tab, selected chip */
+  --accent-hover:   var(--color-ember-hover);
+  --accent-pressed: var(--color-ember-pressed);
+  --on-accent:      #FFFFFF;                     /* 4.96:1 on ember. Chalk is 4.36:1 and fails */
+  --accent-ink:     var(--color-ember-text);     /* links, text buttons: 5.8:1 canvas, 5.0:1 surface */
+
+  /* secondary and tertiary actions */
+  --secondary-bg:     var(--color-background-secondary);
+  --secondary-border: rgba(37, 42, 40, 0.22);
+  --tertiary-hover:   rgba(37, 42, 40, 0.06);
+
+  /* disabled: readable, not invisible (5.4:1 on surface) */
+  --disabled-bg:   var(--color-mineral-deep);
+  --disabled-ink:  var(--color-slate-deep);
+
+  /* lines */
+  --hairline: rgba(37, 42, 40, 0.12); /* decorative edges of raised surfaces (1.4.11 exempt) */
+  --rule:     rgba(37, 42, 40, 0.18); /* row dividers */
+  --control:  rgba(37, 42, 40, 0.58); /* input, chip and switch boundaries: meets 1.4.11 */
+  --focus:    var(--color-ember-text);
+
+  /* status: never ember, never color alone (always with a word or icon) */
+  --positive: #2E6A4E;  /* 5.8:1 canvas */
+  --negative: #9B2C3A;  /* 6.7:1 canvas. Oxblood, distinct from ember */
+  --warning:  #7D5300;  /* 6.1:1 canvas */
+  --info:     #3B5A72;  /* 6.6:1 canvas */
+  --neutral:  var(--color-text-secondary);
+  --positive-tint: rgba(46, 106, 78, 0.10);
+  --negative-tint: rgba(155, 44, 58, 0.09);
+  --warning-tint:  rgba(125, 83, 0, 0.10);
+  --info-tint:     rgba(59, 90, 114, 0.10);
+
+  /* data visualization: one ink ramp, ember reserved for the selected series */
+  --data-1: #252A28;
+  --data-2: #4A504C;
+  --data-3: #7A7F79;
+  --data-4: #A6A9A2;
+  --data-5: #C9C8BF;
+  --data-muted: #DFDBD2;
+  --data-highlight: var(--color-brand-primary);
+
+  /* illustration */
+  --illo-line:   var(--color-text-primary);
+  --illo-hull:   var(--color-brand-primary);
+  --illo-water:  var(--color-mineral-deep);
+  --illo-ballast: var(--color-text-primary);
+
+  /* elevation: border first, then a soft shadow only for things that float */
+  --lift: 0 1px 2px rgba(37, 42, 40, 0.05), 0 8px 24px -12px rgba(37, 42, 40, 0.16);
+  --scrim: rgba(32, 39, 37, 0.36);
+
+  /* shape */
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 16px;
 
-  /* Type */
+  /* type (unchanged in the color refinement) */
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans:  "Archivo", "Helvetica Neue", Arial, sans-serif;
 
-  /* Motion: calm and grounded */
-  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);   /* decelerates into rest, never overshoots */
-  --ease-lift:   cubic-bezier(0.4, 0, 0.6, 1);     /* symmetric, for things leaving */
-  --dur-press:   180ms;  /* tactile feedback */
-  --dur-move:    420ms;  /* screens, sheets */
-  --dur-settle:  900ms;  /* the keel reading finding its new depth */
+  /* motion: calm and grounded */
+  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-lift:   cubic-bezier(0.4, 0, 0.6, 1);
+  --dur-press:   180ms;
+  --dur-move:    420ms;
+  --dur-settle:  900ms;
 }
+
+/* ---------------------------------------------------------- 2b. semantic, dark
+   Not an inversion: basalt with layered charcoal, warm chalk type, a lifted ember. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas:    var(--color-background-dark);
+  --surface:   var(--color-basalt-raised);
+  --surface-2: var(--color-basalt-deep);
+  --ink:   var(--color-text-dark);      /* 13.4:1 on basalt */
+  --ink-2: var(--color-chalk-muted);    /* 7.4:1 on basalt, 5.4:1 on deep basalt */
+  --ink-3: var(--color-chalk-muted);
+  --ink-2-on-surface: var(--color-chalk-muted);
+  --accent:         var(--color-ember-lifted);
+  --accent-hover:   #E68D70;
+  --accent-pressed: #D9714F;
+  --on-accent:      var(--color-background-dark); /* 5.4:1 */
+  --accent-ink:     #E38A6C;                      /* 5.9:1 basalt, 5.1:1 raised */
+  --secondary-bg:     var(--color-basalt-raised);
+  --secondary-border: rgba(244, 240, 231, 0.22);
+  --tertiary-hover:   rgba(244, 240, 231, 0.07);
+  --disabled-bg:  var(--color-basalt-deep);
+  --disabled-ink: var(--color-chalk-muted);
+  --hairline: rgba(244, 240, 231, 0.12);
+  --rule:     rgba(244, 240, 231, 0.16);
+  --control:  rgba(244, 240, 231, 0.50);
+  --focus:    #E38A6C;
+  --positive: #7FC4A0;
+  --negative: #F09AA3;
+  --warning:  #E2B45C;
+  --info:     #9DBCD6;
+  --neutral:  var(--color-chalk-muted);
+  --positive-tint: rgba(127, 196, 160, 0.12);
+  --negative-tint: rgba(240, 154, 163, 0.12);
+  --warning-tint:  rgba(226, 180, 92, 0.12);
+  --info-tint:     rgba(157, 188, 214, 0.12);
+  --data-1: #F4F0E7;
+  --data-2: #C9C8BF;
+  --data-3: #9A9E97;
+  --data-4: #6E746E;
+  --data-5: #4D5550;
+  --data-muted: #2F3734;
+  --data-highlight: var(--color-ember-lifted);
+  --illo-line:  var(--color-text-dark);
+  --illo-hull:  var(--color-ember-lifted);
+  --illo-water: var(--color-basalt-deep);
+  --illo-ballast: #9A9E97;
+  --lift: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 28px -12px rgba(0, 0, 0, 0.5);
+  --scrim: rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --canvas:    var(--color-background-dark);
+    --surface:   var(--color-basalt-raised);
+    --surface-2: var(--color-basalt-deep);
+    --ink:   var(--color-text-dark);
+    --ink-2: var(--color-chalk-muted);
+    --ink-3: var(--color-chalk-muted);
+    --ink-2-on-surface: var(--color-chalk-muted);
+    --accent:         var(--color-ember-lifted);
+    --accent-hover:   #E68D70;
+    --accent-pressed: #D9714F;
+    --on-accent:      var(--color-background-dark);
+    --accent-ink:     #E38A6C;
+    --secondary-bg:     var(--color-basalt-raised);
+    --secondary-border: rgba(244, 240, 231, 0.22);
+    --tertiary-hover:   rgba(244, 240, 231, 0.07);
+    --disabled-bg:  var(--color-basalt-deep);
+    --disabled-ink: var(--color-chalk-muted);
+    --hairline: rgba(244, 240, 231, 0.12);
+    --rule:     rgba(244, 240, 231, 0.16);
+    --control:  rgba(244, 240, 231, 0.50);
+    --focus:    #E38A6C;
+    --positive: #7FC4A0;
+    --negative: #F09AA3;
+    --warning:  #E2B45C;
+    --info:     #9DBCD6;
+    --neutral:  var(--color-chalk-muted);
+    --positive-tint: rgba(127, 196, 160, 0.12);
+    --negative-tint: rgba(240, 154, 163, 0.12);
+    --warning-tint:  rgba(226, 180, 92, 0.12);
+    --info-tint:     rgba(157, 188, 214, 0.12);
+    --data-1: #F4F0E7;
+    --data-2: #C9C8BF;
+    --data-3: #9A9E97;
+    --data-4: #6E746E;
+    --data-5: #4D5550;
+    --data-muted: #2F3734;
+    --data-highlight: var(--color-ember-lifted);
+    --illo-line:  var(--color-text-dark);
+    --illo-hull:  var(--color-ember-lifted);
+    --illo-water: var(--color-basalt-deep);
+    --illo-ballast: #9A9E97;
+  --illo-ballast: #9A9E97;
+    --lift: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 28px -12px rgba(0, 0, 0, 0.5);
+    --scrim: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Utility classes so SVG artwork reads tokens instead of hardcoded hex.
+   (Presentation attributes can't take var(); class rules can.) */
+.f-ink    { fill: var(--illo-line); }
+.f-ink2   { fill: var(--ink-2); }
+.f-hull   { fill: var(--illo-hull); }
+.f-ballast{ fill: var(--illo-ballast); }
+.f-water  { fill: var(--illo-water); }
+.f-surface{ fill: var(--surface); }
+.f-canvas { fill: var(--canvas); }
+.f-accent-ink { fill: var(--accent-ink); }
+.s-ink    { stroke: var(--illo-line); }
+.s-ink2   { stroke: var(--ink-2); }
+.s-accent-ink { stroke: var(--accent-ink); }
+.s-hull   { stroke: var(--illo-hull); }
+.s-rule   { stroke: var(--rule); }
+.s-control{ stroke: var(--control); }
 
 @media (prefers-reduced-motion: reduce) {
   :root { --dur-press: 0ms; --dur-move: 0ms; --dur-settle: 0ms; }
 }
+.f-ink2s  { fill: var(--ink-2-on-surface); }
+.s-ink2s  { stroke: var(--ink-2-on-surface); }
