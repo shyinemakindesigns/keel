@@ -1,0 +1,192 @@
+[
+ {
+  "kind": "text",
+  "fg": "ink",
+  "bg": "canvas",
+  "ratio": 15.17,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Body, headings, amounts"
+ },
+ {
+  "kind": "text",
+  "fg": "ink-2",
+  "bg": "canvas",
+  "ratio": 7.21,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Secondary copy"
+ },
+ {
+  "kind": "text",
+  "fg": "ink-3",
+  "bg": "canvas",
+  "ratio": 5.81,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Captions, metadata"
+ },
+ {
+  "kind": "text",
+  "fg": "accent-ink",
+  "bg": "canvas",
+  "ratio": 5.96,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Links, text buttons"
+ },
+ {
+  "kind": "text",
+  "fg": "ink",
+  "bg": "surface",
+  "ratio": 13.16,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Body, headings, amounts"
+ },
+ {
+  "kind": "text",
+  "fg": "ink-2",
+  "bg": "surface",
+  "ratio": 6.26,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Secondary copy"
+ },
+ {
+  "kind": "text",
+  "fg": "ink-3",
+  "bg": "surface",
+  "ratio": 5.04,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Captions, metadata"
+ },
+ {
+  "kind": "text",
+  "fg": "accent-ink",
+  "bg": "surface",
+  "ratio": 5.17,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Links, text buttons"
+ },
+ {
+  "kind": "text",
+  "fg": "ink",
+  "bg": "surface-2",
+  "ratio": 11.53,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Chart labels in the water band"
+ },
+ {
+  "kind": "text",
+  "fg": "ink-2",
+  "bg": "surface-2",
+  "ratio": 5.48,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Depth ticks in the water band"
+ },
+ {
+  "kind": "text",
+  "fg": "ink",
+  "bg": "accent",
+  "ratio": 4.85,
+  "need": 4.5,
+  "pass": true,
+  "exempt": false,
+  "use": "Label on primary buttons and selected chips"
+ },
+ {
+  "kind": "control",
+  "fg": "#7C746D",
+  "bg": "canvas",
+  "ratio": 4.08,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Input, chip and switch boundary (ink at 58%) on canvas"
+ },
+ {
+  "kind": "control",
+  "fg": "#776E64",
+  "bg": "surface",
+  "ratio": 3.86,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Input, chip and switch boundary (ink at 58%) on surface"
+ },
+ {
+  "kind": "control",
+  "fg": "accent",
+  "bg": "canvas",
+  "ratio": 3.13,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Primary button fill against canvas"
+ },
+ {
+  "kind": "control",
+  "fg": "accent-ink",
+  "bg": "canvas",
+  "ratio": 5.96,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Focus ring"
+ },
+ {
+  "kind": "control",
+  "fg": "ink-2",
+  "bg": "canvas",
+  "ratio": 7.21,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Switch thumb, off state"
+ },
+ {
+  "kind": "control",
+  "fg": "ink",
+  "bg": "accent",
+  "ratio": 4.85,
+  "need": 3.0,
+  "pass": true,
+  "exempt": false,
+  "use": "Switch thumb, on state"
+ },
+ {
+  "kind": "decorative",
+  "fg": "#D2C9BD",
+  "bg": "canvas",
+  "ratio": 1.46,
+  "need": 3.0,
+  "pass": true,
+  "exempt": true,
+  "use": "hairline 12%: edge of a stone card on canvas"
+ },
+ {
+  "kind": "decorative",
+  "fg": "#C6BDB1",
+  "bg": "canvas",
+  "ratio": 1.65,
+  "need": 3.0,
+  "pass": true,
+  "exempt": true,
+  "use": "row rule 18%: edge of a stone card on canvas"
+ }
+]

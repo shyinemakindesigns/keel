@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keel case study</title>
+<meta name="description" content="A self-directed UX and visual design case study: Keel, a fictional budgeting app built around steadiness instead of restriction. Research review, information architecture, wireframes, identity and motion system, interactive prototype, and a testing plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..700;1,100,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font: 400 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+    font-variation-settings: "wdth" 100;
+  }
+  a { color: var(--accent-ink); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+  img { max-width: 100%; display: block; }
+  p { margin: 0 0 1em; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- type ---------- */
+  .serif, h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
+  h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.02; margin: 0; font-variation-settings: "SOFT" 40, "opsz" 144; }
+  h2 { font-size: clamp(32px, 4vw, 46px); line-height: 1.06; margin: 0 0 22px; font-variation-settings: "SOFT" 40, "opsz" 120; }
+  h3 { font-size: 24px; line-height: 1.2; margin: 44px 0 12px; font-variation-settings: "SOFT" 30, "opsz" 48; }
+  h4 { font-size: 17px; font-weight: 600; margin: 28px 0 8px; }
+  .lede { font-size: 21px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+  .prose { max-width: 66ch; }
+  .prose p, .prose li { text-wrap: pretty; }
+  .muted { color: var(--ink-2); }
+  .small { font-size: 15px; }
+  .caption { font-size: 14.5px; color: var(--ink-3); margin-top: 10px; text-wrap: pretty; }
+  .num { font-variant-numeric: tabular-nums; }
+  em { font-style: italic; }
+
+  /* ---------- top bar ---------- */
+  .top { position: sticky; top: 0; z-index: 20; background: var(--canvas); border-bottom: 1px solid var(--rule); }
+  .top .in { max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .wordmark { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 24px; font-variation-settings: "SOFT" 60, "opsz" 72; color: var(--ink); text-decoration: none; }
+  .wordmark svg { width: 28px; height: 28px; }
+  .top .by { font-size: 15px; color: var(--ink-2); }
+  .top .open { font-size: 15px; font-weight: 600; }
+
+  /* ---------- layout ---------- */
+  .layout { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 56px; }
+  .toc { position: sticky; top: 92px; align-self: start; padding-top: 72px; }
+  .toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
+  .toc a { display: grid; grid-template-columns: 30px 1fr; padding: 7px 0 7px 14px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); text-decoration: none; font-size: 15px; line-height: 1.35; transition: color var(--dur-press) var(--ease-settle), border-color var(--dur-move) var(--ease-settle); }
+  .toc a span { font-family: var(--serif); font-variant-numeric: lining-nums; color: var(--ink-3); }
+  .toc a:hover { color: var(--ink); }
+  .toc a[aria-current="true"] { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+  main { min-width: 0; padding-bottom: 80px; }
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; gap: 0; padding: 0 16px; }
+    .toc { display: none; }
+    .top .in { padding: 12px 16px; }
+    .top .by { display: none; }
+  }
+
+  /* ---------- opening ---------- */
+  .opening { padding: 72px 0 28px; }
+  .opening h1 { max-width: 15ch; }
+  .opening .lede { max-width: 40ch; margin-top: 24px; }
+  .open-art { margin: 40px 0 0; }
+  .open-art .stage { width: 100%; aspect-ratio: 3 / 1.45; overflow: hidden; position: relative; }
+  .open-art .stage > div { position: absolute; left: 50%; top: 0; width: min(100%, 720px); transform: translateX(-50%); aspect-ratio: 3 / 2; }
+  .open-art .bar { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .facts-table { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); margin: 40px 0 0; }
+  .facts-table div { padding: 14px 16px 16px 0; }
+  .facts-table div + div { padding-left: 16px; border-left: 1px solid var(--rule); }
+  .facts-table dt { font-size: 14px; color: var(--ink-3); }
+  .facts-table dd { margin: 4px 0 0; font-size: 15.5px; }
+  @media (max-width: 760px) { .facts-table { grid-template-columns: 1fr 1fr; } .facts-table div:nth-child(3) { border-left: 0; padding-left: 0; } .facts-table div:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+
+  .candor { margin: 36px 0 0; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 22px 24px; max-width: 74ch; }
+  .candor h2 { font-size: 22px; margin: 0 0 8px; }
+  .candor p { font-size: 16px; color: var(--ink-2); }
+  .candor p:last-child { margin: 0; }
+  .candor strong { color: var(--ink); }
+
+  .idea { margin: 64px 0 0; padding: 0; max-width: 30ch; font-family: var(--serif); font-size: clamp(28px, 3.4vw, 38px); line-height: 1.2; font-weight: 400; font-variation-settings: "SOFT" 80, "opsz" 96; letter-spacing: -0.01em; text-wrap: balance; }
+  .idea + p { margin-top: 18px; }
+
+  /* ---------- horizon divider: the motif as a section break ---------- */
+  .horizon { position: relative; height: 26px; margin: 96px 0 40px; }
+  .horizon::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: var(--ink); }
+  .horizon::after { content: ""; position: absolute; left: 0; top: 1px; width: 8px; height: 18px; background: var(--ink); clip-path: polygon(0 0, 100% 0, 78% 100%, 22% 100%); }
+  .horizon i { position: absolute; left: -6px; top: 17px; width: 20px; height: 8px; border-radius: 50%; background: var(--ink); }
+  .sec-num { display: block; font-family: var(--serif); font-size: 20px; color: var(--ink-3); font-variant-numeric: lining-nums; margin-bottom: 6px; font-variation-settings: "SOFT" 100, "opsz" 24; }
+
+  /* ---------- structural surfaces ---------- */
+  .panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); }
+  .figure { margin: 32px 0; }
+  .wide { max-width: 980px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15.5px; }
+  .table-wrap { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow-x: auto; }
+  th, td { text-align: left; vertical-align: top; padding: 14px 16px; border-top: 1px solid var(--rule); }
+  thead th { border-top: 0; font-weight: 600; font-size: 14.5px; color: var(--ink-2); white-space: nowrap; }
+  tbody th { font-weight: 600; }
+  td p { margin: 0 0 6px; }
+  td p:last-child { margin: 0; }
+  .t-min { min-width: 760px; }
+
+  /* evidence rows */
+  .evidence { list-style: none; margin: 28px 0; padding: 0; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); }
+  .evidence li { display: grid; grid-template-columns: 52px 1fr; gap: 0 4px; padding: 20px 22px 20px 14px; border-top: 1px solid var(--rule); }
+  .evidence li:first-child { border-top: 0; }
+  .evidence .ref { font-family: var(--serif); font-size: 26px; line-height: 1; color: var(--accent-ink); text-align: center; padding-top: 2px; }
+  .evidence h3 { margin: 0 0 6px; font-size: 20px; }
+  .evidence p { margin: 0 0 6px; font-size: 16px; color: var(--ink-2); }
+  .evidence p.so { color: var(--ink); margin: 8px 0 0; }
+  .evidence cite { font-style: normal; font-size: 14.5px; color: var(--ink-3); display: block; margin-top: 8px; }
+
+  .statement { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 32px); line-height: 1.28; font-weight: 400; font-variation-settings: "SOFT" 60, "opsz" 72; margin: 28px 0; padding: 26px 0; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--rule); max-width: 34ch; text-wrap: pretty; }
+
+  /* principles */
+  .principles { list-style: none; margin: 28px 0; padding: 0; counter-reset: p; }
+  .principles > li { padding: 26px 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 12px 40px; }
+  .principles > li:last-child { border-bottom: 1px solid var(--rule); }
+  .principles h3 { margin: 0; font-size: 28px; }
+  .principles h3 small { display: block; font-family: var(--sans); font-size: 15px; color: var(--ink-3); letter-spacing: 0; margin-bottom: 6px; font-weight: 400; }
+  .principles .why { grid-column: 1; color: var(--ink-2); font-size: 16px; margin: 0; }
+  .principles dl { grid-column: 2; grid-row: 1 / span 2; margin: 0; font-size: 16px; }
+  .principles dt { font-weight: 600; margin-top: 10px; }
+  .principles dt:first-child { margin-top: 0; }
+  .principles dd { margin: 2px 0 0; color: var(--ink-2); }
+  @media (max-width: 760px) { .principles > li { grid-template-columns: 1fr; } .principles dl { grid-column: 1; grid-row: auto; } }
+
+  /* status tags written as words, not badges */
+  .status { font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+
+  /* ---------- IA diagram ---------- */
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ia svg { display: block; min-width: 860px; width: 100%; height: auto; }
+  .ia text { font-family: var(--sans); }
+
+  /* ---------- wireframes ---------- */
+  .wf-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 960px) { .wf-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .wf-row { grid-template-columns: 1fr; } }
+  .wf-fig { margin: 0; }
+  .wf { aspect-ratio: 9 / 18; background: #FFFFFF; border: 2px solid #8A8A8A; border-radius: 18px; padding: 16px 12px; display: flex; flex-direction: column; gap: 8px; font-family: var(--sans); color: #6B6B6B; font-size: 11px; position: relative; overflow: hidden; }
+  .wf .l { height: 7px; background: #C9C9C9; border-radius: 2px; }
+  .wf .l.d { background: #8F8F8F; }
+  .wf .h { height: 16px; background: #8F8F8F; border-radius: 2px; }
+  .wf .b { border: 1.5px solid #A3A3A3; border-radius: 6px; background: #F1F1F1; }
+  .wf .btn { height: 26px; border-radius: 5px; background: #8F8F8F; margin-top: auto; }
+  .wf .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; border-top: 1.5px solid #BDBDBD; padding-top: 8px; margin-top: auto; }
+  .wf .tabs i { height: 16px; background: #DADADA; border-radius: 3px; }
+  .wf .row { display: flex; align-items: center; gap: 6px; padding: 7px 6px; border-top: 1px solid #CFCFCF; }
+  .wf .row:first-child { border-top: 0; }
+  .wf .tg { width: 22px; height: 12px; border-radius: 6px; border: 1.5px solid #8F8F8F; flex: none; margin-left: auto; }
+  .wf .note { font-size: 10.5px; color: #6B6B6B; line-height: 1.3; font-style: italic; }
+  .wf-fig figcaption { margin-top: 12px; font-size: 15px; }
+  .wf-fig figcaption b { display: block; font-weight: 600; }
+  .wf-fig figcaption span { color: var(--ink-2); font-size: 14.5px; }
+  .wf .x { position: absolute; inset: 0; pointer-events: none; }
+
+  /* ---------- identity ---------- */
+  .swatches { display: grid; grid-template-columns: 6fr 3fr 1fr; height: 120px; border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+  .swatches div { padding: 12px 14px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 14px; }
+  .swatches div b { font-size: 15px; }
+  .swatch-list { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); border-top: 1px solid var(--rule); }
+  .swatch-list li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 14px 12px 14px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .swatch-list .chip { width: 44px; height: 44px; border-radius: var(--r-sm); border: 1px solid rgba(36,26,19,.2); }
+  .swatch-list b { display: block; font-size: 15px; }
+  .swatch-list code, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; }
+  .swatch-list span { display: block; font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+
+  .pass { color: var(--ink); font-weight: 600; }
+  .exempt { color: var(--ink-2); }
+  .pair { display: inline-flex; align-items: center; gap: 8px; }
+  .pair i { width: 28px; height: 20px; border-radius: 4px; display: inline-grid; place-items: center; font-style: normal; font-size: 12px; font-weight: 700; border: 1px solid rgba(36,26,19,.15); }
+
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 720px; }
+  .ba figure { margin: 0; }
+  .ba img { border: 1px solid var(--rule); border-radius: var(--r-md); }
+  .ba figcaption { margin-top: 10px; font-size: 15px; }
+  .ba figcaption b { display: block; }
+  @media (max-width: 560px) { .ba { grid-template-columns: 1fr; } }
+
+  .specimen { border-top: 1.5px solid var(--ink); }
+  .specimen .s { display: grid; grid-template-columns: 170px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .specimen .s dt { font-size: 14px; color: var(--ink-3); line-height: 1.4; }
+  .specimen .s dd { margin: 0; min-width: 0; }
+  @media (max-width: 640px) { .specimen .s { grid-template-columns: 1fr; gap: 6px; } }
+
+  .motif { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+  .motif figure { margin: 0; padding: 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .motif figure:nth-child(3n) { border-right: 0; }
+  .motif figure:nth-last-child(-n+3) { border-bottom: 0; }
+  .motif svg { display: block; width: 100%; height: 110px; }
+  .motif figcaption { font-size: 14.5px; margin-top: 10px; }
+  .motif figcaption b { display: block; font-size: 15px; }
+  .motif figcaption span { color: var(--ink-2); }
+  @media (max-width: 720px) {
+    .motif { grid-template-columns: 1fr 1fr; }
+    .motif figure:nth-child(3n) { border-right: 1px solid var(--rule); }
+    .motif figure:nth-child(2n) { border-right: 0; }
+    .motif figure:nth-last-child(-n+3) { border-bottom: 1px solid var(--rule); }
+    .motif figure:nth-last-child(-n+2) { border-bottom: 0; }
+  }
+
+  .construct { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 32px; align-items: center; }
+  .construct svg { width: 100%; height: auto; display: block; }
+  @media (max-width: 760px) { .construct { grid-template-columns: 1fr; } }
+
+  .icons { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--hairline); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; }
+  .icons figure { margin: 0; padding: 18px 22px; border-right: 1px solid var(--rule); text-align: center; flex: 1 1 120px; }
+  .icons figure:last-child { border-right: 0; }
+  .icons svg { width: 72px; height: 72px; color: var(--ink); }
+  .icons figcaption { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+
+  .surfaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .surfaces figure { margin: 0; }
+  .surfaces .demo { height: 120px; border-radius: var(--r-lg); display: grid; place-items: center; font-size: 14px; color: var(--ink-2); }
+  .surfaces figcaption { font-size: 14.5px; margin-top: 10px; color: var(--ink-2); }
+  .surfaces figcaption b { color: var(--ink); display: block; }
+  @media (max-width: 720px) { .surfaces { grid-template-columns: 1fr; } }
+
+  /* motion */
+  .motion-demo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; background: var(--surface); }
+  .motion-demo figure { margin: 0; padding: 18px 18px 16px; }
+  .motion-demo figure + figure { border-left: 1px solid var(--rule); }
+  .motion-demo svg { width: 100%; height: auto; display: block; }
+  .motion-demo figcaption { font-size: 15px; margin-top: 8px; }
+  .motion-demo figcaption b { display: block; }
+  .motion-demo figcaption span { color: var(--ink-2); font-size: 14.5px; }
+  .motion-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  @media (max-width: 640px) { .motion-demo { grid-template-columns: 1fr; } .motion-demo figure + figure { border-left: 0; border-top: 1px solid var(--rule); } }
+  .curves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+  .curves figure { margin: 0; padding: 18px 18px 18px 0; border-bottom: 1px solid var(--rule); }
+  .curves figure + figure { padding-left: 18px; border-left: 1px solid var(--rule); }
+  .curves svg { width: 100%; max-width: 220px; height: auto; display: block; }
+  .curves figcaption { font-size: 14.5px; margin-top: 8px; color: var(--ink-2); }
+  .curves figcaption b { color: var(--ink); display: block; }
+  @media (max-width: 720px) { .curves { grid-template-columns: 1fr; } .curves figure + figure { padding-left: 0; border-left: 0; } }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: var(--r-md); font: 600 15.5px var(--sans); cursor: pointer; border: 1px solid transparent; transition: transform var(--dur-press) var(--ease-settle); }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--ink); border-color: rgba(36,26,19,.16); }
+  .btn-primary:hover { background: #E66B4A; }
+  .btn-quiet { background: var(--canvas); color: var(--ink); border-color: var(--control); }
+  .btn-quiet:hover { background: var(--surface); }
+
+  .lottie-strip { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+  .lottie-strip figure { margin: 0; border-right: 1px solid var(--rule); }
+  .lottie-strip figure:last-child { border-right: 0; }
+  .lottie-strip .f { aspect-ratio: 3 / 2; }
+  .lottie-strip figcaption { font-size: 13.5px; color: var(--ink-2); padding: 6px 10px 8px; border-top: 1px solid var(--rule); background: var(--canvas); }
+  @media (max-width: 720px) { .lottie-strip { grid-template-columns: repeat(3, 1fr); } .lottie-strip figure:nth-child(3) { border-right: 0; } .lottie-strip figure:nth-child(-n+3) { border-bottom: 1px solid var(--rule); } }
+  .illo-main { background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+  .illo-main .stage { aspect-ratio: 3 / 1.6; position: relative; overflow: hidden; }
+  .illo-main .stage > div { position: absolute; inset: 0 0 auto 0; aspect-ratio: 3 / 2; }
+
+  /* prototype */
+  .proto { display: grid; grid-template-columns: 410px minmax(0, 1fr); gap: 48px; align-items: start; }
+  .device { width: 410px; padding: 10px; border-radius: 44px; background: var(--ink); box-shadow: var(--lift); }
+  .device .screen-wrap { width: 390px; height: 844px; border-radius: 34px; overflow: hidden; background: var(--canvas); position: relative; }
+  .device iframe { width: 390px; height: 844px; border: 0; display: block; transform-origin: 0 0; }
+  .proto-side { position: sticky; top: 96px; }
+  .walk { list-style: none; margin: 18px 0; padding: 0; border-top: 1px solid var(--rule); }
+  .walk li { border-bottom: 1px solid var(--rule); }
+  .walk button { width: 100%; text-align: left; background: none; border: 0; padding: 12px 0; font: inherit; color: var(--ink); cursor: pointer; display: grid; grid-template-columns: 28px 1fr; gap: 8px; }
+  .walk button span { font-family: var(--serif); color: var(--ink-3); }
+  .walk button small { display: block; color: var(--ink-2); font-size: 14.5px; line-height: 1.4; margin-top: 2px; }
+  .walk button:hover b { text-decoration: underline; text-underline-offset: 3px; }
+  .walk button[aria-current="true"] span { color: var(--accent-ink); }
+  .walk button[aria-current="true"] b { color: var(--ink); }
+  @media (max-width: 1100px) { .proto { grid-template-columns: 1fr; } .proto-side { position: static; } }
+  @media (max-width: 460px) {
+    .device { width: 100%; padding: 6px; border-radius: 34px; }
+    .device .screen-wrap { width: 100%; border-radius: 28px; }
+  }
+
+  /* change log */
+  .changes { list-style: none; padding: 0; margin: 24px 0; }
+  .changes > li { border-top: 1px solid var(--rule); padding: 24px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px 36px; }
+  .changes > li:last-child { border-bottom: 1px solid var(--rule); }
+  .changes h4 { grid-column: 1 / -1; margin: 0; font-size: 19px; font-family: var(--serif); font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 36; }
+  .changes .was, .changes .now { font-size: 16px; color: var(--ink-2); }
+  .changes .was b, .changes .now b { color: var(--ink); display: block; font-size: 14.5px; margin-bottom: 4px; }
+  @media (max-width: 640px) { .changes > li { grid-template-columns: 1fr; } }
+
+  ol.plain, ul.plain { padding-left: 1.2em; }
+  ol.plain li, ul.plain li { margin-bottom: 8px; }
+
+  .refs { list-style: none; padding: 0; margin: 0; counter-reset: r; font-size: 15.5px; }
+  .refs li { display: grid; grid-template-columns: 36px 1fr; padding: 12px 0; border-top: 1px solid var(--rule); }
+  .refs li:last-child { border-bottom: 1px solid var(--rule); }
+  .refs b { font-family: var(--serif); font-weight: 500; color: var(--accent-ink); }
+
+  footer { border-top: 1px solid var(--rule); }
+  footer .in { max-width: 1240px; margin: 0 auto; padding: 28px 24px 48px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 32 32">
+      <path d="M4 15h24" stroke="#241A13" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#E2603D"/>
+      <path d="M15 17.5h2l-.4 7h-1.2z" fill="#241A13"/>
+      <ellipse cx="16" cy="25.2" rx="3" ry="1.5" fill="#241A13"/>
+    </symbol>
+    <symbol id="i-steady" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M6 9.5h12c-.5 2.2-1.8 3.3-3.6 3.3H9.6C7.8 12.8 6.5 11.7 6 9.5z"/><path d="M12 13v6"/><path d="M10.5 19.5h3"/></g></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></g></symbol>
+    <symbol id="i-goals" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M8 18V5"/><path d="M8 5.5l8 2.5-8 2.5"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="in">
+    <a class="wordmark" href="#top" aria-label="Keel, back to top"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</a>
+    <span class="by">A case study by Shyine Makin</span>
+    <a class="open" href="prototype.html">Open the prototype</a>
+  </div>
+</header>
+
+<div class="layout" id="top">
+  <nav class="toc" aria-label="Case study sections">
+    <ol>
+      <li><a href="#problem"><span>1</span>The problem</a></li>
+      <li><a href="#research"><span>2</span>Research</a></li>
+      <li><a href="#define"><span>3</span>Define</a></li>
+      <li><a href="#ia"><span>4</span>Architecture</a></li>
+      <li><a href="#lofi"><span>5</span>Wireframes</a></li>
+      <li><a href="#identity"><span>6</span>Identity and motion</a></li>
+      <li><a href="#prototype"><span>7</span>Prototype</a></li>
+      <li><a href="#testing"><span>8</span>Testing plan</a></li>
+      <li><a href="#reflection"><span>9</span>Reflection</a></li>
+      <li><a href="#references"><span>&nbsp;</span>References</a></li>
+    </ol>
+  </nav>
+
+<main>
+
+<!-- ============================================================ OPENING -->
+<section class="opening" aria-labelledby="title">
+  <h1 id="title">A budgeting app that tells you you’re okay before it tells you anything else.</h1>
+  <p class="lede">Keel is a personal finance concept built on one idea: confidence with money comes from steadiness, not restriction. This is the full process behind it, from the research that shaped the idea to a working prototype, with the visual and motion system designed alongside the product rather than after it.</p>
+
+  <figure class="open-art">
+    <div class="stage"><div id="hero-illo" role="img" aria-label="Animated illustration: a small sailboat, drawn as a cutaway so its keel shows below the waterline, rocks and settles level."></div></div>
+    <figcaption class="bar caption">
+      <span>The keel metaphor as a hand-authored Lottie animation. It plays once and holds still, because the stillness is the point.</span>
+      <button class="btn btn-quiet" id="hero-replay" type="button">Replay</button>
+    </figcaption>
+  </figure>
+
+  <dl class="facts-table">
+    <div><dt>Role</dt><dd>Everything, solo: research review through prototype</dd></div>
+    <div><dt>When</dt><dd>October 2026, self-directed</dd></div>
+    <div><dt>Made with</dt><dd>HTML, CSS, JS, Lottie JSON written by hand, Python for audits</dd></div>
+    <div><dt>Status</dt><dd>Concept and prototype. Not tested with users yet</dd></div>
+  </dl>
+
+  <aside class="candor" aria-labelledby="about-h">
+    <h2 id="about-h">About this project</h2>
+    <p><strong>Keel is fictional.</strong> It isn’t a client, an employer’s product, or a real company, and nothing here is affiliated with any financial institution. I made it to show the whole arc of my process in one public, inspectable piece.</p>
+    <p><strong>What’s real and what isn’t.</strong> The research section is a desk review of published research and public competitor material. I didn’t interview anyone for this project, and there are no invented personas or quotes on this page. The testing section is a plan, not results. Every number in the prototype is sample data I made up to drive the interaction, and it’s labeled that way where it appears. The cited sources are real and linked at the bottom.</p>
+  </aside>
+
+  <p class="idea">A keel is the part of a boat you never see. It doesn’t stop the waves. It keeps you upright through them.</p>
+  <p class="prose muted">Every decision below traces back to that sentence: what the home screen leads with, what the app refuses to show in red, the palette, the pacing of the motion, and the one shape the whole system is built from.</p>
+</section>
+
+<!-- ============================================================ 1 PROBLEM -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="problem" aria-labelledby="problem-h">
+  <span class="sec-num">1</span>
+  <h2 id="problem-h">The problem: budgeting apps meet hard weeks with red numbers</h2>
+  <div class="prose">
+    <p class="lede">Most budgeting tools are built around limits. Categories get ceilings, progress bars fill up and change color, and an alert arrives when you go over. That design assumes the problem is missing information. The research on money and emotion points somewhere else: people tend to look away from their finances exactly when things get hard.</p>
+  </div>
+
+  <ol class="evidence">
+    <li>
+      <span class="ref" aria-hidden="true">1</span>
+      <div>
+        <h3>Money stress is the normal state, not the edge case</h3>
+        <p>In the American Psychological Association’s Stress in America survey (fielded August 2014 with 3,068 adults, released February 2015), 72% reported feeling stressed about money at least some of the time in the prior month, and 22% reported extreme money stress.</p>
+        <p class="so">So a finance app should assume the person opening it is already a little anxious.</p>
+        <cite>American Psychological Association, <a href="#ref-1">Stress in America: Paying With Our Health</a> (2015)</cite>
+      </div>
+    </li>
+    <li>
+      <span class="ref" aria-hidden="true">2</span>
+      <div>
+        <h3>People avoid financial information when they expect bad news</h3>
+        <p>Karlsson, Loewenstein and Seppi named this the ostrich effect. In two datasets, Scandinavian and American investors checked their portfolios more often in rising markets than in flat or falling ones. Later work by Sicherman, Loewenstein, Seppi and Utkus, using account login records, found the same pattern: attention drops after market declines.</p>
+        <p class="so">So the moment someone most needs a clear picture is the moment they’re least likely to open the app.</p>
+        <cite>Karlsson, Loewenstein &amp; Seppi, <a href="#ref-2">The ostrich effect</a> (2009); Sicherman et al., <a href="#ref-3">Financial Attention</a> (2016)</cite>
+      </div>
+    </li>
+    <li>
+      <span class="ref" aria-hidden="true">3</span>
+      <div>
+        <h3>Feeling secure is the goal, not staying under budget</h3>
+        <p>The Consumer Financial Protection Bureau’s research on financial well-being frames it around security and freedom of choice, now and in the future: being in control of day-to-day finances, being able to absorb a shock, and being on track for goals. Its research found that well-being isn’t determined by income alone.</p>
+        <p class="so">So success should be measured by whether people feel steady, not by whether every category stayed green.</p>
+        <cite>CFPB, <a href="#ref-4">Financial well-being: The goal of financial education</a> (2015)</cite>
+      </div>
+    </li>
+  </ol>
+
+  <div class="prose">
+    <p>Put together, these sources suggest an uncomfortable inference: if people already avoid financial information when they expect bad news, an app that greets a rough week with red overages is working against its own goal. It teaches people to stop looking. That’s the bet Keel is built on. It’s an inference from published research, not something I’ve measured, and the testing plan in section 8 is designed to check it.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 2 RESEARCH -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="research" aria-labelledby="research-h">
+  <span class="sec-num">2</span>
+  <h2 id="research-h">Research: a literature and competitor review</h2>
+  <div class="prose">
+    <p class="lede">I didn’t run interviews for this project. Instead of inventing users, I did a desk review: what published research says about money and attention, and how four products position themselves.</p>
+    <p>Competitor notes come from each product’s own public site, published method, or announcements, read in October 2026. I didn’t hold paid accounts in all four, so this is a review of stated positioning and documented patterns, not a hands-on teardown. If I were doing this inside a team, the next step would be interviews with five to eight people who stopped using a budgeting app, which is the group this concept most needs to understand.</p>
+  </div>
+
+  <h3>What the literature changes about the brief</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Source</th><th scope="col">What it says</th><th scope="col">What it means for Keel</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Ostrich effect <a href="#ref-2">[2]</a>, Financial Attention <a href="#ref-3">[3]</a></th><td>Attention to finances goes up with good news and down with bad news.</td><td><p>The home screen has to be safe to open on a bad week.</p><p>Lead with what’s holding steady, then show what moved.</p></td></tr>
+        <tr><th scope="row">CFPB financial well-being <a href="#ref-4">[4]</a></th><td>Well-being is about present and future security and freedom of choice, and it’s partly subjective.</td><td><p>The headline metric should express security over time (“how long am I covered”) rather than a balance or a category total.</p></td></tr>
+        <tr><th scope="row">APA Stress in America <a href="#ref-1">[1]</a></th><td>Most adults report money stress at least some of the time.</td><td><p>Default tone is calm. No alarm colors, no shaking error states, no urgency in motion.</p></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>How four products frame the job</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Product</th><th scope="col">What it centers, in its own words</th><th scope="col">What it asks of you</th><th scope="col">What Keel takes, and leaves</th></tr></thead>
+      <tbody>
+        <tr>
+          <th scope="row">YNAB</th>
+          <td><p>A method built on four published rules: give every dollar a job, embrace your true expenses, roll with the punches, age your money <a href="#ref-5">[5]</a>.</p><p>Its Age of Money metric is how long, on average, money sits between being earned and being spent <a href="#ref-6">[6]</a>.</p></td>
+          <td>Active, regular assignment of every dollar. Real commitment, real payoff for people who stick with it.</td>
+          <td><p><b>Takes:</b> setting aside true expenses first, and the forgiving stance of rolling with the punches.</p><p><b>Leaves:</b> the requirement to assign every dollar by hand.</p></td>
+        </tr>
+        <tr>
+          <th scope="row">Mint</th>
+          <td><p>Intuit announced on October 31, 2023 that Mint was going away and members would move to Credit Karma. Credit Karma’s announcement talks about tracking net worth, reviewing spending and monitoring cash flow <a href="#ref-7">[7]</a>.</p></td>
+          <td>Little. It aggregated automatically, then categorized.</td>
+          <td><p><b>Takes:</b> a lesson about trust. People who built habits on a tool lost it. Keel would need easy data export from day one.</p><p><b>Leaves:</b> category tracking as the main event.</p></td>
+        </tr>
+        <tr>
+          <th scope="row">Monarch</th>
+          <td><p>Budgeting, tracking progress and planning, with a strong emphasis on inviting a partner to see the full picture and budget together, on web, iOS and Android <a href="#ref-8">[8]</a>.</p></td>
+          <td>Setting up a full financial picture, ideally with a partner.</td>
+          <td><p><b>Takes:</b> shared visibility as a future direction for households.</p><p><b>Leaves:</b> breadth as the headline. Keel leads with one answer, not a dashboard.</p></td>
+        </tr>
+        <tr>
+          <th scope="row">Copilot Money</th>
+          <td><p>“Your money, beautifully organized”: automatic tracking of accounts, spending and investments, with AI that tags transactions, on Apple platforms and the web <a href="#ref-9">[9]</a>.</p></td>
+          <td>Very little day to day. Review and correct.</td>
+          <td><p><b>Takes:</b> a high craft bar. A calm product still has to feel considered.</p><p><b>Leaves:</b> organization as the promise. Keel’s promise is reassurance.</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The gap</h3>
+  <div class="prose">
+    <p>In the material I reviewed, the headline is usually a balance, a remaining budget, or a set of category totals. YNAB’s Age of Money is the closest precedent to what Keel does, because it measures money in time instead of dollars. The difference is direction. Age of Money looks back at how long money sat before it was spent. Keel’s reading looks forward: <strong>if nothing else came in, how long are you covered?</strong> That one forward-looking answer, shown before any detail, is the product.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 3 DEFINE -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="define" aria-labelledby="define-h">
+  <span class="sec-num">3</span>
+  <h2 id="define-h">Define: one question, three principles</h2>
+
+  <p class="statement">People who want to feel in control of their money often look away when things get tight, and most budgeting apps meet them at that moment with overages. How might we give someone one calm, honest answer about whether they’re okay, one they’d still be willing to open on a bad week?</p>
+
+  <div class="prose"><p>From that, three principles. Each one is specific enough to say no to something, which is how I checked it wasn’t a generic UX platitude.</p></div>
+
+  <ol class="principles">
+    <li>
+      <h3><small>Principle 1</small>Show the keel before the waves</h3>
+      <p class="why">Lead every screen with what’s holding you steady (covered bills, days of room) before what’s moving (recent spending).</p>
+      <dl>
+        <dt>This means</dt><dd>The home screen opens on a date, “steady through Oct 25”, not a balance or a list.</dd>
+        <dt>This rules out</dt><dd>Leading with a transaction feed, a net worth chart, or the biggest category.</dd>
+      </dl>
+    </li>
+    <li>
+      <h3><small>Principle 2</small>Weight, not walls</h3>
+      <p class="why">Spending shifts weight; it doesn’t break limits. Every change is expressed as what it does to your room, in days.</p>
+      <dl>
+        <dt>This means</dt><dd>A $16.80 lunch is “about half a day of your usual spending”. A planned purchase shows its effect on your reading before you spend.</dd>
+        <dt>This rules out</dt><dd>Red overages, per-category ceilings that “break”, guilt copy like “you overspent”.</dd>
+      </dl>
+    </li>
+    <li>
+      <h3><small>Principle 3</small>Settle, don’t startle</h3>
+      <p class="why">Motion and feedback move at the pace of water finding its level: slower, decelerating into rest.</p>
+      <dl>
+        <dt>This means</dt><dd>When your reading changes, the keel sinks or rises and settles over about 900ms.</dd>
+        <dt>This rules out</dt><dd>Shakes, flashes, bouncy overshoot, badge counts, and anything timed to grab attention.</dd>
+      </dl>
+    </li>
+  </ol>
+
+  <h3>Success criteria</h3>
+  <div class="prose"><p>These are proposed measures, written before any data exists. None of them has been measured. They’re here so the testing plan has something specific to check.</p></div>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Question</th><th scope="col">Proposed measure</th><th scope="col">Target I’d set</th><th scope="col">Status</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Can people read it?</th><td>Five-second test on the home screen: “Are you okay this week? How do you know?”</td><td>4 of 5 participants answer correctly and point to the reading</td><td class="status">Proposed, not measured</td></tr>
+        <tr><th scope="row">Does it answer “can I afford this”?</th><td>Timed task using the purchase check</td><td>Under 20 seconds, no help</td><td class="status">Proposed, not measured</td></tr>
+        <tr><th scope="row">Is it safe to open on a bad week?</th><td>In a live product: opens in the week after an expensive week, compared to that person’s baseline</td><td>No drop from baseline</td><td class="status">Proposed, needs a live product</td></tr>
+        <tr><th scope="row">Do people feel steadier?</th><td>CFPB Financial Well-Being Scale <a href="#ref-4">[4]</a> at start and after eight weeks</td><td>An increase, compared against a group using their current tool</td><td class="status">Proposed, needs a study</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================ 4 IA -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="ia" aria-labelledby="ia-h">
+  <span class="sec-num">4</span>
+  <h2 id="ia-h">Information architecture: everything returns to the reading</h2>
+  <div class="prose">
+    <p class="lede">Three tabs, and one rule underneath them: any action that moves money shows its effect on the reading before it happens, and returns you to it after.</p>
+    <p>Onboarding collects exactly the three inputs the reading needs (accounts, recurring bills, payday) and nothing else. Goals got a plain name. I considered “Harbors” to extend the nautical theme and dropped it: a metaphor should explain the product, and a tab label that needs explaining is costing clarity to buy charm.</p>
+  </div>
+
+  <figure class="figure ia wide">
+    <div class="scroll-x panel" style="padding: 8px 0;">
+      <svg viewBox="0 0 960 560" role="img" aria-labelledby="ia-title ia-desc">
+        <title id="ia-title">Keel sitemap and core flow</title>
+        <desc id="ia-desc">Onboarding runs Welcome, Accounts, Bills, Payday, then Taking your first reading, which lands on the Steady tab. The app has three tabs. Steady contains the reading, the purchase check and the coming up list. Activity contains spending weight by category and transactions, each opening a detail sheet. Goals contains the goal and an add-to-goal sheet. The purchase check, the transaction sheet and the add-to-goal sheet all show their effect on the reading.</desc>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5C4D41"/></marker>
+          <marker id="arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A3381A"/></marker>
+        </defs>
+        <g font-size="13" fill="#241A13">
+          <!-- onboarding row -->
+          <text x="24" y="34" font-size="14" font-weight="600">Onboarding</text>
+          <text x="118" y="34" font-size="13" fill="#5C4D41">collects only what the reading needs</text>
+          <g>
+            <rect x="24" y="50" width="128" height="52" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+            <text x="38" y="73" font-weight="600">Welcome</text><text x="38" y="91" fill="#5C4D41" font-size="12">the promise, illustrated</text>
+            <rect x="188" y="50" width="128" height="52" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+            <text x="202" y="73" font-weight="600">Accounts</text><text x="202" y="91" fill="#5C4D41" font-size="12">what you have</text>
+            <rect x="352" y="50" width="128" height="52" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+            <text x="366" y="73" font-weight="600">Bills</text><text x="366" y="91" fill="#5C4D41" font-size="12">what’s already spoken for</text>
+            <rect x="516" y="50" width="128" height="52" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+            <text x="530" y="73" font-weight="600">Payday</text><text x="530" y="91" fill="#5C4D41" font-size="12">the shore to measure to</text>
+            <rect x="680" y="50" width="160" height="52" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+            <text x="694" y="73" font-weight="600">First reading</text><text x="694" y="91" fill="#5C4D41" font-size="12">loading, in the motif</text>
+            <path d="M152 76h32M316 76h32M480 76h32M644 76h32" stroke="#5C4D41" stroke-width="1.5" marker-end="url(#arr)"/>
+            <path d="M760 102v58" stroke="#5C4D41" stroke-width="1.5" marker-end="url(#arr)"/>
+          </g>
+
+          <!-- the horizon: tab bar -->
+          <path d="M24 176h912" stroke="#241A13" stroke-width="1.5"/>
+          <text x="24" y="166" font-size="14" font-weight="600">The app</text>
+          <text x="94" y="166" font-size="13" fill="#5C4D41">three tabs</text>
+
+          <!-- Steady column -->
+          <rect x="24" y="196" width="288" height="300" rx="12" fill="#E2603D" fill-opacity=".10" stroke="#A3381A" stroke-opacity=".5"/>
+          <text x="44" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Steady</text>
+          <text x="114" y="226" font-size="12.5" fill="#5C4D41">home, opens here</text>
+          <rect x="44" y="244" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="58" y="268" font-weight="600">The reading</text><text x="58" y="287" fill="#5C4D41" font-size="12">steady through a date, keel depth</text>
+          <rect x="44" y="316" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="58" y="340" font-weight="600">Purchase check</text><text x="58" y="359" fill="#5C4D41" font-size="12">preview a spend before you make it</text>
+          <rect x="44" y="388" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="58" y="412" font-weight="600">Coming up</text><text x="58" y="431" fill="#5C4D41" font-size="12">bills, each marked set aside or not</text>
+          <text x="44" y="474" font-size="12" fill="#5C4D41">Settings and export: not built in prototype</text>
+
+          <!-- Activity column -->
+          <rect x="336" y="196" width="288" height="300" rx="12" fill="#EAE1D4" stroke="rgba(36,26,19,.25)"/>
+          <text x="356" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Activity</text>
+          <text x="436" y="226" font-size="12.5" fill="#5C4D41">since last payday</text>
+          <rect x="356" y="244" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="370" y="268" font-weight="600">Weight by category</text><text x="370" y="287" fill="#5C4D41" font-size="12">shares, never limits</text>
+          <rect x="356" y="316" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="370" y="340" font-weight="600">Transactions</text><text x="370" y="359" fill="#5C4D41" font-size="12">grouped by day, filter by category</text>
+          <rect x="356" y="388" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)" stroke-dasharray="4 3"/>
+          <text x="370" y="412" font-weight="600">Transaction sheet</text><text x="370" y="431" fill="#5C4D41" font-size="12">its weight, in days</text>
+          <path d="M480 376v8" stroke="#5C4D41" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Goals column -->
+          <rect x="648" y="196" width="288" height="300" rx="12" fill="#EAE1D4" stroke="rgba(36,26,19,.25)"/>
+          <text x="668" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Goals</text>
+          <text x="726" y="226" font-size="12.5" fill="#5C4D41">money set aside on purpose</text>
+          <rect x="668" y="244" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)"/>
+          <text x="682" y="268" font-weight="600">Goal</text><text x="682" y="287" fill="#5C4D41" font-size="12">progress as ballast filling a hold</text>
+          <rect x="668" y="316" width="248" height="60" rx="8" fill="#F6F1EA" stroke="rgba(36,26,19,.35)" stroke-dasharray="4 3"/>
+          <text x="682" y="340" font-weight="600">Add to goal sheet</text><text x="682" y="359" fill="#5C4D41" font-size="12">shows the new reading first</text>
+          <path d="M792 304v8" stroke="#5C4D41" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- return-to-reading arrows -->
+          <path d="M356 418C320 418 318 274 296 274" fill="none" stroke="#A3381A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <path d="M668 346C640 346 640 520 330 520C200 520 300 300 296 290" fill="none" stroke="#A3381A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <path d="M160 316v-8" stroke="#A3381A" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <text x="384" y="546" font-size="12.5" fill="#A3381A">Dashed: anything that moves money shows and returns to the reading</text>
+          <text x="384" y="470" font-size="12" fill="#5C4D41">Dashed box: sheet, not a page</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption class="caption">Sitemap and core flow. The dashed connectors are the architecture’s one rule: no money moves without the reading being shown.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ 5 LO-FI -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="lofi" aria-labelledby="lofi-h">
+  <span class="sec-num">5</span>
+  <h2 id="lofi-h">Low fidelity: the first idea was wrong</h2>
+  <div class="prose">
+    <p class="lede">Grayscale and boxy on purpose, so the only thing being judged was structure. The first home screen was a dial, and it’s here because the reason I dropped it shaped everything after.</p>
+  </div>
+
+  <div class="wf-row figure">
+    <figure class="wf-fig">
+      <div class="wf" aria-hidden="true">
+        <div class="l d" style="width:40%"></div>
+        <div style="margin:16px auto 6px;width:78%;aspect-ratio:2/1;border:10px solid #BDBDBD;border-bottom:0;border-radius:200px 200px 0 0;position:relative">
+          <div style="position:absolute;left:50%;bottom:0;width:3px;height:70%;background:#6B6B6B;transform:rotate(38deg);transform-origin:bottom"></div>
+        </div>
+        <div class="h" style="width:55%;margin:0 auto"></div>
+        <div class="l" style="width:70%;margin:0 auto"></div>
+        <div class="b" style="padding:6px"><div class="row"><div class="l" style="width:60%"></div></div><div class="row"><div class="l" style="width:50%"></div></div><div class="row"><div class="l" style="width:66%"></div></div></div>
+        <div class="tabs"><i></i><i></i><i></i></div>
+        <svg class="x" viewBox="0 0 100 200" preserveAspectRatio="none"><path d="M6 6L94 194M94 6L6 194" stroke="#9A9A9A" stroke-width=".6"/></svg>
+      </div>
+      <figcaption><b>Home v0: a dial (dropped)</b><span>A gauge reads as a speedometer or a fuel tank. Both are about speed and running out, which is the feeling Keel exists to remove.</span></figcaption>
+    </figure>
+
+    <figure class="wf-fig">
+      <div class="wf" aria-hidden="true">
+        <div class="l d" style="width:40%"></div>
+        <div class="l" style="width:50%;margin-top:10px"></div>
+        <div class="h" style="width:62%;height:22px"></div>
+        <div class="l" style="width:88%"></div>
+        <div style="position:relative;height:70px;margin:6px -12px 0;background:#E6E6E6;border-top:2px solid #6B6B6B">
+          <div style="position:absolute;left:30%;top:-10px;width:22%;height:12px;background:#9A9A9A;border-radius:0 0 8px 8px"></div>
+          <div style="position:absolute;left:40%;top:0;width:3px;height:40px;background:#6B6B6B"></div>
+          <div style="position:absolute;right:12px;top:4px;width:28%" ><div class="l" style="margin-bottom:8px"></div><div class="l" style="margin-bottom:8px"></div><div class="l"></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="b" style="height:30px"></div><div class="b" style="height:30px"></div></div>
+        <div class="b" style="height:44px"></div>
+        <div class="tabs"><i></i><i></i><i></i></div>
+      </div>
+      <figcaption><b>Home v1: a date and a waterline</b><span>The answer becomes a date, and depth below the line becomes room past payday. Horizontal, settled, no needle.</span></figcaption>
+    </figure>
+
+    <figure class="wf-fig">
+      <div class="wf" aria-hidden="true">
+        <div class="l" style="width:24%"></div>
+        <div class="h" style="width:80%"></div>
+        <div class="l" style="width:90%"></div>
+        <div class="l" style="width:60%"></div>
+        <div class="b" style="margin-top:8px">
+          <div class="row"><div class="l" style="width:40%"></div><div class="tg"></div></div>
+          <div class="row"><div class="l" style="width:30%"></div><div class="tg"></div></div>
+          <div class="row"><div class="l" style="width:46%"></div><div class="tg"></div></div>
+          <div class="row"><div class="l" style="width:36%"></div><div class="tg"></div></div>
+          <div class="row"><div class="l" style="width:28%"></div><div class="tg"></div></div>
+        </div>
+        <div class="note">Keel finds bills; you only confirm. No category setup.</div>
+        <div class="btn"></div>
+      </div>
+      <figcaption><b>Onboarding: confirm bills</b><span>Setup is confirming, not configuring. Three steps, each one an input the reading actually uses.</span></figcaption>
+    </figure>
+
+    <figure class="wf-fig">
+      <div class="wf" aria-hidden="true">
+        <div class="h" style="width:60%;height:22px"></div>
+        <div style="position:relative;height:60px;margin:4px -12px 0;background:#E6E6E6;border-top:2px solid #6B6B6B">
+          <div style="position:absolute;left:30%;top:-10px;width:22%;height:12px;background:#9A9A9A;border-radius:0 0 8px 8px"></div>
+          <div style="position:absolute;left:40%;top:0;width:3px;height:16px;background:#6B6B6B"></div>
+          <div style="position:absolute;left:40%;top:0;width:3px;height:44px;border:1px dashed #6B6B6B"></div>
+        </div>
+        <div class="b" style="padding:8px;margin-top:6px">
+          <div class="l d" style="width:66%;margin-bottom:8px"></div>
+          <div style="display:flex;gap:6px"><div class="b" style="flex:1;height:22px;background:#fff"></div><div style="width:40px;height:22px;background:#8F8F8F;border-radius:4px"></div></div>
+          <div class="l" style="width:90%;margin-top:8px"></div><div class="l" style="width:70%;margin-top:6px"></div>
+        </div>
+        <div class="note">What if I buy this? The keel moves; the old depth stays as a dashed outline.</div>
+        <div class="tabs"><i></i><i></i><i></i></div>
+      </div>
+      <figcaption><b>Purchase check</b><span>The interaction that makes “weight, not walls” concrete: see the cost in days before you spend.</span></figcaption>
+    </figure>
+  </div>
+
+  <h3>What changed on the way to high fidelity</h3>
+  <div class="prose">
+    <p>Three structural changes happened after these sketches, all from my own review of the rendered screens (there’s no user testing yet, and section 8 says so). They’re documented with before and after in section 8’s change log, but in short: the reading moved out of a card and onto the page itself, category colors became tints of one ink instead of several hues, and the purchase check’s “ghost” keel was redesigned because the first version was illegible at phone size.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 6 IDENTITY -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="identity" aria-labelledby="identity-h">
+  <span class="sec-num">6</span>
+  <h2 id="identity-h">Visual and motion identity</h2>
+  <div class="prose">
+    <p class="lede">The brief for the identity came straight from the concept: warm instead of clinical, grounded instead of urgent, one confident accent instead of a traffic-light system. Fintech defaults to blue and green because they signal trust and growth. Keel’s promise is closer to shelter, so the palette starts from warm stone and ink.</p>
+  </div>
+
+  <h3>Palette: one accent, and restraint as the point</h3>
+  <div class="figure">
+    <div class="swatches" role="img" aria-label="Palette proportions: canvas 60 percent, stone surface 30 percent, terracotta accent 10 percent.">
+      <div style="background:#F6F1EA;border-right:1px solid var(--hairline)"><b>Canvas 60</b><code>#F6F1EA</code></div>
+      <div style="background:#EAE1D4;border-right:1px solid var(--hairline)"><b>Stone 30</b><code>#EAE1D4</code></div>
+      <div style="background:#E2603D"><b>10</b><code>#E2603D</code></div>
+    </div>
+    <ul class="swatch-list">
+      <li><div class="chip" style="background:#F6F1EA"></div><div><b>Canvas</b><code>#F6F1EA</code><span>The page. Warm off-white, never stark white.</span></div></li>
+      <li><div class="chip" style="background:#EAE1D4"></div><div><b>Stone</b><code>#EAE1D4</code><span>Structural surface: panels, rows, tables.</span></div></li>
+      <li><div class="chip" style="background:#DED3C3"></div><div><b>Deep stone</b><code>#DED3C3</code><span>Water in the reading, wells. Only ink and ink 2 text on it.</span></div></li>
+      <li><div class="chip" style="background:#241A13"></div><div><b>Ink</b><code>#241A13</code><span>Text, the keel itself. Near-black with a brown undertone.</span></div></li>
+      <li><div class="chip" style="background:#5C4D41"></div><div><b>Ink 2 and 3</b><code>#5C4D41 · #6A5B4E</code><span>Secondary copy and captions.</span></div></li>
+      <li><div class="chip" style="background:#E2603D"></div><div><b>Signal terracotta</b><code>#E2603D</code><span>The only hue. Buttons, the hull, the active tab, chosen chips.</span></div></li>
+      <li><div class="chip" style="background:#A3381A"></div><div><b>Terracotta text</b><code>#A3381A</code><span>The same hue, darkened so links and focus rings pass contrast.</span></div></li>
+    </ul>
+    <p class="caption">Category shares in the Activity tab use tints of ink (#241A13 through #CFC3B3), not extra hues. The only colorful thing on any screen is something you can act on, or the hull.</p>
+  </div>
+
+  <h3>Contrast: audited, not eyeballed</h3>
+  <div class="prose">
+    <p>Every pairing is checked by a script (<code>source/contrast_audit.py</code>) against WCAG 2.1: 4.5:1 for text under 1.4.3, and 3:1 for control boundaries and focus indicators under 1.4.11. Decorative hairlines are listed too and marked exempt, with the reason, rather than quietly left out.</p>
+    <p>The audit changed the palette. My first accent was <code>#E05A3A</code> with ink <code>#2A1F18</code> as the button label: <strong>4.35:1, a fail.</strong> Nudging the accent to <code>#E2603D</code> (still inside the terracotta range I wanted) and deepening ink to <code>#241A13</code> brought it to 4.85:1 without introducing white button text, which tested lower on this hue (3.69:1).</p>
+  </div>
+  <div class="table-wrap figure wide">
+    <table class="t-min num">
+      <thead><tr><th scope="col">Pairing</th><th scope="col">Used for</th><th scope="col">Ratio</th><th scope="col">Needs</th><th scope="col">Result</th></tr></thead>
+      <tbody id="contrast-rows"></tbody>
+    </table>
+  </div>
+
+  <h3>60 / 30 / 10, measured from screenshots</h3>
+  <div class="prose">
+    <p>Naming tokens “canvas, surface, accent” doesn’t make a screen 60/30/10. So I wrote a second script (<code>source/weight_check.py</code>) that takes rendered screenshots and assigns every pixel to its nearest palette role. Text and chart marks are counted separately as content; the split is over the color fields.</p>
+    <p>The first measurement of the home screen came back <strong>30% canvas, 68% surface, 2% accent</strong>: the reading lived in a stone card that filled most of the phone, so the structural color had become the background. I took the reading out of the card and set it directly on the canvas, let the water band carry the stone, and turned the tab bar into canvas with a hairline. The re-measure: <strong>64 / 34 / 2</strong>.</p>
+  </div>
+  <div class="ba figure">
+    <figure><img src="assets/img/home-v1-before-weight-fix.png" alt="Home screen before: the reading sits inside a large stone-colored card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
+    <figure><img src="assets/img/home-v2-after-weight-fix.png" alt="Home screen after: the reading date sits directly on the warm off-white canvas, with a stone water band below it." loading="lazy" width="780" height="1688"><figcaption><b>After: 64 / 34 / 2</b><span class="muted">Canvas leads, stone structures.</span></figcaption></figure>
+  </div>
+  <div class="table-wrap figure wide">
+    <table class="num">
+      <thead><tr><th scope="col">Screen, as rendered</th><th scope="col">Canvas</th><th scope="col">Surface</th><th scope="col">Accent</th><th scope="col">My read</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Home (after)</th><td>63.8%</td><td>33.9%</td><td>2.3%</td><td>On target for 60/30. Accent low because there’s one action.</td></tr>
+        <tr><th scope="row">Welcome</th><td>79.4%</td><td>14.1%</td><td>6.5%</td><td>Canvas-heavy by design: one illustration, one button.</td></tr>
+        <tr><th scope="row">Payday step</th><td>81.8%</td><td>9.4%</td><td>8.8%</td><td>Accent carries the choices, as intended.</td></tr>
+        <tr><th scope="row">Bills step</th><td>47.0%</td><td>46.0%</td><td>7.1%</td><td>List-heavy; rows need their structure.</td></tr>
+        <tr><th scope="row">Activity</th><td>51.5%</td><td>48.5%</td><td>0.0%</td><td>Over on surface. Accepted, see below.</td></tr>
+        <tr><th scope="row">Goals</th><td>68.0%</td><td>32.0%</td><td>0.1%</td><td>On target.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p>Two honest notes on the numbers. I treat 10% as a ceiling for the accent, not a quota: it only appears where there’s something to do, and I didn’t add orange to a screen just to hit a number. And list-heavy screens (Bills, Activity) run closer to 50/50 because every list sits on a stone surface with real row dividers instead of floating on the page. I chose structure over the ratio there, and I’d revisit it with real content lengths.</p>
+  </div>
+
+  <h3>Type: an editorial serif and a working grotesque</h3>
+  <div class="prose"><p>Fraunces carries the voice: headlines, the wordmark and, most importantly, the reading’s date, set large so the answer is the first thing you see. Its soft axis is turned up to take the edge off the serifs. Archivo does the work: UI, body, numbers, with tabular figures anywhere amounts line up. Headlines use balanced wrapping so no line ends on a single dangling word, and body copy holds to about 66 characters a line.</p></div>
+  <dl class="specimen figure">
+    <div class="s"><dt>Reading date<br>Fraunces 500, 52px, opsz 144, soft 30</dt><dd><span class="serif" style="font-size:clamp(44px,6vw,64px);line-height:1;font-variation-settings:'SOFT' 30,'opsz' 144;font-variant-numeric:lining-nums">Oct 25</span></dd></div>
+    <div class="s"><dt>Headline<br>Fraunces 500, 34px, soft 40</dt><dd><span class="serif" style="font-size:34px;line-height:1.1;font-variation-settings:'SOFT' 40,'opsz' 96">These look like regular bills.</span></dd></div>
+    <div class="s"><dt>Body<br>Archivo 400, 16 to 17px, 1.5</dt><dd>Keel looks at your bills, your paydays and your usual spending, then tells you one thing first: how long you’re covered.</dd></div>
+    <div class="s"><dt>UI and amounts<br>Archivo 500 to 600, tabular</dt><dd class="num" style="font-weight:500">Car insurance &nbsp;·&nbsp; $142.00 &nbsp;·&nbsp; Set aside</dd></div>
+    <div class="s"><dt>Wordmark<br>Fraunces 600, soft 60</dt><dd><span class="wordmark" style="font-size:40px"><svg aria-hidden="true" style="width:44px;height:44px"><use href="#mark"/></svg>Keel</span></dd></div>
+  </dl>
+
+  <h3>One shape: the waterline and the keel</h3>
+  <div class="prose"><p>Instead of a new decorative shape per screen, the whole system is built from one construction: a horizontal line (the waterline, which is always payday), a hull resting on it, and a weighted keel hanging below. Depth below the line means room. Every appearance of the motif follows the same rule, so it never turns into decoration.</p></div>
+  <div class="construct figure">
+    <svg viewBox="0 0 460 250" role="img" aria-labelledby="cons-t">
+      <title id="cons-t">Construction of the motif: waterline, hull, keel fin and ballast bulb, with depth marking days past payday.</title>
+      <rect x="0" y="96" width="460" height="154" fill="#DED3C3"/>
+      <path d="M0 96h460" stroke="#241A13" stroke-width="2"/>
+      <path d="M150 68h160c-3.8 19-16.8 38-36.8 38h-86.4c-20 0-33-19-36.8-38z" fill="#E2603D"/>
+      <path d="M222 104h16l-3 96h-10z" fill="#241A13"/>
+      <ellipse cx="230" cy="202" rx="22" ry="9" fill="#241A13"/>
+      <g font-family="Archivo, sans-serif" font-size="13.5" fill="#241A13">
+        <path d="M330 80h40" stroke="#241A13"/><text x="376" y="84">hull: the accent</text>
+        <path d="M24 92v-30" stroke="#241A13"/><text x="30" y="60">waterline = payday</text>
+        <path d="M250 150h50" stroke="#241A13"/><text x="306" y="154">keel: ink, depth = room</text>
+        <path d="M256 204h44" stroke="#241A13"/><text x="306" y="208">ballast: weight sits low</text>
+      </g>
+    </svg>
+    <div class="prose small">
+      <p><b>Waterline</b> 1.5 to 2px ink, always horizontal, always full width of its container. It is never tilted outside the illustration.</p>
+      <p><b>Hull</b> the accent, flat bottom with soft bilge curves. It always sits on the line, never floats.</p>
+      <p><b>Keel and bulb</b> ink. The only part that changes size, and only to encode one thing: days past payday.</p>
+    </div>
+  </div>
+
+  <div class="motif figure" role="list">
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><use href="#mark" x="64" y="18" width="72" height="72"/></svg>
+      <figcaption><b>Brand mark</b><span>The construction at 32px.</span></figcaption>
+    </figure>
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="0" y="40" width="200" height="70" fill="#DED3C3"/><path d="M0 40h200" stroke="#241A13" stroke-width="1.5"/><path d="M60 26h80c-2 10-8 16-17 16H77c-9 0-15-6-17-16z" fill="#E2603D"/><path d="M96 41h8l-1.5 46h-5z" fill="#241A13"/><ellipse cx="100" cy="88" rx="11" ry="4.5" fill="#241A13"/><path d="M150 44v56" stroke="#5C4D41"/><path d="M146 44h4M146 62h4M146 80h4M146 100h4" stroke="#5C4D41"/></svg>
+      <figcaption><b>The reading</b><span>Keel depth is days past payday.</span></figcaption>
+    </figure>
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="40" y="56" width="120" height="40" fill="#DED3C3"/><path d="M40 56h120" stroke="#241A13" stroke-width="2" stroke-dasharray="120" stroke-dashoffset="40"/><path d="M76 46h48c-1.5 7-6 11-12 11H88c-6 0-10.5-4-12-11z" fill="#E2603D" opacity=".55"/><path d="M97 57h6l-1 14h-4z" fill="#241A13"/></svg>
+      <figcaption><b>Loading</b><span>Line draws, hull drops, keel sinks.</span></figcaption>
+    </figure>
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="16" y="44" width="168" height="30" rx="5" fill="#DED3C3"/><rect x="16" y="44" width="72" height="30" rx="5" fill="#241A13"/><path d="M16 44h168" stroke="#241A13" stroke-width="1.5"/><path d="M88 32v42" stroke="#E2603D" stroke-width="3" stroke-linecap="round"/></svg>
+      <figcaption><b>Goal progress</b><span>Ballast filling a hold, below the line.</span></figcaption>
+    </figure>
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><path d="M20 50h160" stroke="#241A13" stroke-width="1.5"/><path d="M20 51h8l-2 16h-4z" fill="#241A13"/><ellipse cx="24" cy="68" rx="10" ry="4" fill="#241A13"/></svg>
+      <figcaption><b>Section breaks</b><span>The horizon rule on this page.</span></figcaption>
+    </figure>
+    <figure role="listitem">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><g color="#241A13"><use href="#i-steady" x="76" y="31" width="48" height="48"/></g></svg>
+      <figcaption><b>Tab icon</b><span>Hull and keel at 24px, in line.</span></figcaption>
+    </figure>
+  </div>
+
+  <h3>Iconography</h3>
+  <div class="prose"><p>A small set drawn on a 24px grid with a 1.75px stroke and round joins, matching the weight of Archivo at UI sizes. Only three icons ship in the prototype, because there are only three places to go. The Steady icon is the motif itself.</p></div>
+  <div class="icons figure">
+    <figure><svg aria-hidden="true"><use href="#i-steady"/></svg><figcaption>Steady</figcaption></figure>
+    <figure><svg aria-hidden="true"><use href="#i-activity"/></svg><figcaption>Activity</figcaption></figure>
+    <figure><svg aria-hidden="true"><use href="#i-goals"/></svg><figcaption>Goals: a pennant on the line</figcaption></figure>
+    <figure><svg aria-hidden="true" viewBox="0 0 32 32"><use href="#mark"/></svg><figcaption>Mark</figcaption></figure>
+  </div>
+
+  <h3>Surfaces: border first, then maybe a shadow</h3>
+  <div class="surfaces figure">
+    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline)">Stone, 1px hairline</div><figcaption><b>Default raised surface</b>Fill and a 12% ink hairline. No shadow.</figcaption></figure>
+    <figure><div class="demo" style="background:var(--canvas);border:1px solid var(--hairline);box-shadow:var(--lift)">Hairline plus lift</div><figcaption><b>Only for things that float</b>Sheets and the device frame. Soft, low-alpha, never a hard edge.</figcaption></figure>
+    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline);padding:0;display:block;overflow:hidden"><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Phone · $65</div><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Internet · $70</div><div style="padding:12px 14px;text-align:left">Gym · $40</div></div><figcaption><b>Lists are structure</b>Every row view sits on stone with an 18% rule. No text floating on canvas.</figcaption></figure>
+  </div>
+  <div class="prose small muted"><p>Radii: 6px for chips, 10px for buttons and inputs, 16px for panels and sheets. No pill buttons: a pill reads as a tag or a toy, and Keel’s buttons should feel like a firm handle.</p></div>
+
+  <h3>Motion: settle, don’t startle</h3>
+  <div class="prose">
+    <p>This is the part of the identity I’d most want to defend in a review, because the pacing is an argument, not a style. In my previous motion study, Clearstep, the payment confirmation uses a 350ms curve with overshoot (<code>cubic-bezier(.17,.89,.32,1.28)</code>). That’s right for a checkout: the moment is a small win and should feel crisp. Keel’s moments are different. A reading changing isn’t a win or a loss, it’s information about your footing, so it should feel like weight finding its level: slower, decelerating, with at most one small overshoot that damps out.</p>
+  </div>
+
+  <div class="motion-demo figure">
+    <figure>
+      <svg viewBox="0 0 260 150" aria-hidden="true"><rect x="0" y="36" width="260" height="114" fill="#DED3C3"/><path d="M0 36h260" stroke="#241A13" stroke-width="1.5"/><path d="M80 20h100c-2.4 12-10.5 18-23 18h-54c-12.5 0-20.6-6-23-18z" fill="#E2603D"/><g id="snap-fin"><path id="snap-path" fill="#241A13"/><ellipse id="snap-bulb" cx="130" rx="13" ry="5.5" fill="#241A13"/></g></svg>
+      <figcaption><b>Snappy: 350ms, overshoot curve</b><span>The checkout pacing. Here it reads as a jolt, as if the news were urgent.</span></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 260 150" aria-hidden="true"><rect x="0" y="36" width="260" height="114" fill="#DED3C3"/><path d="M0 36h260" stroke="#241A13" stroke-width="1.5"/><path d="M80 20h100c-2.4 12-10.5 18-23 18h-54c-12.5 0-20.6-6-23-18z" fill="#E2603D"/><g><path id="settle-path" fill="#241A13"/><ellipse id="settle-bulb" cx="130" rx="13" ry="5.5" fill="#241A13"/></g></svg>
+      <figcaption><b>Keel: damped spring, about 900ms</b><span>Stiffness 70, damping 15. One small overshoot, then rest.</span></figcaption>
+    </figure>
+  </div>
+  <div class="motion-controls">
+    <button class="btn btn-primary" id="motion-run" type="button">Change the reading</button>
+    <span class="small muted" id="motion-note">Runs both at once so you can feel the difference.</span>
+  </div>
+
+  <div class="curves figure">
+    <figure><svg viewBox="0 0 220 150" id="curve-settle" aria-hidden="true"></svg><figcaption><b>ease-settle, 420ms</b><code>cubic-bezier(0.2, 0.7, 0.2, 1)</code><br>Screens and sheets. Decelerates into rest, never overshoots.</figcaption></figure>
+    <figure><svg viewBox="0 0 220 150" id="curve-spring" aria-hidden="true"></svg><figcaption><b>keel spring, about 900ms</b>k 70, c 15, mass 1<br>Only for the reading, the one physical thing in the UI.</figcaption></figure>
+    <figure><svg viewBox="0 0 220 150" id="curve-snap" aria-hidden="true"></svg><figcaption><b>Not used: snap with overshoot</b><code>cubic-bezier(.17, .89, .32, 1.28)</code><br>Shown for contrast with Clearstep.</figcaption></figure>
+  </div>
+  <div class="table-wrap figure wide">
+    <table class="num t-min">
+      <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Used for</th><th scope="col">Reduced motion</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>--dur-press</code></th><td>180ms, ease-settle</td><td>Button press, switch, chip</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-move</code></th><td>420ms, ease-settle</td><td>Screen changes (fade plus 12px rise), sheets, tab marker</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-settle</code></th><td>about 900ms, spring</td><td>The keel finding a new depth; goal ballast filling</td><td>Jumps to the end state</td></tr>
+        <tr><th scope="row">Illustration</th><td>5s, 60fps, plays once</td><td>Welcome screen</td><td>Shows the settled last frame</td></tr>
+        <tr><th scope="row">Loading</th><td>about 2.3s</td><td>First reading: line draws, hull drops, keel sinks</td><td>0.6s, no movement</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose small muted"><p>There is no error shake, no success burst and no attention pulse anywhere in the system. When something goes wrong, Keel says what and what would fix it, in words.</p></div>
+
+  <h3>The illustration: a boat finding its keel</h3>
+  <div class="prose">
+    <p>There’s no After Effects export path in the environment I built this in, so the animation is written directly as Lottie JSON from a Python script (<code>source/gen_lottie.py</code>), the same approach I used for Clearstep. The boat is drawn as a cutaway so the keel shows below the water: the hidden thing made visible, which is the whole product in one picture.</p>
+    <p>Three colors only (ink, terracotta, deep stone). The boat starts heeled 9° and rocks about a pivot near the center of buoyancy, so the hull and keel swing in opposition like a real righting moment. Each swing keeps about 62% of the last one’s amplitude and is slightly quicker, which is what damping looks like. It’s level by frame 180 and then holds still for two seconds before it stops. I rendered and reviewed every keyframe before using it; the strip below is the live file, not screenshots.</p>
+  </div>
+  <div class="illo-main figure"><div class="stage"><div id="illo-big" role="img" aria-label="The keel illustration, larger."></div></div></div>
+  <div class="lottie-strip figure" id="strip" aria-label="Frames 0, 44, 84, 120, 180 and 299 of the animation."></div>
+  <div class="motion-controls"><button class="btn btn-quiet" id="illo-replay" type="button">Replay</button><a class="small" href="assets/lottie/keel-settle.json">Download the JSON</a></div>
+</section>
+
+<!-- ============================================================ 7 PROTOTYPE -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="prototype" aria-labelledby="proto-h">
+  <span class="sec-num">7</span>
+  <h2 id="proto-h">High fidelity: the working prototype</h2>
+  <div class="prose">
+    <p class="lede">Onboarding through to the steadiness view, built in HTML, CSS and JavaScript. It’s live: the reading is computed, not drawn, so turning off a bill, choosing a different payday, checking a purchase or moving money into a goal all change it.</p>
+  </div>
+
+  <div class="proto figure">
+    <div class="device">
+      <div class="screen-wrap" id="screen-wrap">
+        <iframe id="proto-frame" src="prototype.html?embed=1" title="Keel prototype, interactive" loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="proto-side">
+      <p class="small muted">Use the phone directly, or jump to a moment:</p>
+      <ol class="walk" id="walk">
+        <li><button data-jump="welcome"><span>1</span><span><b>Welcome</b><small>The illustration plays once and settles.</small></span></button></li>
+        <li><button data-jump="bills"><span>2</span><span><b>Confirm bills</b><small>Turn one off; it changes your first reading.</small></span></button></li>
+        <li><button data-jump="payday"><span>3</span><span><b>Payday</b><small>The shore the reading measures toward.</small></span></button></li>
+        <li><button data-jump="taking"><span>4</span><span><b>First reading</b><small>Loading built from the motif.</small></span></button></li>
+        <li><button data-jump="home"><span>5</span><span><b>Steady</b><small>The answer first: a date, and depth past payday.</small></span></button></li>
+        <li><button data-whatif="300"><span>6</span><span><b>Check a $300 purchase</b><small>The keel rises and settles; “Now” stays dashed.</small></span></button></li>
+        <li><button data-whatif="700"><span>7</span><span><b>Check a $700 purchase</b><small>Short before payday, said plainly, with the first bill it would reach. No red.</small></span></button></li>
+        <li><button data-jump="activity"><span>8</span><span><b>Activity</b><small>Weight by category; tap a row to see it in days.</small></span></button></li>
+        <li><button data-jump="goals"><span>9</span><span><b>Goals</b><small>Adding money shows the new reading before you confirm.</small></span></button></li>
+      </ol>
+      <p class="small"><a href="prototype.html">Open the prototype on its own</a> (works on a phone).</p>
+      <p class="small muted">All amounts are sample data. The reading uses a fixed “today” of Thursday, October 8, 2026, so the dates make sense whenever you open it.</p>
+    </div>
+  </div>
+
+  <h3>How the reading is calculated</h3>
+  <div class="prose">
+    <p>Starting today, Keel walks forward one day at a time, subtracting your usual daily spending and any bill that falls due, and ignoring future income. The last day the balance stays above zero is the “steady through” date. Payday is then compared to it: the difference is the keel depth.</p>
+    <p>Ignoring income is deliberate. It means the reading answers “how much room do I have if things go wrong”, which is the question underneath money anxiety, rather than restating a balance. It’s also the decision I’m least sure people will understand without being told, which is why it’s the first risk in the testing plan.</p>
+  </div>
+</section>
+
+<!-- ============================================================ 8 TESTING -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="testing" aria-labelledby="testing-h">
+  <span class="sec-num">8</span>
+  <h2 id="testing-h">Testing and iteration: a plan, plus what my own review changed</h2>
+  <div class="prose">
+    <p class="lede">Nobody outside this project has used the prototype yet. So this section is two honest things: the test I’d run next, and the changes that came from my own review of rendered screens. Neither is presented as user research.</p>
+  </div>
+
+  <h3>The riskiest assumptions</h3>
+  <ol class="plain prose">
+    <li><b>“Steady through Oct 25” might be read as “my money runs out on Oct 25”.</b> Literally true, emotionally the opposite of the intent. If people read it as a deadline, the reading creates the anxiety it was meant to remove.</li>
+    <li><b>Ignoring income may confuse more than it reassures.</b> People know they’re getting paid on the 16th. A number that pretends they aren’t could feel wrong.</li>
+    <li><b>“Usual daily spending” assumes a usual.</b> For people with irregular income or spending, which overlaps heavily with the people most stressed about money, an average could be misleading.</li>
+    <li><b>Expressing cost in days might feel like a judgment in disguise.</b> “About half a day” is meant to be neutral; it could still land as guilt.</li>
+  </ol>
+
+  <h3>The plan</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <tbody>
+        <tr><th scope="row" style="width:180px">Method</th><td>Moderated, remote, think-aloud sessions on the prototype as it is now, 30 minutes each. One observer, notes taken against tasks.</td></tr>
+        <tr><th scope="row">Who</th><td>Five people who have tried at least one budgeting app and stopped using it. That group is the target: people the restriction model already failed. Mixed pay schedules, including at least two with irregular income.</td></tr>
+        <tr><th scope="row">Tasks</th><td>
+          <ol class="plain" style="margin:0">
+            <li>Five-second look at the Steady screen, then hide it: “Are you okay this week? How do you know?”</li>
+            <li>“You’re thinking about a $300 purchase. Can you afford it?” (Timed, success is a correct yes with a reason.)</li>
+            <li>“What does Oct 25 mean?” Open answer, then: “How does that make you feel?”</li>
+            <li>Set up from Welcome, turning off one bill that isn’t really recurring.</li>
+            <li>Find what you spent the most on since payday, and say whether that’s a problem.</li>
+          </ol>
+        </td></tr>
+        <tr><th scope="row">Measures</th><td>Task success, time on task 2, the words people use for the reading (recorded verbatim), and a single closing question: “Would you open this on a bad week?”</td></tr>
+        <tr><th scope="row">Decision rules</th><td>
+          <p>If two or more of five read the date as a deadline, the reading gets reframed (candidate: “Covered until Oct 25” plus a sentence leading with payday).</p>
+          <p>If two or more are confused that income is ignored, add an explicit line: “Even if payday were late, you’d be covered.”</p>
+          <p>If the purchase check takes over 20 seconds for most people, it moves above the fold on the Steady screen.</p>
+        </td></tr>
+        <tr><th scope="row">Not claimed</th><td>Five sessions find usability problems; they don’t prove that Keel makes anyone feel steadier. That needs the longer CFPB-scale study in section 3.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What my own review changed</h3>
+  <div class="prose"><p>Every screen and animation was rendered headless and reviewed before I called it done. These are the design changes that review caused. They’re real, but they came from me checking my own work against my own criteria, not from users.</p></div>
+  <ol class="changes">
+    <li>
+      <h4>The accent failed contrast as a button</h4>
+      <div class="was"><b>Was</b>Accent <code>#E05A3A</code> with ink label <code>#2A1F18</code>: 4.35:1, below the 4.5:1 minimum for normal text.</div>
+      <div class="now"><b>Now</b>Accent <code>#E2603D</code>, ink <code>#241A13</code>: 4.85:1. Still terracotta, still one hue, no white text needed.</div>
+    </li>
+    <li>
+      <h4>The home screen was 68% stone</h4>
+      <div class="was"><b>Was</b>The reading lived in a large stone card, and the tab bar was stone too. Measured from a screenshot: 30 / 68 / 2.</div>
+      <div class="now"><b>Now</b>The reading sits directly on the canvas, the water band carries the stone, and the tab bar is canvas with a hairline. Measured: 64 / 34 / 2.</div>
+    </li>
+    <li>
+      <h4>The purchase preview was illegible</h4>
+      <div class="was"><b>Was</b>A small dashed “ghost” keel drawn beside the real one at the new depth. At phone size it read as a rendering glitch, and the tick labels ran off the edge.</div>
+      <div class="now"><b>Now</b>The real keel moves to the new depth with the settle spring, and the old depth stays behind as a dashed outline labeled “Now”. The waterline is labeled “Payday” so depth has a reference.</div>
+    </li>
+    <li>
+      <h4>Lists collapsed inside scrolling screens</h4>
+      <div class="was"><b>Was</b>On the first render, the Coming up list and the category bar shrank to zero height inside the flex layout, so the screen looked finished but was missing its content.</div>
+      <div class="now"><b>Now</b>Fixed in layout, and the reason I don’t trust a screen until I’ve seen it scrolled to the bottom.</div>
+    </li>
+  </ol>
+</section>
+
+<!-- ============================================================ 9 REFLECTION -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="reflection" aria-labelledby="reflection-h">
+  <span class="sec-num">9</span>
+  <h2 id="reflection-h">Reflection</h2>
+  <div class="prose">
+    <p class="lede">What I wanted this project to show is that the brand and the product can be the same decision. The terracotta hull, the date set in Fraunces, the 900ms settle and the “weight, not walls” copy aren’t a skin on top of a budgeting app. They’re the product’s argument, made visible.</p>
+    <p>The test I used at the end was to hide the name and ask whether this could be any budgeting app’s case study. I don’t think it could. The headline metric is a forward-looking date that ignores income on purpose. The visualization encodes exactly one thing, room past payday, as the depth of a keel below a waterline that always means payday. Spending is shown as days of room rather than overages. The motion is slower than a fintech default for a stated reason. Take away “Keel” and those choices still only belong to this idea.</p>
+  </div>
+
+  <h3>What’s real and what’s illustrative</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Real</th><th scope="col">Illustrative</th></tr></thead>
+      <tbody>
+        <tr><td>The cited research and competitor positioning, linked below and checkable</td><td>Keel itself: the name, the product, the brand</td></tr>
+        <tr><td>The prototype’s logic: the reading, the purchase check, the goal preview all compute live</td><td>Every amount, bill, merchant and date in the prototype</td></tr>
+        <tr><td>The contrast audit and the 60/30/10 measurements, with the scripts that produced them</td><td>The success criteria targets, which are proposals</td></tr>
+        <tr><td>The Lottie animation, hand-authored and rendered for review</td><td>Any claim about how users would react. Untested.</td></tr>
+        <tr><td>The four changes in section 8, made from my own review</td><td>None of section 8 is user research, and it isn’t presented as such</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What I’d do differently with more time and a team</h3>
+  <div class="prose">
+    <ul class="plain">
+      <li><b>Talk to people before designing the reading.</b> I’d start with interviews with people who quit budgeting apps, and I’d expect them to change the metric. Desk research told me what to worry about; only people can tell me what the number should be called.</li>
+      <li><b>Pressure-test the calculation with someone who builds financial products.</b> “Usual daily spending” is doing a lot of quiet work. Irregular income needs its own model, not an average.</li>
+      <li><b>Design the bad day properly.</b> The prototype handles “short before payday” with calm copy. A real version needs a path to do something about it, designed with the same care as the happy path.</li>
+      <li><b>Build the illustration in a real motion tool.</b> Writing Lottie by hand forced me to understand the format deeply. With After Effects or Rive, I’d iterate on the rocking curve with a motion designer in minutes instead of hours.</li>
+      <li><b>Run the accessibility audit with people, not just scripts.</b> Ratios pass, but a screen reader pass on the reading and the keel visualization is the real test.</li>
+    </ul>
+    <p>This project is the public, inspectable version of work I’ve done in professional settings, like scenario-based testing and interviews with technicians and clients, where the findings stayed internal. Keel is the version I can show all the way through.</p>
+  </div>
+</section>
+
+<!-- ============================================================ REFERENCES -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="references" aria-labelledby="refs-h">
+  <h2 id="refs-h">References</h2>
+  <ol class="refs">
+    <li id="ref-1"><b>1</b><span>American Psychological Association (2015). <em>Stress in America: Paying With Our Health.</em> Survey conducted by Harris Poll, August 2014, 3,068 adults. <a href="https://www.apa.org/news/press/releases/stress/2014/stress-report.pdf">apa.org</a></span></li>
+    <li id="ref-2"><b>2</b><span>Karlsson, N., Loewenstein, G., &amp; Seppi, D. (2009). The ostrich effect: Selective attention to information. <em>Journal of Risk and Uncertainty</em>, 38, 95 to 115. <a href="https://www.cmu.edu/tepper/faculty-and-research/assets/docs/ppaper-61264983153898-ostrich-effect-1.pdf">cmu.edu (PDF)</a></span></li>
+    <li id="ref-3"><b>3</b><span>Sicherman, N., Loewenstein, G., Seppi, D. J., &amp; Utkus, S. P. (2016). Financial Attention. <em>The Review of Financial Studies</em>, 29(4). <a href="https://www.cmu.edu/dietrich/sds/docs/loewenstein/FinancialAttention.pdf">cmu.edu (PDF)</a></span></li>
+    <li id="ref-4"><b>4</b><span>Consumer Financial Protection Bureau (2015). <em>Financial well-being: The goal of financial education.</em> <a href="https://www.consumerfinance.gov/data-research/research-reports/financial-well-being/">consumerfinance.gov</a></span></li>
+    <li id="ref-5"><b>5</b><span>YNAB. The YNAB Method. <a href="https://www.ynab.com/method">ynab.com/method</a>, read October 2026.</span></li>
+    <li id="ref-6"><b>6</b><span>YNAB Support. Age of Money. <a href="https://support.ynab.com/en_us/age-of-money-H1ZS84W1s">support.ynab.com</a>, read October 2026.</span></li>
+    <li id="ref-7"><b>7</b><span>Intuit Credit Karma (October 31, 2023). Intuit Credit Karma welcomes all Minters! <a href="https://www.creditkarma.com/about/releases/intuit-credit-karma-welcomes-all-minters">creditkarma.com</a></span></li>
+    <li id="ref-8"><b>8</b><span>Monarch. Homepage. <a href="https://www.monarch.com/">monarch.com</a>, read October 2026.</span></li>
+    <li id="ref-9"><b>9</b><span>Copilot Money. Homepage. <a href="https://www.copilot.money/">copilot.money</a>, read October 2026.</span></li>
+  </ol>
+  <p class="caption">Product notes reflect each company’s public material on the date read and may have changed since.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="in">
+    <span>Built by Shyine Makin. A self-directed project, not client work.</span>
+    <span>Keel is fictional and not affiliated with any company. Sources in <code>source/</code>.</span>
+  </div>
+</footer>
+
+<script src="assets/vendor/lottie.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  function reduced() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+  // ---------------------------------------------------------------- Lottie
+  var SRC = 'assets/lottie/keel-settle.json';
+  function illo(el, frame) {
+    var a = lottie.loadAnimation({ container: el, renderer: 'svg', loop: false, autoplay: false, path: SRC, rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
+    a.addEventListener('DOMLoaded', function () {
+      if (frame !== undefined) a.goToAndStop(frame, true);
+      else if (reduced()) a.goToAndStop(a.totalFrames - 1, true);
+    });
+    return a;
+  }
+  var hero = illo($('#hero-illo'));
+  var big = illo($('#illo-big'));
+  function playWhenSeen(anim, el) {
+    if (!('IntersectionObserver' in window)) { anim.play(); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting && !reduced()) { anim.goToAndPlay(0, true); io.disconnect(); } });
+    }, { threshold: 0.5 });
+    io.observe(el);
+  }
+  playWhenSeen(hero, $('#hero-illo'));
+  playWhenSeen(big, $('#illo-big'));
+  $('#hero-replay').addEventListener('click', function () { hero.goToAndPlay(0, true); });
+  $('#illo-replay').addEventListener('click', function () { big.goToAndPlay(0, true); });
+  [0, 44, 84, 120, 180, 299].forEach(function (f, i) {
+    var fig = document.createElement('figure');
+    var d = document.createElement('div'); d.className = 'f';
+    var cap = document.createElement('figcaption');
+    cap.textContent = 'Frame ' + f + ['', ', heel left', ', swing right', '', ', level', ', held'][i];
+    fig.appendChild(d); fig.appendChild(cap); $('#strip').appendChild(fig);
+    illo(d, f);
+  });
+
+  // ---------------------------------------------------------------- contrast table
+  var AUDIT = [
+    ['Ink', '#241A13', 'Canvas', '#F6F1EA', 'Body, headings, amounts', 15.17, 4.5],
+    ['Ink 2', '#5C4D41', 'Canvas', '#F6F1EA', 'Secondary copy', 7.21, 4.5],
+    ['Ink 3', '#6A5B4E', 'Canvas', '#F6F1EA', 'Captions, metadata', 5.81, 4.5],
+    ['Terracotta text', '#A3381A', 'Canvas', '#F6F1EA', 'Links, text buttons', 5.96, 4.5],
+    ['Ink', '#241A13', 'Stone', '#EAE1D4', 'Text on panels and rows', 13.16, 4.5],
+    ['Ink 2', '#5C4D41', 'Stone', '#EAE1D4', 'Secondary copy on panels', 6.26, 4.5],
+    ['Ink 3', '#6A5B4E', 'Stone', '#EAE1D4', 'Metadata in rows', 5.04, 4.5],
+    ['Terracotta text', '#A3381A', 'Stone', '#EAE1D4', 'Links on panels', 5.17, 4.5],
+    ['Ink 2', '#5C4D41', 'Deep stone', '#DED3C3', 'Depth labels in the water band', 5.48, 4.5],
+    ['Ink', '#241A13', 'Terracotta', '#E2603D', 'Button labels, chosen chips', 4.85, 4.5],
+    ['Control border', '#7C746D', 'Canvas', '#F6F1EA', 'Inputs, chips, switches (1.4.11)', 4.08, 3],
+    ['Control border', '#776E64', 'Stone', '#EAE1D4', 'Inputs on panels (1.4.11)', 3.86, 3],
+    ['Terracotta', '#E2603D', 'Canvas', '#F6F1EA', 'Button fill edge (1.4.11)', 3.13, 3],
+    ['Focus ring', '#A3381A', 'Canvas', '#F6F1EA', 'Keyboard focus (1.4.11)', 5.96, 3],
+    ['Hairline 12%', '#D2C9BD', 'Canvas', '#F6F1EA', 'Card edges: decorative, fill already separates', 1.46, null],
+    ['Row rule 18%', '#C6BDB1', 'Canvas', '#F6F1EA', 'Row dividers: decorative', 1.65, null]
+  ];
+  $('#contrast-rows').innerHTML = AUDIT.map(function (r) {
+    var res = r[6] === null ? '<span class="exempt">Exempt, decorative</span>' : '<span class="pass">Pass</span>';
+    return '<tr><td><span class="pair"><i style="background:' + r[3] + ';color:' + r[1] + '">Aa</i>' + r[0] + ' on ' + r[2].toLowerCase() + '</span></td><td>' + r[4] + '</td><td>' + r[5].toFixed(2) + ':1</td><td>' + (r[6] ? r[6] + ':1' : 'n/a') + '</td><td>' + res + '</td></tr>';
+  }).join('');
+
+  // ---------------------------------------------------------------- easing curves
+  function bez(p1x, p1y, p2x, p2y, t) {
+    var u = 1 - t;
+    return [3 * u * u * t * p1x + 3 * u * t * t * p2x + t * t * t, 3 * u * u * t * p1y + 3 * u * t * t * p2y + t * t * t];
+  }
+  function plot(id, pts, color) {
+    var W = 200, H = 110, ox = 10, oy = 128;
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + (ox + p[0] * W).toFixed(1) + ' ' + (oy - p[1] * H).toFixed(1); }).join('');
+    $(id).innerHTML =
+      '<rect x="' + ox + '" y="' + (oy - H) + '" width="' + W + '" height="' + H + '" fill="#EAE1D4"/>' +
+      '<path d="M' + ox + ' ' + (oy - H) + 'h' + W + '" stroke="#241A13" stroke-width="1.25" stroke-dasharray="3 3"/>' +
+      '<path d="M' + ox + ' ' + oy + 'h' + W + '" stroke="#5C4D41" stroke-width="1"/>' +
+      '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linejoin="round"/>';
+  }
+  var s = []; for (var t = 0; t <= 1.0001; t += 0.01) s.push(bez(0.2, 0.7, 0.2, 1, t));
+  plot('#curve-settle', s, '#241A13');
+  var n = []; for (t = 0; t <= 1.0001; t += 0.01) n.push(bez(0.17, 0.89, 0.32, 1.28, t));
+  plot('#curve-snap', n, '#6A5B4E');
+  var sp = [], x = 0, v = 0, dt = 1 / 600;
+  for (var i = 0; i <= 600; i++) { if (i % 6 === 0) sp.push([i / 600, x]); var a = -70 * (x - 1) - 15 * v; v += a * dt; x += v * dt; }
+  plot('#curve-spring', sp, '#A3381A');
+
+  // ---------------------------------------------------------------- snap vs settle demo
+  var TOP = 38, PER = 7, X = 130;
+  function fin(days) { return 'M' + (X - 5) + ' ' + TOP + 'h10l-2 ' + (8 + days * PER) + 'h-6z'; }
+  function draw(prefix, days) {
+    $('#' + prefix + '-path').setAttribute('d', fin(days));
+    $('#' + prefix + '-bulb').setAttribute('cy', TOP + 9 + days * PER);
+  }
+  var cur = 3; draw('snap', cur); draw('settle', cur);
+  $('#motion-run').addEventListener('click', function () {
+    var from = cur, to = cur === 3 ? 13 : 3; cur = to;
+    if (reduced()) { draw('snap', to); draw('settle', to); $('#motion-note').textContent = 'Reduced motion is on, so both jump straight to the new depth.'; return; }
+    var t0 = performance.now();
+    var sx = from, sv = 0, last = t0;
+    (function frame(now) {
+      // snap: the Clearstep curve over 350ms
+      var p = Math.min(1, (now - t0) / 350);
+      // solve bezier x for t (few Newton steps)
+      var tt = p;
+      for (var k = 0; k < 6; k++) { var bx = bez(0.17, 0.89, 0.32, 1.28, tt)[0] - p; var d = (bez(0.17, 0.89, 0.32, 1.28, tt + 0.001)[0] - bez(0.17, 0.89, 0.32, 1.28, tt)[0]) / 0.001; if (Math.abs(d) < 1e-6) break; tt -= bx / d; tt = Math.max(0, Math.min(1, tt)); }
+      draw('snap', from + (to - from) * bez(0.17, 0.89, 0.32, 1.28, tt)[1]);
+      // settle: spring
+      var dt = Math.min(0.032, (now - last) / 1000); last = now;
+      var a = -70 * (sx - to) - 15 * sv; sv += a * dt; sx += sv * dt;
+      draw('settle', sx);
+      if (p < 1 || Math.abs(sx - to) > 0.01 || Math.abs(sv) > 0.01) requestAnimationFrame(frame);
+      else { draw('snap', to); draw('settle', to); }
+    })(t0);
+  });
+
+  // ---------------------------------------------------------------- prototype embed
+  var frame = $('#proto-frame'), wrap = $('#screen-wrap');
+  function fit() {
+    var w = wrap.clientWidth;
+    var s = Math.min(1, w / 390);
+    frame.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+    wrap.style.height = (844 * s) + 'px';
+  }
+  window.addEventListener('resize', fit); fit();
+  var walkBtns = Array.prototype.slice.call(document.querySelectorAll('#walk button'));
+  function mark(btn) { walkBtns.forEach(function (b) { b.setAttribute('aria-current', b === btn ? 'true' : 'false'); }); }
+  walkBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.dataset.jump) frame.contentWindow.postMessage({ keel: 'go', name: b.dataset.jump }, '*');
+      if (b.dataset.whatif) frame.contentWindow.postMessage({ keel: 'whatif', amount: +b.dataset.whatif }, '*');
+      mark(b);
+    });
+  });
+
+  // ---------------------------------------------------------------- table of contents
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  function onScroll() {
+    var y = window.scrollY + 140, idx = -1;
+    secs.forEach(function (s, i) { if (s && s.offsetTop <= y) idx = i; });
+    links.forEach(function (a, i) { a.setAttribute('aria-current', i === idx ? 'true' : 'false'); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
+</script>
+</body>
+</html>
