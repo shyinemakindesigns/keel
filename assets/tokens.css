@@ -104,12 +104,22 @@
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans:  "Archivo", "Helvetica Neue", Arial, sans-serif;
 
-  /* motion: calm and grounded */
-  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-lift:   cubic-bezier(0.4, 0, 0.6, 1);
-  --dur-press:   180ms;
-  --dur-move:    420ms;
-  --dur-settle:  900ms;
+  /* motion: Keel Motion Language (settle, reveal, connect, respond, reassure)
+     Durations follow the interaction, not a single global speed. */
+  --ease-settle:   cubic-bezier(0.2, 0.7, 0.2, 1);   /* default: decelerates into rest, never overshoots */
+  --ease-enter:    cubic-bezier(0.22, 1, 0.36, 1);    /* arrivals: sheets, reveals */
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);        /* leaving: quick and quiet */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);      /* state changes in place */
+  --ease-lift:     cubic-bezier(0.4, 0, 0.6, 1);      /* symmetric, rare */
+  --dur-press:    140ms;  /* button and chip feedback (100 to 160) */
+  --dur-hover:    200ms;  /* hover (160 to 220) */
+  --dur-card:     280ms;  /* card and row changes (220 to 320) */
+  --dur-chart:    520ms;  /* data transitions (350 to 550) */
+  --dur-move:     420ms;  /* screens and sheets (350 to 500) */
+  --dur-settle:   900ms;  /* the keel finding a new depth: the one physical object */
+  --dur-illustration: 1400ms; /* feedback illustrations (900 to 1800) */
+  --dur-hero:     4000ms; /* signature animation (2500 to 4000) */
+  --stagger:      60ms;   /* sequential reveals */
 }
 
 /* ---------------------------------------------------------- 2b. semantic, dark
@@ -228,8 +238,16 @@
 .s-rule   { stroke: var(--rule); }
 .s-control{ stroke: var(--control); }
 
+/* Reduced motion: the OS setting, or the page-level switch (data-motion="reduced"
+   on <html>, used by the case study's motion controls). Everything still changes
+   state; it just doesn't travel. */
 @media (prefers-reduced-motion: reduce) {
-  :root { --dur-press: 0ms; --dur-move: 0ms; --dur-settle: 0ms; }
+  :root { --dur-press: 0ms; --dur-hover: 0ms; --dur-card: 0ms; --dur-chart: 0ms; --dur-move: 0ms;
+          --dur-settle: 0ms; --dur-illustration: 0ms; --dur-hero: 0ms; --stagger: 0ms; }
+}
+:root[data-motion="reduced"] {
+  --dur-press: 0ms; --dur-hover: 0ms; --dur-card: 0ms; --dur-chart: 0ms; --dur-move: 0ms;
+  --dur-settle: 0ms; --dur-illustration: 0ms; --dur-hero: 0ms; --stagger: 0ms;
 }
 .f-ink2s  { fill: var(--ink-2-on-surface); }
 .s-ink2s  { stroke: var(--ink-2-on-surface); }

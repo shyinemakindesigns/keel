@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Lottie frame preview</title>
+<link rel="stylesheet" href="../../assets/tokens.css">
+<style>
+  body{margin:0;background:var(--canvas);color:var(--ink);font:12px/1.4 system-ui,sans-serif;padding:8px}
+  .grid{display:grid;grid-template-columns:repeat(var(--cols,4),1fr);gap:8px}
+  .c{outline:1px solid var(--rule);position:relative} .c span{position:absolute;left:6px;top:4px;z-index:2}
+</style></head>
+<body>
+<!-- Dev tool: renders chosen frames of one animation side by side, for review.
+     ?name=equilibrium&frames=0,48,96&theme=dark&cols=3&aspect=640/420 -->
+<div class="grid" id="g"></div>
+<script src="../../assets/vendor/lottie.min.js"></script>
+<script>
+  var q = new URLSearchParams(location.search);
+  var dark = q.get('theme') === 'dark';
+  if (dark) document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.setAttribute('data-theme', 'light');
+  var name = q.get('name'), frames = (q.get('frames') || '0').split(',').map(Number);
+  document.documentElement.style.setProperty('--cols', q.get('cols') || Math.min(4, frames.length));
+  fetch('../../assets/lottie/' + name + (dark ? '-dark' : '') + '.json').then(function (r) { return r.json(); }).then(function (data) {
+    var ar = data.w + '/' + data.h;
+    frames.forEach(function (f) {
+      var c = document.createElement('div'); c.className = 'c'; c.style.aspectRatio = ar;
+      c.innerHTML = '<span>f' + f + '</span>'; document.getElementById('g').appendChild(c);
+      var a = lottie.loadAnimation({ container: c, renderer: 'svg', loop: false, autoplay: false, animationData: JSON.parse(JSON.stringify(data)) });
+      a.addEventListener('DOMLoaded', function () { a.goToAndStop(f, true); });
+    });
+    window.__ready = true;
+  });
+</script>
+</body></html>
