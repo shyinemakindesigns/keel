@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>keel-lottie player test</title>
+<link rel="stylesheet" href="../../assets/tokens.css">
+<style>body{margin:0;background:var(--canvas);color:var(--ink);font:14px system-ui;padding:16px} keel-lottie{width:480px;aspect-ratio:640/360;outline:1px solid var(--rule)} .spacer{height:2400px}</style>
+</head><body>
+<!-- Automated check for assets/js/keel-lottie.js. Results land in window.__results. -->
+<keel-lottie id="a" name="equilibrium" label="test" poster="end"></keel-lottie>
+<div class="spacer"></div>
+<keel-lottie id="far" name="equilibrium" trigger="inview" label="offscreen"></keel-lottie>
+<script src="../../assets/js/keel-lottie.js" data-base="../../assets/"></script>
+<script>
+  var R = window.__results = [];
+  function ok(name, cond, info) { R.push((cond ? 'PASS ' : 'FAIL ') + name + (info !== undefined ? ' (' + info + ')' : '')); }
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  var a = document.getElementById('a'), far = document.getElementById('far');
+  (async function () {
+    await a.ready;
+    ok('loads and holds poster end', Math.round(a.anim.currentFrame) === a.totalFrames - 1, a.anim.currentFrame);
+    ok('lazy: offscreen element did not load JSON', !far.anim);
+    ok('runtime loaded once', !!window.lottie);
+    await a.replay(); await wait(500);
+    ok('replay plays', a.isPlaying && a.anim.currentFrame > 5, Math.round(a.anim.currentFrame));
+    a.pause(); var f = a.anim.currentFrame; await wait(300);
+    ok('pause holds frame', a.anim.currentFrame === f);
+    await a.play(); await wait(200);
+    ok('play resumes', a.anim.currentFrame > f);
+    a.stop();
+    ok('stop returns to poster', Math.round(a.anim.currentFrame) === a.totalFrames - 1);
+    await a.goTo(48);
+    ok('goTo', Math.round(a.anim.currentFrame) === 48);
+    await a.scrubTo(0.5, { duration: 300 });
+    ok('scrubTo eases to mapped frame', Math.abs(a.anim.currentFrame - (a.totalFrames - 1) * 0.5) < 1, a.anim.currentFrame);
+    await a.replay(); await wait(200);
+    window.scrollTo(0, 3000); await wait(400);
+    ok('pauses when scrolled away', a.anim.isPaused);
+    ok('inview element autoplays when visible', far.anim && !far.anim.isPaused);
+    window.scrollTo(0, 0); await wait(400);
+    ok('resumes intent when back in view', !a.anim.isPaused);
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.dispatchEvent(new Event('keel-theme')); await a.ready; await wait(300);
+    ok('theme swap loads dark file', a.anim.path === undefined || (a.anim.path + a.anim.fileName).indexOf('dark') >= 0 || a._src().indexOf('-dark') > 0, a._src());
+    document.documentElement.setAttribute('data-motion', 'reduced');
+    await a.playSegment(0, 120);
+    ok('reduced motion: segment jumps to end', Math.round(a.anim.currentFrame) === 120, a.anim.currentFrame);
+    window.__done = true;
+  })().catch(function (e) { R.push('ERROR ' + e.message); window.__done = true; });
+</script>
+</body></html>
