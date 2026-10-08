@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keel prototype</title>
+<meta name="description" content="Interactive prototype of Keel, a fictional budgeting app built around steadiness. Sample data only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--surface);
+    color: var(--ink);
+    font: 400 16px/1.5 var(--sans);
+    font-variation-settings: "wdth" 100;
+    -webkit-font-smoothing: antialiased;
+    display: flex; align-items: center; justify-content: center;
+  }
+  body.embedded { background: var(--canvas); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+  .app {
+    position: relative; width: 100%; max-width: 430px; height: 100dvh; max-height: 932px;
+    background: var(--canvas); overflow: hidden;
+    border-left: 1px solid var(--hairline); border-right: 1px solid var(--hairline);
+  }
+  body.embedded .app { max-width: none; max-height: none; border: 0; }
+
+  /* ---------- screens ---------- */
+  .screen {
+    position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden;
+    padding: 28px 22px 32px;
+    display: none; flex-direction: column;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity var(--dur-move) var(--ease-settle), transform var(--dur-move) var(--ease-settle);
+  }
+  .screen > * { flex-shrink: 0; }
+  .screen.tabbed { padding-bottom: 104px; }
+  .screen.shown { display: flex; }
+  .screen.in { opacity: 1; transform: none; }
+
+  /* ---------- type ---------- */
+  .wordmark { font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 60, "opsz" 72; letter-spacing: -0.01em; }
+  h1, h2, .display { font-family: var(--serif); font-weight: 500; font-variation-settings: "SOFT" 40, "opsz" 96; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+  h1 { font-size: 34px; line-height: 1.08; }
+  h2 { font-size: 22px; line-height: 1.2; }
+  p { margin: 0; }
+  .lede { font-size: 17px; color: var(--ink-2); line-height: 1.5; text-wrap: pretty; }
+  .meta { font-size: 13.5px; color: var(--ink-3); }
+  .num { font-variant-numeric: tabular-nums; }
+  .step { font-size: 14px; color: var(--ink-3); margin-bottom: 18px; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 20px; border-radius: var(--r-md);
+    font-weight: 600; font-size: 16px; cursor: pointer; border: 1px solid transparent;
+    transition: transform var(--dur-press) var(--ease-settle), background-color var(--dur-press) var(--ease-settle);
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--ink); border-color: rgba(36,26,19,.16); }
+  .btn-primary:hover { background: #E66B4A; }
+  .btn-quiet { background: transparent; color: var(--ink); border-color: var(--control); }
+  .btn-quiet:hover { background: var(--surface); }
+  .btn-text { background: none; border: 0; color: var(--accent-ink); font-weight: 600; cursor: pointer; padding: 10px 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .btn-block { width: 100%; }
+  .foot { margin-top: auto; padding-top: 24px; display: grid; gap: 12px; }
+
+  /* ---------- surfaces ---------- */
+  .panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); }
+  .rows { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-top: 1px solid var(--rule); min-height: 56px; }
+  .row:first-child { border-top: 0; }
+  .row .grow { flex: 1; min-width: 0; }
+  .row .title { font-weight: 500; }
+  .row .amt { font-variant-numeric: tabular-nums; font-weight: 500; }
+  button.row { width: 100%; background: none; border-left: 0; border-right: 0; border-bottom: 0; text-align: left; cursor: pointer; }
+  button.row:first-child { border-top: 0; }
+  button.row:hover { background: rgba(36,26,19,.035); }
+  .section-label { font-size: 15px; font-weight: 600; margin: 28px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  .section-label span { font-weight: 400; color: var(--ink-3); font-size: 13.5px; }
+
+  /* ---------- switch ---------- */
+  .switch { width: 46px; height: 28px; border-radius: 14px; border: 1px solid var(--control); background: var(--canvas); position: relative; cursor: pointer; flex: none; transition: background-color var(--dur-press) var(--ease-settle); }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 10px; background: var(--ink-2); transition: transform var(--dur-move) var(--ease-settle), background-color var(--dur-press); }
+  .switch[aria-checked="true"] { background: var(--accent); border-color: rgba(36,26,19,.58); }
+  .switch[aria-checked="true"]::after { transform: translateX(18px); background: var(--ink); }
+
+  /* ---------- welcome ---------- */
+  .welcome-art { width: calc(100% + 44px); margin: 8px -22px 0; aspect-ratio: 3 / 2; }
+  .welcome h1 { font-size: 38px; margin-top: 4px; }
+  .welcome .lede { margin-top: 14px; }
+  .brandline { display: flex; align-items: center; gap: 10px; font-size: 26px; }
+  .brandline svg { width: 30px; height: 30px; }
+
+  /* ---------- chips ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { min-height: 44px; padding: 0 14px; border-radius: var(--r-sm); border: 1px solid var(--control); background: var(--surface); cursor: pointer; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--ink); border-color: rgba(36,26,19,.58); font-weight: 600; }
+  fieldset { border: 0; padding: 0; margin: 22px 0 0; }
+  legend { font-weight: 600; margin-bottom: 10px; padding: 0; }
+
+  /* ---------- reading loader ---------- */
+  .taking { align-items: center; justify-content: center; text-align: center; }
+  .taking svg { width: 220px; height: 120px; }
+  .taking .wl { stroke-dasharray: 200; stroke-dashoffset: 200; }
+  .taking.run .wl { animation: draw 700ms var(--ease-settle) forwards; }
+  .taking .hull-g { opacity: 0; transform: translateY(-14px); transform-box: fill-box; }
+  .taking.run .hull-g { animation: drop 900ms var(--ease-settle) 500ms forwards; }
+  .taking .fin { transform: scaleY(0); transform-origin: 50% 0; transform-box: fill-box; }
+  .taking.run .fin { animation: sink 900ms var(--ease-settle) 900ms forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes drop { to { opacity: 1; transform: none; } }
+  @keyframes sink { to { transform: scaleY(1); } }
+
+  /* ---------- home ---------- */
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .topbar .wordmark { font-size: 22px; display: flex; align-items: center; gap: 8px; }
+  .topbar .wordmark svg { width: 24px; height: 24px; }
+  .reading { padding: 6px 0 0; background: none; border: 0; border-radius: 0; }
+  .reading .kicker { font-size: 15px; color: var(--ink-2); }
+  .reading .date { font-family: var(--serif); font-size: 52px; line-height: 1; font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 144; letter-spacing: -0.02em; margin: 6px 0 10px; font-variant-numeric: lining-nums; }
+  .reading .sub { color: var(--ink-2); font-size: 15.5px; text-wrap: pretty; }
+  .reading .sub b { color: var(--ink); font-weight: 600; }
+  .keelviz { display: block; width: calc(100% + 44px); margin: 14px -22px 0; height: auto; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--rule); margin: 0 -22px; background: var(--canvas); }
+  .facts div { padding: 12px 22px 14px; }
+  .facts div + div { border-left: 1px solid var(--rule); }
+  .facts dt { font-size: 13px; color: var(--ink-3); }
+  .facts dd { margin: 2px 0 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .whatif { margin-top: 16px; padding: 16px 18px; }
+  .whatif label { font-weight: 600; display: block; }
+  .whatif .hint { font-size: 14px; color: var(--ink-3); margin: 2px 0 12px; }
+  .money { display: flex; gap: 8px; }
+  .money .field { flex: 1; display: flex; align-items: center; border: 1px solid var(--control); border-radius: var(--r-md); background: var(--canvas); padding-left: 14px; min-height: 52px; }
+  .money .field:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .money .field span { color: var(--ink-2); font-weight: 500; }
+  .money input { flex: 1; min-width: 0; border: 0; background: transparent; font: 500 17px var(--sans); color: var(--ink); padding: 0 8px; height: 50px; outline: none; font-variant-numeric: tabular-nums; }
+  .whatif-result { font-size: 15px; color: var(--ink-2); margin-top: 12px; min-height: 0; text-wrap: pretty; }
+  .whatif-result b { color: var(--ink); font-weight: 600; }
+  .whatif-result:empty { display: none; }
+
+  .bill-when { width: 50px; flex: none; font-variant-numeric: tabular-nums; }
+  .bill-when b { display: block; font-family: var(--serif); font-size: 20px; line-height: 1; font-weight: 500; }
+  .bill-when small { font-size: 12.5px; color: var(--ink-3); }
+  .tag { font-size: 13px; color: var(--ink-2); }
+
+  /* ---------- tab bar ---------- */
+  .tabbar {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+    display: none; grid-template-columns: repeat(3, 1fr);
+    background: var(--canvas); border-top: 1px solid var(--rule);
+    padding: 6px 8px calc(10px + env(safe-area-inset-bottom));
+  }
+  .tabbar.on { display: grid; }
+  .tabbar button { background: none; border: 0; display: grid; justify-items: center; gap: 3px; padding: 8px 0 4px; cursor: pointer; font-size: 12.5px; font-weight: 500; color: var(--ink-2); border-radius: var(--r-md); }
+  .tabbar svg { width: 24px; height: 24px; }
+  .tabbar .mark { width: 22px; height: 3px; border-radius: 2px; background: transparent; transition: background-color var(--dur-move) var(--ease-settle); }
+  .tabbar [aria-current="page"] { color: var(--ink); font-weight: 600; }
+  .tabbar [aria-current="page"] .mark { background: var(--accent); }
+
+  /* ---------- activity ---------- */
+  .weightbar { display: flex; height: 14px; border-radius: 4px; overflow: hidden; border: 1px solid var(--hairline); margin: 14px 0 12px; }
+  .weightbar i { display: block; height: 100%; transition: background-color var(--dur-move) var(--ease-settle); }
+  .weightbar i + i { border-left: 2px solid var(--canvas); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; }
+  .day-head { font-size: 13.5px; color: var(--ink-3); margin: 20px 0 8px; }
+  .cat-dot { width: 10px; height: 10px; border-radius: 2px; flex: none; border: 1px solid rgba(36,26,19,.25); }
+
+  /* ---------- goals ---------- */
+  .goal { padding: 18px; }
+  .goal h2 { font-size: 24px; }
+  .ballast { margin: 18px 0 8px; display: block; width: 100%; height: auto; }
+  .goal .nums { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+  .goal .nums b { font-family: var(--serif); font-size: 28px; font-weight: 500; }
+
+  /* ---------- sheet ---------- */
+  .scrim { position: absolute; inset: 0; background: rgba(36,26,19,.32); opacity: 0; pointer-events: none; transition: opacity var(--dur-move) var(--ease-settle); z-index: 10; }
+  .scrim.on { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 11;
+    background: var(--canvas); border-top: 1px solid var(--hairline); border-radius: var(--r-lg) var(--r-lg) 0 0;
+    padding: 10px 22px calc(26px + env(safe-area-inset-bottom));
+    transform: translateY(105%); transition: transform var(--dur-move) var(--ease-settle);
+    box-shadow: 0 -12px 32px -16px rgba(36,26,19,.25);
+  }
+  .sheet.on { transform: none; }
+  .sheet .grab { width: 36px; height: 4px; border-radius: 2px; background: var(--surface-2); margin: 0 auto 16px; }
+  .sheet h2 { margin-bottom: 6px; }
+  .sheet .lede { font-size: 16px; }
+
+  .note { font-size: 13.5px; color: var(--ink-3); margin-top: 14px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .taking.run .wl, .taking.run .hull-g, .taking.run .fin { animation-duration: 1ms; animation-delay: 0ms; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Brand mark: hull on a waterline, keel below. The same construction as the reading. -->
+    <symbol id="mark" viewBox="0 0 32 32">
+      <path d="M4 15h24" stroke="#241A13" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#E2603D"/>
+      <path d="M15 17.5h2l-.4 7h-1.2z" fill="#241A13"/>
+      <ellipse cx="16" cy="25.2" rx="3" ry="1.5" fill="#241A13"/>
+    </symbol>
+    <symbol id="i-steady" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M6 9.5h12c-.5 2.2-1.8 3.3-3.6 3.3H9.6C7.8 12.8 6.5 11.7 6 9.5z"/><path d="M12 13v6"/><path d="M10.5 19.5h3"/></g></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></g></symbol>
+    <symbol id="i-goals" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M8 18V5"/><path d="M8 5.5l8 2.5-8 2.5"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="app" id="app">
+
+  <!-- 1. Welcome -->
+  <section class="screen welcome" data-screen="welcome" aria-labelledby="w-h">
+    <div class="brandline wordmark"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</div>
+    <div class="welcome-art" id="welcome-art" role="img" aria-label="Illustration: a small sailboat rocks on the water and settles level. Its keel is visible below the waterline."></div>
+    <h1 id="w-h">Know you’re okay before you know the details.</h1>
+    <p class="lede">Keel looks at your bills, your paydays and your usual spending, then tells you one thing first: how long you’re covered.</p>
+    <div class="foot">
+      <button class="btn btn-primary btn-block" data-go="accounts">Begin</button>
+      <p class="meta" style="text-align:center">Prototype. Sample data only, nothing connects to a bank.</p>
+    </div>
+  </section>
+
+  <!-- 2. Accounts -->
+  <section class="screen" data-screen="accounts" aria-labelledby="a-h">
+    <p class="step">Step 1 of 3</p>
+    <h1 id="a-h">Start with what you have.</h1>
+    <p class="lede" style="margin-top:12px">In the real product this is where you’d connect a bank. Here the prototype uses two sample accounts.</p>
+    <div class="section-label">Sample accounts</div>
+    <div class="rows">
+      <div class="row"><div class="grow"><div class="title">Everyday checking</div><div class="meta">Counts toward your reading</div></div><div class="amt" id="acct-checking">$1,240.00</div></div>
+      <div class="row"><div class="grow"><div class="title">Car repair fund</div><div class="meta">Savings goal, kept separate</div></div><div class="amt" id="acct-goal">$380.00</div></div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-primary btn-block" data-go="bills">Use sample accounts</button>
+      <button class="btn-text" data-go="welcome">Back</button>
+    </div>
+  </section>
+
+  <!-- 3. Bills -->
+  <section class="screen" data-screen="bills" aria-labelledby="b-h">
+    <p class="step">Step 2 of 3</p>
+    <h1 id="b-h">These look like regular bills.</h1>
+    <p class="lede" style="margin-top:12px">Keep the ones that are. Keel sets money aside for them before it tells you anything else.</p>
+    <div class="section-label">Found in the last 3 months</div>
+    <div class="rows" id="bill-toggles"></div>
+    <div class="foot">
+      <button class="btn btn-primary btn-block" data-go="payday">Continue</button>
+      <button class="btn-text" data-go="accounts">Back</button>
+    </div>
+  </section>
+
+  <!-- 4. Payday -->
+  <section class="screen" data-screen="payday" aria-labelledby="p-h">
+    <p class="step">Step 3 of 3</p>
+    <h1 id="p-h">When does money usually arrive?</h1>
+    <p class="lede" style="margin-top:12px">Your next payday is the shore Keel measures toward.</p>
+    <fieldset>
+      <legend>Next payday</legend>
+      <div class="chips" id="payday-chips"></div>
+    </fieldset>
+    <fieldset>
+      <legend>How often</legend>
+      <div class="chips" id="cadence-chips"></div>
+    </fieldset>
+    <div class="foot">
+      <button class="btn btn-primary btn-block" data-go="taking">Take my first reading</button>
+      <button class="btn-text" data-go="bills">Back</button>
+    </div>
+  </section>
+
+  <!-- 5. Taking a reading -->
+  <section class="screen taking" data-screen="taking" aria-live="polite">
+    <svg viewBox="0 0 220 120" aria-hidden="true">
+      <rect x="10" y="62" width="200" height="58" fill="#DED3C3"/>
+      <path class="wl" d="M10 62h200" stroke="#241A13" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <g class="hull-g">
+        <path d="M76 50h68c-2 9-8 15-16 15H92c-8 0-14-6-16-15z" fill="#E2603D"/>
+      </g>
+      <g class="fin">
+        <path d="M106 64h8l-1.5 30h-5z" fill="#241A13"/>
+        <ellipse cx="110" cy="96" rx="11" ry="5" fill="#241A13"/>
+      </g>
+    </svg>
+    <h2 style="margin-top:18px">Taking your first reading</h2>
+    <p class="meta" style="margin-top:6px">Setting aside bills, then measuring to payday</p>
+  </section>
+
+  <!-- 6. Home: the steadiness view -->
+  <section class="screen tabbed" data-screen="home" aria-labelledby="home-h">
+    <div class="topbar">
+      <div class="wordmark"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</div>
+      <div class="meta">Thu, Oct 8</div>
+    </div>
+    <h1 id="home-h" class="sr">Your reading</h1>
+
+    <div class="reading">
+      <p class="kicker" id="r-kicker">You’re steady through</p>
+      <p class="date num" id="r-date" aria-live="polite">Oct 25</p>
+      <p class="sub" id="r-sub"></p>
+      <svg class="keelviz" id="keelviz" viewBox="0 0 340 156" role="img" aria-labelledby="kv-desc">
+        <desc id="kv-desc">Keel depth shows how many days past payday you are covered.</desc>
+        <rect x="0" y="34" width="340" height="122" fill="#DED3C3"/>
+        <g id="kv-ticks" font-family="Archivo, sans-serif" font-size="12.5" fill="#5C4D41"></g>
+        <path d="M0 34h340" stroke="#241A13" stroke-width="1.5"/>
+        <g id="kv-ghost" opacity="0">
+          <path id="kv-ghost-fin" fill="none" stroke="#5C4D41" stroke-width="1.25" stroke-dasharray="3 3"/>
+          <text id="kv-ghost-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5" fill="#5C4D41">Now</text>
+          <text id="kv-new-label" x="84" text-anchor="end" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600" fill="#241A13"></text>
+        </g>
+        <g id="kv-boat">
+          <path id="kv-fin" fill="#241A13"/>
+          <ellipse id="kv-bulb" cx="120" rx="13" ry="5.5" fill="#241A13"/>
+          <path d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" fill="#E2603D"/>
+        </g>
+      </svg>
+      <dl class="facts">
+        <div><dt>Bills before payday</dt><dd id="f-bills">$294</dd></div>
+        <div><dt>Reach payday with</dt><dd id="f-landing">about $562</dd></div>
+      </dl>
+    </div>
+
+    <form class="panel whatif" id="whatif" novalidate>
+      <label for="wi-amt">Thinking about a purchase?</label>
+      <p class="hint" id="wi-hint">See how it would move your reading before you spend.</p>
+      <div class="money">
+        <div class="field"><span>$</span><input id="wi-amt" inputmode="decimal" autocomplete="off" placeholder="0" aria-describedby="wi-hint"></div>
+        <button class="btn btn-primary" type="submit">Check</button>
+      </div>
+      <p class="whatif-result" id="wi-result" aria-live="polite"></p>
+      <button class="btn-text" type="button" id="wi-clear" hidden>Clear</button>
+    </form>
+
+    <div class="section-label">Coming up <span id="upcoming-sub">all set aside</span></div>
+    <div class="rows" id="upcoming"></div>
+    <p class="note">Usual day-to-day spending: about $48 a day, from the sample's last 8 weeks.</p>
+  </section>
+
+  <!-- 7. Activity -->
+  <section class="screen tabbed" data-screen="activity" aria-labelledby="act-h">
+    <h1 id="act-h" style="font-size:30px">This stretch</h1>
+    <p class="meta" style="margin-top:4px">Since payday on Oct 2</p>
+    <div class="weightbar" id="weightbar" aria-hidden="true"></div>
+    <div class="legend chips" id="cat-filter" role="group" aria-label="Filter by category"></div>
+    <div id="tx-list"></div>
+  </section>
+
+  <!-- 8. Goals -->
+  <section class="screen tabbed" data-screen="goals" aria-labelledby="g-h">
+    <h1 id="g-h" style="font-size:30px">Goals</h1>
+    <p class="meta" style="margin-top:4px">Money you’re setting aside on purpose</p>
+    <div class="panel goal" style="margin-top:20px">
+      <h2>Car repair fund</h2>
+      <p class="meta">For the brakes, before winter</p>
+      <svg class="ballast" id="ballast" viewBox="0 0 300 64" role="img" aria-labelledby="ballast-desc">
+        <desc id="ballast-desc">Progress toward 1,000 dollars.</desc>
+        <rect x="0" y="22" width="300" height="34" rx="6" fill="#DED3C3"/>
+        <rect id="ballast-fill" x="0" y="22" width="114" height="34" rx="6" fill="#241A13"/>
+        <path d="M0 22h300" stroke="#241A13" stroke-width="1.5"/>
+        <path id="ballast-mark" d="M114 8v48" stroke="#E2603D" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="nums"><div><b id="goal-saved">$380</b><div class="meta">saved</div></div><div style="text-align:right"><b>$1,000</b><div class="meta">goal</div></div></div>
+      <div class="foot" style="padding-top:18px">
+        <button class="btn btn-quiet btn-block" id="goal-add">Add to this goal</button>
+      </div>
+    </div>
+    <p class="note">Moving money into a goal takes it out of checking, so Keel shows what it does to your reading before you confirm.</p>
+  </section>
+
+  <nav class="tabbar" id="tabbar" aria-label="Main">
+    <button data-tab="home"><span class="mark"></span><svg aria-hidden="true"><use href="#i-steady"/></svg>Steady</button>
+    <button data-tab="activity"><span class="mark"></span><svg aria-hidden="true"><use href="#i-activity"/></svg>Activity</button>
+    <button data-tab="goals"><span class="mark"></span><svg aria-hidden="true"><use href="#i-goals"/></svg>Goals</button>
+  </nav>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h" hidden>
+    <div class="grab"></div>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+
+<script src="assets/vendor/lottie.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------ sample data
+  var TODAY = new Date(2026, 9, 8); // Thu Oct 8 2026
+  var DAILY = 48;                   // usual day-to-day spending
+  var state = {
+    checking: 1240,
+    goal: 380,
+    payday: new Date(2026, 9, 16),
+    cadence: 'Every two weeks',
+    bills: [
+      { id: 'stream', name: 'Streaming', day: new Date(2026, 9, 10), amt: 17, on: true },
+      { id: 'phone', name: 'Phone', day: new Date(2026, 9, 12), amt: 65, on: true },
+      { id: 'net', name: 'Internet', day: new Date(2026, 9, 14), amt: 70, on: true },
+      { id: 'car', name: 'Car insurance', day: new Date(2026, 9, 15), amt: 142, on: true },
+      { id: 'gym', name: 'Gym', day: new Date(2026, 9, 21), amt: 40, on: true },
+      { id: 'rent', name: 'Rent', day: new Date(2026, 10, 1), amt: 1450, on: true }
+    ]
+  };
+  var TX = [
+    { d: 'Thu, Oct 8', name: 'Corner Market', cat: 'Groceries', amt: 23.40 },
+    { d: 'Thu, Oct 8', name: 'Metro fare', cat: 'Getting around', amt: 3.25 },
+    { d: 'Wed, Oct 7', name: 'Hana Sushi', cat: 'Eating out', amt: 16.80 },
+    { d: 'Wed, Oct 7', name: 'Fairway Pharmacy', cat: 'Health', amt: 12.15 },
+    { d: 'Tue, Oct 6', name: 'Northside Grocer', cat: 'Groceries', amt: 61.20 },
+    { d: 'Mon, Oct 5', name: 'Fuel stop', cat: 'Getting around', amt: 44.00 },
+    { d: 'Mon, Oct 5', name: 'Dinner with Sam', cat: 'Eating out', amt: 38.50 },
+    { d: 'Sun, Oct 4', name: 'Second Story Books', cat: 'Everything else', amt: 19.99 },
+    { d: 'Sat, Oct 3', name: 'Harbor Coffee', cat: 'Eating out', amt: 5.25 },
+    { d: 'Sat, Oct 3', name: 'Ace Hardware', cat: 'Everything else', amt: 27.60 },
+    { d: 'Fri, Oct 2', name: 'Northside Grocer', cat: 'Groceries', amt: 54.30 }
+  ];
+  // Category tints: one ink family stepped in lightness, so the accent stays the only hue.
+  var CATS = { 'Groceries': '#241A13', 'Eating out': '#5C4D41', 'Getting around': '#8E7E70', 'Health': '#B5A797', 'Everything else': '#CFC3B3' };
+
+  // ------------------------------------------------------------ helpers
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function fmtDate(d) { return MON[d.getMonth()] + ' ' + d.getDate(); }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function diffDays(a, b) { return Math.round((a - b) / 86400000); }
+  function same(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function money(n, cents) {
+    var s = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
+    return (n < 0 ? '-$' : '$') + s;
+  }
+  function daysWord(n) {
+    if (n === 1) return '1 day';
+    if (n === 7) return 'a week';
+    if (n === 14) return 'two weeks';
+    return n + ' days';
+  }
+  function reduced() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // ------------------------------------------------------------ the reading
+  // "Steady through" = the last day your money covers your bills and your
+  // usual spending if nothing else came in. Payday is ignored on purpose:
+  // the reading answers "how much room do I have", not "what's my balance".
+  function reading(extraSpend) {
+    var bal = state.checking - (extraSpend || 0);
+    var bills = state.bills.filter(function (b) { return b.on; });
+    var through = null, shortOn = null;
+    for (var i = 0; i < 90; i++) {
+      var day = addDays(TODAY, i);
+      var due = bills.filter(function (b) { return same(b.day, day); });
+      var dueAmt = due.reduce(function (s, b) { return s + b.amt; }, 0);
+      var next = bal - DAILY - dueAmt;
+      if (next < 0) { through = addDays(day, -1); shortOn = due.length ? due[0] : null; break; }
+      bal = next;
+    }
+    if (!through) through = addDays(TODAY, 89);
+    var toPay = diffDays(state.payday, TODAY);
+    var billsBefore = bills.filter(function (b) { return b.day < state.payday; });
+    var billsBeforeAmt = billsBefore.reduce(function (s, b) { return s + b.amt; }, 0);
+    var landing = state.checking - (extraSpend || 0) - billsBeforeAmt - DAILY * toPay;
+    return {
+      through: through,
+      margin: diffDays(through, state.payday),
+      shortBill: shortOn,
+      billsBefore: billsBefore,
+      billsBeforeAmt: billsBeforeAmt,
+      landing: landing
+    };
+  }
+
+  // ------------------------------------------------------------ keel viz
+  // The waterline is payday. The keel hangs below it: its depth is how
+  // many days past payday your money would still cover you.
+  var KV = { x: 120, top: 38, zero: 40, perDay: 7, maxDays: 14 };
+  function depthFor(margin) { return Math.max(0.4, Math.min(KV.maxDays, margin)); }
+  function yFor(days) { return KV.zero + days * KV.perDay; }
+  function finPath(days, dx) {
+    var x = KV.x + (dx || 0);
+    return 'M' + (x - 5) + ' ' + KV.top + 'h10l-2 ' + (yFor(days) - KV.top) + 'h-6z';
+  }
+  function drawTicks() {
+    var out = '<path d="M226 ' + KV.zero + 'V' + yFor(14) + '" stroke="#5C4D41" stroke-width="1"/>';
+    [[0, 'Payday'], [3, '+3 days'], [7, '+1 week'], [14, '+2 weeks']].forEach(function (t) {
+      var y = yFor(t[0]);
+      out += '<path d="M220 ' + y + 'h6" stroke="#5C4D41" stroke-width="1"/>' +
+             '<text x="234" y="' + (y + 4) + '"' + (t[0] === 0 ? ' font-weight="600" fill="#241A13"' : '') + '>' + t[1] + '</text>';
+    });
+    $('#kv-ticks').innerHTML = out;
+  }
+  var kvCurrent = null, kvRaf = null;
+  function setKeel(days, instant) {
+    if (kvCurrent === null || instant || reduced()) { cancelAnimationFrame(kvRaf); kvCurrent = days; renderKeel(days); return; }
+    // A damped spring: the keel finds its new depth and settles. One small
+    // overshoot, then rest, in about 900ms. Never a bounce.
+    cancelAnimationFrame(kvRaf);
+    var x = kvCurrent, v = 0, k = 70, c = 15, last = performance.now();
+    kvCurrent = days;
+    (function step(now) {
+      var dt = Math.min(0.032, Math.max(0, (now - last) / 1000)); last = now;
+      var a = -k * (x - days) - c * v; v += a * dt; x += v * dt;
+      renderKeel(x);
+      if (Math.abs(x - days) > 0.01 || Math.abs(v) > 0.01) kvRaf = requestAnimationFrame(step);
+      else renderKeel(days);
+    })(last);
+  }
+  function renderKeel(days) {
+    $('#kv-fin').setAttribute('d', finPath(days));
+    $('#kv-bulb').setAttribute('cy', yFor(days) + 1);
+  }
+  var baseDepth = null;
+  function setPreview(days, label) {
+    var g = $('#kv-ghost');
+    if (days === null) { g.setAttribute('opacity', '0'); setKeel(baseDepth); return; }
+    var y = yFor(baseDepth);
+    $('#kv-ghost-fin').setAttribute('d', finPath(baseDepth) + ' M' + (KV.x - 13) + ' ' + (y + 1) + 'a13 5.5 0 1 0 26 0a13 5.5 0 1 0 -26 0');
+    $('#kv-ghost-label').setAttribute('y', y + 5);
+    var ny = yFor(days);
+    var lbl = $('#kv-new-label');
+    lbl.textContent = label; lbl.setAttribute('y', ny + 5);
+    // keep the two labels from colliding
+    var gap = Math.abs(ny - y);
+    $('#kv-ghost-label').style.display = gap < 14 ? 'none' : '';
+    g.setAttribute('opacity', '1');
+    setKeel(days);
+  }
+
+  // ------------------------------------------------------------ render home
+  function renderHome(opts) {
+    var r = reading(0);
+    var steady = r.margin >= 0;
+    $('#r-kicker').textContent = steady ? "You’re steady through" : "You’re covered through";
+    $('#r-date').textContent = fmtDate(r.through);
+    $('#r-sub').innerHTML = steady
+      ? '<b>' + daysWord(r.margin) + ' past</b> your next payday on ' + fmtDate(state.payday) + '. Your bills before then are already set aside.'
+      : 'That’s <b>' + daysWord(-r.margin) + ' before</b> payday on ' + fmtDate(state.payday) + '. One change usually covers it; see Coming up below.';
+    $('#kv-desc').textContent = 'Keel depth: covered ' + daysWord(Math.abs(r.margin)) + (steady ? ' past' : ' before') + ' payday.';
+    $('#f-bills').textContent = money(r.billsBeforeAmt);
+    $('#f-landing').textContent = r.landing >= 0 ? 'about ' + money(Math.round(r.landing / 5) * 5) : 'short ' + money(Math.round(-r.landing / 5) * 5);
+    baseDepth = depthFor(r.margin);
+    var pending = parseFloat(($('#wi-amt').value || '').replace(/[^0-9.]/g, ''));
+    if ($('#wi-result').textContent && pending > 0) runWhatIf(pending); else setKeel(baseDepth);
+
+    var up = state.bills.filter(function (b) { return b.on; }).sort(function (a, b) { return a.day - b.day; }).slice(0, 5);
+    $('#upcoming').innerHTML = up.map(function (b) {
+      var covered = b.day <= r.through;
+      return '<div class="row"><div class="bill-when"><b>' + b.day.getDate() + '</b><small>' + MON[b.day.getMonth()] + '</small></div>' +
+        '<div class="grow"><div class="title">' + b.name + '</div><div class="tag">' + (covered ? 'Set aside' : 'After your reading, comes from your next paycheck') + '</div></div>' +
+        '<div class="amt">' + money(b.amt) + '</div></div>';
+    }).join('');
+    var allCovered = up.every(function (b) { return b.day <= r.through || b.day >= state.payday; });
+    $('#upcoming-sub').textContent = allCovered ? 'covered by this paycheck or the next' : '';
+  }
+
+  // ------------------------------------------------------------ what if
+  function runWhatIf(amount) {
+    var res = $('#wi-result');
+    if (!(amount > 0)) { res.textContent = 'Enter an amount to see how it would move your reading.'; setPreview(null); return; }
+    var base = reading(0), r = reading(amount);
+    var line;
+    if (r.margin >= 0) {
+      line = 'With ' + money(amount) + ' spent today, you’d be steady through <b>' + fmtDate(r.through) + '</b>, ' + daysWord(r.margin) + ' past payday. ' +
+        (diffDays(base.through, r.through) > 0 ? 'That’s ' + daysWord(diffDays(base.through, r.through)) + ' less room than now.' : 'Your reading wouldn’t change.');
+    } else {
+      line = 'With ' + money(amount) + ' spent today, you’d be covered through <b>' + fmtDate(r.through) + '</b>, ' + daysWord(-r.margin) + ' before payday.' +
+        (r.shortBill ? ' ' + r.shortBill.name + ' (' + money(r.shortBill.amt) + ') on ' + fmtDate(r.shortBill.day) + ' is the first bill it would reach.' : ' Your usual spending would run past what’s left.');
+    }
+    res.innerHTML = line;
+    setPreview(depthFor(r.margin), 'With ' + money(amount));
+    $('#wi-clear').hidden = false;
+  }
+
+  // ------------------------------------------------------------ onboarding builders
+  function renderBillToggles() {
+    $('#bill-toggles').innerHTML = state.bills.map(function (b) {
+      return '<div class="row"><div class="grow"><div class="title" id="bl-' + b.id + '">' + b.name + '</div><div class="meta">' + money(b.amt) + ' around the ' + ordinal(b.day.getDate()) + '</div></div>' +
+        '<button class="switch" role="switch" aria-checked="' + b.on + '" aria-labelledby="bl-' + b.id + '" data-bill="' + b.id + '"></button></div>';
+    }).join('');
+  }
+  function ordinal(n) { var s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  function renderPaydayChips() {
+    var opts = [new Date(2026, 9, 9), new Date(2026, 9, 15), new Date(2026, 9, 16), new Date(2026, 9, 23)];
+    $('#payday-chips').innerHTML = opts.map(function (d) {
+      return '<button class="chip" aria-pressed="' + same(d, state.payday) + '" data-payday="' + d.getTime() + '">' + DOW[d.getDay()] + ', ' + fmtDate(d) + '</button>';
+    }).join('');
+    $('#cadence-chips').innerHTML = ['Weekly', 'Every two weeks', 'Twice a month', 'Monthly'].map(function (c) {
+      return '<button class="chip" aria-pressed="' + (c === state.cadence) + '" data-cadence="' + c + '">' + c + '</button>';
+    }).join('');
+  }
+
+  // ------------------------------------------------------------ activity
+  var activeCat = null;
+  function renderActivity() {
+    var totals = {};
+    TX.forEach(function (t) { totals[t.cat] = (totals[t.cat] || 0) + t.amt; });
+    var sum = TX.reduce(function (s, t) { return s + t.amt; }, 0);
+    var cats = Object.keys(CATS);
+    $('#weightbar').innerHTML = cats.map(function (c) {
+      var col = activeCat && activeCat !== c ? '#E3DACD' : (activeCat === c ? '#E2603D' : CATS[c]);
+      return '<i style="width:' + (totals[c] / sum * 100).toFixed(2) + '%;background:' + col + '"></i>';
+    }).join('');
+    $('#cat-filter').innerHTML = cats.map(function (c) {
+      return '<button class="chip" aria-pressed="' + (activeCat === c) + '" data-cat="' + c + '" style="display:inline-flex;align-items:center;gap:8px;min-height:40px">' +
+        '<span class="cat-dot" style="background:' + (activeCat === c ? '#E2603D' : CATS[c]) + '"></span>' + c + ' <span class="num" style="opacity:.8">' + Math.round(totals[c] / sum * 100) + '%</span></button>';
+    }).join('');
+    var list = TX.filter(function (t) { return !activeCat || t.cat === activeCat; });
+    var html = '', lastDay = null, open = false;
+    list.forEach(function (t, i) {
+      if (t.d !== lastDay) {
+        if (open) html += '</div>';
+        html += '<p class="day-head">' + t.d + '</p><div class="rows">';
+        open = true; lastDay = t.d;
+      }
+      html += '<button class="row" data-tx="' + TX.indexOf(t) + '"><span class="cat-dot" style="background:' + CATS[t.cat] + '"></span><span class="grow"><span class="title" style="display:block">' + t.name + '</span><span class="meta">' + t.cat + '</span></span><span class="amt">' + money(t.amt, true) + '</span></button>';
+    });
+    if (open) html += '</div>';
+    $('#tx-list').innerHTML = html;
+  }
+  function txSheet(t) {
+    var days = t.amt / DAILY;
+    var phrase = days < 0.4 ? 'a few hours of an ordinary day' : days < 0.75 ? 'about half a day' : days < 1.25 ? 'about a day' : 'about ' + Math.round(days) + ' days';
+    openSheet('<h2 id="sheet-h">' + t.name + '</h2><p class="meta" style="margin-bottom:14px">' + t.d + ' · ' + t.cat + '</p>' +
+      '<p class="lede"><b style="color:var(--ink)">' + money(t.amt, true) + '</b> is ' + phrase + ' of your usual spending. It’s already counted in your reading.</p>' +
+      '<div class="foot"><button class="btn btn-quiet btn-block" data-close>Done</button></div>');
+  }
+
+  // ------------------------------------------------------------ goals
+  var pendingAdd = 50;
+  function renderGoal(animate) {
+    var w = Math.min(300, state.goal / 1000 * 300);
+    var fill = $('#ballast-fill'), mark = $('#ballast-mark');
+    if (animate && !reduced()) {
+      var from = parseFloat(fill.getAttribute('width')), t0 = performance.now(), dur = 900;
+      (function step(now) {
+        var p = Math.min(1, (now - t0) / dur);
+        var e = 1 - Math.pow(1 - p, 3); // settle: decelerate into rest
+        var x = from + (w - from) * e;
+        fill.setAttribute('width', x); mark.setAttribute('d', 'M' + x + ' 8v48');
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+    } else { fill.setAttribute('width', w); mark.setAttribute('d', 'M' + w + ' 8v48'); }
+    $('#goal-saved').textContent = money(state.goal);
+    $('#ballast-desc').textContent = 'Progress: ' + money(state.goal) + ' of $1,000 saved.';
+  }
+  function goalSheet() {
+    function body() {
+      var now = reading(0), after = reading(pendingAdd);
+      return '<h2 id="sheet-h">Add to Car repair fund</h2>' +
+        '<div class="chips" style="margin:14px 0 16px" role="group" aria-label="Amount">' + [25, 50, 100].map(function (a) {
+          return '<button class="chip" aria-pressed="' + (a === pendingAdd) + '" data-add="' + a + '">' + money(a) + '</button>';
+        }).join('') + '</div>' +
+        '<p class="lede" aria-live="polite">' + (same(now.through, after.through)
+          ? 'Your reading stays at <b style="color:var(--ink)">' + fmtDate(now.through) + '</b>.'
+          : 'Your reading would move from ' + fmtDate(now.through) + ' to <b style="color:var(--ink)">' + fmtDate(after.through) + '</b>, still ' + daysWord(Math.max(0, after.margin)) + ' past payday.') + '</p>' +
+        '<div class="foot"><button class="btn btn-primary btn-block" data-confirm-add>Move ' + money(pendingAdd) + ' to this goal</button><button class="btn-text" data-close>Not now</button></div>';
+    }
+    openSheet(body());
+    $('#sheet-body').onclick = function (e) {
+      var a = e.target.closest('[data-add]');
+      if (a) { pendingAdd = +a.getAttribute('data-add'); $('#sheet-body').innerHTML = body(); $('[data-add="' + pendingAdd + '"]').focus(); }
+      if (e.target.closest('[data-confirm-add]')) {
+        state.checking -= pendingAdd; state.goal += pendingAdd;
+        closeSheet(); renderGoal(true); renderHome();
+      }
+      if (e.target.closest('[data-close]')) closeSheet();
+    };
+  }
+
+  // ------------------------------------------------------------ sheet
+  var lastFocus = null;
+  function openSheet(html) {
+    lastFocus = document.activeElement;
+    $('#sheet-body').innerHTML = html;
+    $('#sheet-body').onclick = function (e) { if (e.target.closest('[data-close]')) closeSheet(); };
+    var s = $('#sheet'); s.hidden = false;
+    void s.offsetWidth; s.classList.add('on'); $('#scrim').classList.add('on');
+    setTimeout(function () { var f = s.querySelector('button'); if (f) f.focus(); }, 60);
+  }
+  function closeSheet() {
+    var s = $('#sheet'); s.classList.remove('on'); $('#scrim').classList.remove('on');
+    setTimeout(function () { s.hidden = true; }, reduced() ? 0 : 420);
+    if (lastFocus) lastFocus.focus();
+  }
+  $('#scrim').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#sheet').classList.contains('on')) closeSheet(); });
+
+  // ------------------------------------------------------------ navigation
+  var current = null;
+  var TABS = { home: 1, activity: 1, goals: 1 };
+  function go(name, opts) {
+    if (name === current) return;
+    var next = $('[data-screen="' + name + '"]'); if (!next) return;
+    var prev = current && $('[data-screen="' + current + '"]');
+    if (prev) { prev.classList.remove('in'); prev.classList.remove('shown'); }
+    next.classList.add('shown'); next.scrollTop = 0;
+    void next.offsetWidth; next.classList.add('in');
+    current = name;
+    $('#tabbar').classList.toggle('on', !!TABS[name]);
+    $$('#tabbar [data-tab]').forEach(function (b) { if (b.getAttribute('data-tab') === name) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    if (name === 'welcome') playWelcome();
+    if (name === 'taking') runTaking();
+    if (name === 'home') { if (opts && opts.fromTaking) kvCurrent = 0.6; renderHome(); }
+    if (name === 'activity') renderActivity();
+    if (name === 'goals') renderGoal(false);
+    if (!(opts && opts.silent)) { var h = next.querySelector('h1, h2'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } }
+    try { parent.postMessage({ keel: 'screen', name: name }, '*'); } catch (e) {}
+  }
+
+  var takingTimer = null;
+  function runTaking() {
+    var el = $('[data-screen="taking"]');
+    el.classList.remove('run'); void el.offsetWidth; el.classList.add('run');
+    clearTimeout(takingTimer);
+    takingTimer = setTimeout(function () { go('home', { fromTaking: true }); }, reduced() ? 600 : 2300);
+  }
+
+  var welcomeAnim = null;
+  function playWelcome() {
+    if (!window.lottie) return;
+    if (!welcomeAnim) {
+      welcomeAnim = lottie.loadAnimation({ container: $('#welcome-art'), renderer: 'svg', loop: false, autoplay: false, path: 'assets/lottie/keel-settle.json',
+        rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
+      welcomeAnim.addEventListener('DOMLoaded', function () { reduced() ? welcomeAnim.goToAndStop(welcomeAnim.totalFrames - 1, true) : welcomeAnim.goToAndPlay(0, true); });
+    } else if (!reduced()) welcomeAnim.goToAndPlay(0, true);
+  }
+
+  // ------------------------------------------------------------ events
+  document.addEventListener('click', function (e) {
+    var t;
+    if ((t = e.target.closest('[data-go]'))) go(t.getAttribute('data-go'));
+    else if ((t = e.target.closest('[data-tab]'))) go(t.getAttribute('data-tab'));
+    else if ((t = e.target.closest('[data-bill]'))) {
+      var b = state.bills.filter(function (x) { return x.id === t.getAttribute('data-bill'); })[0];
+      b.on = !b.on; t.setAttribute('aria-checked', b.on);
+    }
+    else if ((t = e.target.closest('[data-payday]'))) { state.payday = new Date(+t.getAttribute('data-payday')); renderPaydayChips(); $('[data-payday="' + state.payday.getTime() + '"]').focus(); }
+    else if ((t = e.target.closest('[data-cadence]'))) { state.cadence = t.getAttribute('data-cadence'); renderPaydayChips(); $('[data-cadence="' + state.cadence + '"]').focus(); }
+    else if ((t = e.target.closest('[data-cat]'))) { var c = t.getAttribute('data-cat'); activeCat = activeCat === c ? null : c; renderActivity(); var nb = $('[data-cat="' + c + '"]'); if (nb) nb.focus(); }
+    else if ((t = e.target.closest('[data-tx]'))) txSheet(TX[+t.getAttribute('data-tx')]);
+    else if (e.target.closest('#goal-add')) goalSheet();
+  });
+  $('#whatif').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = parseFloat(($('#wi-amt').value || '').replace(/[^0-9.]/g, ''));
+    runWhatIf(v);
+  });
+  $('#wi-clear').addEventListener('click', function () {
+    $('#wi-amt').value = ''; $('#wi-result').textContent = ''; setPreview(null); this.hidden = true; $('#wi-amt').focus();
+  });
+
+  // Let the case study page drive the prototype.
+  window.addEventListener('message', function (e) {
+    var d = e.data || {};
+    if (d.keel === 'go' && d.name) go(d.name, { silent: true });
+    if (d.keel === 'whatif') { go('home', { silent: true }); $('#wi-amt').value = d.amount; runWhatIf(d.amount); }
+  });
+
+  // ------------------------------------------------------------ boot
+  drawTicks();
+  renderBillToggles();
+  renderPaydayChips();
+  var params = new URLSearchParams(location.search);
+  if (params.get('embed') === '1') document.body.classList.add('embedded');
+  go(params.get('screen') || 'welcome', { silent: true });
+})();
+</script>
+</body>
+</html>

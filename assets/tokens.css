@@ -1,0 +1,48 @@
+/* Keel design tokens.
+   Shared by the case study (index.html) and the prototype (prototype.html).
+   Contrast ratios are WCAG 2.1, computed with source/contrast_audit.py.  */
+
+:root {
+  /* Surfaces: 60 / 30 / 10 */
+  --canvas:   #F6F1EA;  /* 60: warm off-white page */
+  --surface:  #EAE1D4;  /* 30: stone, one step up: panels, rows, nav */
+  --surface-2:#DED3C3;  /* deeper stone: water, pressed states, wells (no small text on it) */
+
+  /* Ink */
+  --ink:   #241A13;     /* 15.2:1 on canvas, 13.2:1 on surface */
+  --ink-2: #5C4D41;     /* 7.2:1 on canvas, 6.3:1 on surface */
+  --ink-3: #6A5B4E;     /* 5.8:1 on canvas, 5.0:1 on surface: captions, metadata */
+
+  /* The one accent. Two roles, one hue. */
+  --accent:     #E2603D; /* fills: buttons, hull, active tab. Ink label on it: 4.85:1 */
+  --accent-ink: #A3381A; /* text-safe accent for links and inline emphasis: 6.0:1 canvas, 5.2:1 surface */
+
+  /* Lines */
+  --hairline:   rgba(36, 26, 19, 0.12); /* decorative edges of raised surfaces (1.4.11 exempt, surface fill already separates) */
+  --rule:       rgba(36, 26, 19, 0.18); /* row dividers in lists */
+  --control:    rgba(36, 26, 19, 0.58); /* boundaries of inputs and toggles: 3.7:1, meets 1.4.11 */
+  --focus:      #A3381A;                /* focus ring, 6.0:1 on canvas */
+
+  /* Shadow: only after a border, always soft */
+  --lift: 0 1px 2px rgba(36, 26, 19, 0.05), 0 8px 24px -12px rgba(36, 26, 19, 0.14);
+
+  /* Shape */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+
+  /* Type */
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  /* Motion: calm and grounded */
+  --ease-settle: cubic-bezier(0.2, 0.7, 0.2, 1);   /* decelerates into rest, never overshoots */
+  --ease-lift:   cubic-bezier(0.4, 0, 0.6, 1);     /* symmetric, for things leaving */
+  --dur-press:   180ms;  /* tactile feedback */
+  --dur-move:    420ms;  /* screens, sheets */
+  --dur-settle:  900ms;  /* the keel reading finding its new depth */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-press: 0ms; --dur-move: 0ms; --dur-settle: 0ms; }
+}
