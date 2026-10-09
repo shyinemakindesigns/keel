@@ -1,6 +1,8 @@
 # Rive specification
 
-**Status: specification only. No `.riv` files exist in this project.** Rive files are authored in the Rive editor, which wasn’t available in the environment Keel was built in. Each component below has a working web implementation today that already uses these exact input names, so an authored `.riv` can replace it behind the same interface. Nothing in the case study or app is labeled as Rive.
+**Status: the four Keel components below are specified, not authored.** Rive files are authored in the Rive editor, which wasn’t available in the environment Keel was built in. Each component has a working web implementation today that already uses these exact input names, so an authored `.riv` can replace it behind the same interface.
+
+**One real `.riv` does run in the project:** a CC BY 4.0 community file, [“Toggle switch” by ashishb](https://rive.app/community/files/2795-5761-toggle-switch), recolored to Mineral & Ember by `source/rive/recolor_toggle.py` (colors only; geometry, animations and the `Switch` state machine untouched) and wired into the case study’s motion section. See “Integration in practice” at the end.
 
 Why these four: they respond to state continuously instead of playing once. That is what Rive state machines are for, and what Lottie is not.
 
@@ -96,4 +98,15 @@ Caveat recorded on purpose: a Rive artboard can only approximate exact chart val
 </script>
 ```
 
-The vendored `rive.js` and `rive.wasm` already exist in the sibling Clearstep project and can be copied when the first `.riv` is authored.
+## Integration in practice: the community toggle
+
+What `assets/js/case-study.js` does with `assets/rive/keel-toggle.riv`, and what the four Keel components should copy:
+
+- **Lazy runtime.** `assets/vendor/rive.js` (2.21.2, 51 KB gzip) and `rive.wasm` (431 KB gzip) load only when the demo is within 300px of the viewport. `rive.RuntimeLoader.setWasmUrl()` points at the self-hosted WASM.
+- **One owner of state.** A native `<button role="switch">` holds `aria-checked` and fires the `Pressed` trigger. `shouldDisableRiveListeners: true` stops the file’s own pointer listeners, so the visual can’t drift from the accessible state.
+- **Themes.** Two recolored files; the instance is rebuilt on theme change and restores its state.
+- **Reduced motion.** The state machine isn’t started; the runtime scrubs the `On` or `Off` animation to its end instead.
+- **Rendering.** `stopRendering()` off-screen, `startRendering()` on interaction or when visible; `cleanup()` before every rebuild.
+- **High DPI.** `resizeDrawingSurfaceToCanvas()` in `onLoad`.
+
+Measured: the switch toggles from the keyboard, and the reading it drives moves from Oct 25 to Oct 26, matching the app.

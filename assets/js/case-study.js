@@ -31,6 +31,7 @@
     if (red) document.documentElement.removeAttribute('data-motion'); else document.documentElement.setAttribute('data-motion', 'reduced');
     try { localStorage.setItem('keel-motion', red ? 'full' : 'reduced'); } catch (e) {}
     syncToggles();
+    document.dispatchEvent(new Event('keel-motion'));
     toFrame({ keel: 'motion', value: red ? 'full' : 'reduced' });
     if (!red) $$('keel-lottie').forEach(function (el) { if (el.isPlaying && !el.hasAttribute('loop')) el.stop(); });
   });
@@ -384,6 +385,77 @@
     if (d.keel === 'screen') { frameReady(); if (!d.fromWalk) mark(d.name); }
   });
   if ($('#exp-reset')) $('#exp-reset').addEventListener('click', function () { toFrame({ keel: 'reset' }); });
+
+  // ================================================================ Rive in practice (a real .riv in the Rive web runtime)
+  // Third-party file, CC BY 4.0: "Toggle switch" by ashishb, recolored by source/rive/recolor_toggle.py.
+  (function riveDemo() {
+    var btn = $('#rv-switch'), canvas = $('#rv-canvas'), box = $('.rive-demo');
+    if (!btn) return;
+    var r = null, on = false, loading = null, visible = false;
+    // Same sample model as the app: $1,240, $48 a day, bills; pausing the gym removes the Oct 21 bill.
+    var BILLS = [[10, 17], [12, 65], [14, 70], [15, 142], [21, 40], [32, 1450]];
+    function through(gym) {
+      var bal = 1240;
+      for (var i = 0; i < 90; i++) {
+        var day = 8 + i, due = BILLS.filter(function (b) { return b[0] === day && (gym || b[0] !== 21); }).reduce(function (t, b) { return t + b[1]; }, 0);
+        var next = bal - 48 - due;
+        if (next < 0) return new Date(2026, 9, day - 1);
+        bal = next;
+      }
+    }
+    function read() {
+      var t = through(!on), m = Math.round((t - new Date(2026, 9, 16)) / 864e5);
+      $('#rv-read').innerHTML = 'Steady through <b>' + C.fmtDate(t) + '</b>: ' + m + ' days past payday.' + (on ? ' The gym is paused.' : '');
+    }
+    function runtime() {
+      if (window.rive && window.rive.Rive) return Promise.resolve();
+      if (loading) return loading;
+      loading = new Promise(function (res, rej) {
+        var sc = document.createElement('script'); sc.src = 'assets/vendor/rive.js';
+        sc.onload = function () { window.rive.RuntimeLoader.setWasmUrl('assets/vendor/rive.wasm'); res(); };
+        sc.onerror = rej; document.head.appendChild(sc);
+      });
+      return loading;
+    }
+    function fire() {
+      var ins = r && r.stateMachineInputs('Switch'), p = ins && ins.filter(function (i) { return i.name === 'Pressed'; })[0];
+      if (p) p.fire();
+    }
+    function jump() { try { r.scrub(on ? 'On' : 'Off', 10); } catch (e) {} }
+    function build() {
+      if (r) { r.cleanup(); r = null; }
+      var red = reduced();
+      r = new window.rive.Rive({
+        src: 'assets/rive/keel-toggle' + (isDark() ? '-dark' : '') + '.riv', canvas: canvas,
+        autoplay: !red, stateMachines: red ? undefined : 'Switch', animations: red ? ['Off', 'On'] : undefined,
+        shouldDisableRiveListeners: true,
+        onLoad: function () {
+          r.resizeDrawingSurfaceToCanvas();
+          btn.disabled = false;
+          $('#rv-status').textContent = 'Running in the Rive web runtime' + (red ? ', motion reduced: it jumps to the end state.' : '.');
+          if (red) jump(); else if (on) fire();
+          if (!visible) r.stopRendering();
+        },
+        onLoadError: function () { btn.disabled = false; $('#rv-status').textContent = 'The Rive file didn’t load here; the switch still works as a plain control.'; }
+      });
+    }
+    btn.addEventListener('click', function () {
+      on = !on; btn.setAttribute('aria-checked', String(on)); read();
+      if (!r) return;
+      r.startRendering();
+      if (reduced()) jump(); else fire();
+    });
+    var io = new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible && !r && !loading) runtime().then(build).catch(function () { btn.disabled = false; $('#rv-status').textContent = 'The Rive runtime didn’t load; the switch still works as a plain control.'; });
+      if (r) { if (visible) r.startRendering(); else r.stopRendering(); }   // no rendering off-screen
+    }, { rootMargin: '300px 0px' });
+    io.observe(box);
+    document.addEventListener('keel-theme', function () { if (r) build(); });
+    document.addEventListener('keel-motion', function () { if (r) build(); });
+    window.__keelRive = function () { return { on: on, ready: !!r, sm: r ? r.playingStateMachineNames : null, anims: r ? r.playingAnimationNames : null }; };
+    read();
+  })();
 
   // ================================================================ table of contents
   var links = $$('.toc a'), secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });

@@ -50,6 +50,7 @@ Judged against: WCAG 2.2 AA, the project’s own tokens (`assets/tokens.css`) an
 | All 24 Lottie files | 229 KB raw, 30 KB gzip; largest 16.3 KB |
 | Lottie requests, case study | 12 unique fetches for 28 players (was 28 before the fetch cache) |
 | Static fallbacks | 24 SVGs, 36.5 KB gzip |
+| Rive runtime (case study only) | 51 KB JS + 431 KB WASM gzip, loaded only near the Rive demo; not loaded by the app |
 | Screenshots | WebP, 31 to 47 KB each, served at 2.6 to 3.6× displayed size (sharp on high-density screens) |
 
 ## Not verified
