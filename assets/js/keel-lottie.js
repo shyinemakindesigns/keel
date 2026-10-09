@@ -11,8 +11,7 @@
       loop                        loop while playing (used only for loading)
       poster="end"                frame shown before play and for reduced motion: end | start | <frame>
       label="..."                 accessible name (role="img")
-      fallback="assets/fallbacks/equilibrium.svg"  static image shown until the animation is ready,
-                                  and kept if JavaScript or the runtime is unavailable
+      no-fallback                 skip the automatic static fallback (assets/fallbacks/<name>.svg)
     ></keel-lottie>
 
   JS API (on the element):
@@ -38,7 +37,8 @@
   var runtime = null;
 
   function loadRuntime() {
-    if (window.lottie) return Promise.resolve(window.lottie);
+    // check for the real library: an element with id="lottie" would also appear as window.lottie
+    if (window.lottie && typeof window.lottie.loadAnimation === 'function') return Promise.resolve(window.lottie);
     if (runtime) return runtime;
     runtime = new Promise(function (resolve, reject) {
       var s = document.createElement('script');
@@ -75,6 +75,14 @@
     return 3 * v * v * mid * y1 + 3 * v * mid * mid * y2 + mid * mid * mid;
   }
 
+  // One network request per file, however many players use it. Each player gets
+  // its own parsed copy, because lottie-web mutates animation data as it renders.
+  var files = new Map();
+  function fetchData(url) {
+    if (!files.has(url)) files.set(url, fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status + ' ' + url); return r.text(); }));
+    return files.get(url).then(function (txt) { return JSON.parse(txt); });
+  }
+
   var all = new Set();
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { e.target._onView(e.isIntersecting, e.intersectionRatio); });
@@ -91,16 +99,23 @@
       this._scrub = 0;
     }
     connectedCallback() {
-      this.setAttribute('role', 'img');
-      if (this.hasAttribute('label')) this.setAttribute('aria-label', this.getAttribute('label'));
+      // An empty label means decorative: hide it from assistive tech instead of exposing an unnamed image.
+      var lbl = this.getAttribute('label');
+      if (lbl) { this.setAttribute('role', 'img'); this.setAttribute('aria-label', lbl); }
+      else { this.removeAttribute('role'); this.setAttribute('aria-hidden', 'true'); }
       if (!this.style.display) this.style.display = 'block';
       this.style.position = this.style.position || 'relative';
-      if (this.getAttribute('fallback') && !this.querySelector('img')) {
-        var img = document.createElement('img');
-        img.src = this.getAttribute('fallback'); img.alt = ''; img.setAttribute('aria-hidden', 'true');
-        img.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain';
-        this.appendChild(img);
+      // Static fallback: the settled frame as SVG (assets/fallbacks/), in the matching theme.
+      // Shown until the animation is ready and kept if the runtime never loads. Authors can
+      // also write the <picture> into the HTML so it shows with JavaScript off.
+      if (!this.hasAttribute('no-fallback') && !this.querySelector(':scope > picture, :scope > img')) {
+        var n = this.getAttribute('name'), pic = document.createElement('picture');
+        pic.innerHTML = '<source srcset="' + BASE + 'fallbacks/' + n + '-dark.svg" media="(prefers-color-scheme: dark)">' +
+          '<img src="' + BASE + 'fallbacks/' + n + (isDark() ? '-dark' : '') + '.svg" alt="" aria-hidden="true">';
+        this.appendChild(pic);
       }
+      var still = this.querySelector(':scope > picture img, :scope > img');
+      if (still) still.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain';
       all.add(this);
       if (io) io.observe(this); else this._onView(true, 1);
     }
@@ -125,7 +140,8 @@
     _load(holdFrame) {
       if (this._ready) return this._ready;
       var self = this;
-      this._ready = loadRuntime().then(function (lottie) {
+      this._ready = Promise.all([loadRuntime(), fetchData(this._src())]).then(function (got) {
+        var lottie = got[0], data = got[1];
         return new Promise(function (resolve, reject) {
           var box = document.createElement('div');
           box.style.cssText = 'position:absolute;inset:0';
@@ -133,11 +149,11 @@
           self.appendChild(box);
           var a = lottie.loadAnimation({
             container: box, renderer: 'svg', autoplay: false, loop: self.hasAttribute('loop'),
-            path: self._src(), rendererSettings: { preserveAspectRatio: self.getAttribute('fit') || 'xMidYMid meet', progressiveLoad: true }
+            animationData: data, rendererSettings: { preserveAspectRatio: self.getAttribute('fit') || 'xMidYMid meet', progressiveLoad: true }
           });
           self.anim = a; self._box = box;
           a.addEventListener('DOMLoaded', function () {
-            var img = self.querySelector(':scope > img'); if (img) img.style.visibility = 'hidden';
+            var still = self.querySelector(':scope > picture, :scope > img'); if (still) still.style.visibility = 'hidden';
             a.goToAndStop(holdFrame !== undefined ? holdFrame : self._poster(), true);
             self.dispatchEvent(new CustomEvent('keel-ready'));
             resolve(a);

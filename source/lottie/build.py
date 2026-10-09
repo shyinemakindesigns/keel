@@ -243,7 +243,7 @@ def goal_created(P):
 # =================================================================== 11
 def loading(P):
     """11 Loading. Three blocks on a line drift a few pixels out of level and
-    settle back, in sequence. Seamless 1.6s loop; runs only while waiting."""
+    settle back, in sequence. A 1.6s loop with no visible join; runs only while waiting."""
     A = Anim("loading", 200, 80, 96)
     for n, x in enumerate((64, 100, 136)):
         d = n * 10

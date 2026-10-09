@@ -12,17 +12,23 @@ Keel is not a real company, product or client project, and it is not affiliated 
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | The long-form case study: problem, research review, define, information architecture, wireframes, identity and motion system, prototype, testing plan, reflection, references |
-| `prototype.html` | The interactive prototype, onboarding through to the steadiness view. Works on its own and on a phone |
-| `assets/tokens.css` | Mineral & Ember design tokens shared by both pages: brand primitives, a semantic layer, a full dark theme, shape and motion |
-| `assets/lottie/keel-settle.json`, `keel-settle-dark.json` | Hand-authored Lottie animation, one file per theme with identical keyframes: a boat rocks and settles level |
-| `assets/vendor/lottie.min.js` | lottie-web 5.12.2 |
-| `assets/img/` | Before and after screenshots used in the case study |
-| `source/gen_lottie.py` | Generates both Lottie files. Source of truth for the animation |
-| `source/svg_tokens.py` | Rewrites hardcoded SVG colors into token classes so artwork follows the theme |
-| `source/contrast_audit.py` | WCAG 2.1/2.2 AA contrast audit of every text, control, chart and border pairing, both themes |
-| `source/weight_check.py` | Measures the 60/30/10 color split from real screenshots (`--dark` for the dark theme) |
-| `docs/stillform/` | STILLFORM upgrade notes, starting with the Phase 0 audit |
+| `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
+| `prototype.html` | The app, onboarding through Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout |
+| `system.html` | The design and motion system: live tokens, the animation library with fallbacks, Rive specs, engineering notes |
+| `DESIGN.md` | Short brand brief |
+| `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
+| `assets/css/` | `components.css` (shared), `app.css` (the app), `case-study-motion.css` (the case study) |
+| `assets/js/keel-lottie.js` | `<keel-lottie>`: the one Lottie player (lazy, cached, visibility-aware, themed, reduced-motion aware) |
+| `assets/js/keel-charts.js` | Data-bound SVG charts shared by the app and the case study |
+| `assets/js/motion-registry.js` | One description of every animation, read by the gallery, the system page and the specs |
+| `assets/js/app.js`, `case-study.js` | Page behavior |
+| `assets/lottie/` | 12 hand-authored Lottie animations, light and dark (30 KB gzip in total) |
+| `assets/fallbacks/` | Static SVG of each animation’s settled frame, both themes |
+| `assets/img/` | Screenshots (WebP) |
+| `source/lottie/` | `build.py` and `kit.py` (the Lottie builder), preview, export and player-test pages, `gen_specs.js`, the Fraunces wordmark outlines |
+| `source/*.py` | Contrast audit, 60/30/10 check, the v1 keel animation generator |
+| `docs/motion-system/` | Motion system README, animation specifications and storyboards, Rive specification, QA report, phase audit |
+| `docs/stillform/` | Color-system audit |
 
 ## Run it
 
@@ -34,10 +40,11 @@ python3 -m http.server 4317
 
 Then open <http://localhost:4317/> for the case study and <http://localhost:4317/prototype.html> for the prototype.
 
-Regenerate the animation or rerun the audits:
+Regenerate the animations or rerun the audits:
 
 ```bash
-python3 source/gen_lottie.py
+python3 source/lottie/build.py      # every Lottie, light and dark
+node source/lottie/gen_specs.js     # docs/motion-system/animation-specifications.md
 python3 source/contrast_audit.py
 python3 source/weight_check.py path/to/screenshot.png   # needs Pillow
 ```
@@ -80,8 +87,15 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 - **Theme:** follows the OS by default; the case study has a toggle, remembered per browser, that also drives the embedded prototype and swaps the Lottie files
 - **Accessibility:** WCAG 2.2 AA contrast on all text, controls and chart marks in both themes, keyboard focus rings, switches with `role="switch"`, live regions for reading changes, and full `prefers-reduced-motion` support
 
+## Motion: what each animation is made of
+
+- **12 Lottie animations**, written in code with `source/lottie/kit.py` (no After Effects export). Three are progress-mapped: their timelines are linear in one value, and the app eases to the frame that matches real state.
+- **4 data-bound SVG charts** (spending by category, day by day, upcoming expenses, scenario comparison), because exact numbers can’t live in a keyframed file.
+- **No Rive files.** Four state machines are specified in `docs/motion-system/rive-spec.md`, with web implementations that already use the specified input names.
+
 ## Status
 
 - **v1:** case study, prototype, identity, animation and audits
-- **STILLFORM, color refinement (done):** Mineral & Ember palette, semantic tokens, dark theme, recolored Lottie, re-run audits. Layout, type and spacing deliberately unchanged
-- **STILLFORM, next:** see `docs/stillform/00-audit.md` for the remaining scope (equilibrium illustration, Lottie library, Rive specification, motion lab, design system page, cross-channel work). Each step lands as its own merge into `main`
+- **Mineral & Ember color system:** palette, semantic tokens, dark theme, recolored animation, re-run audits
+- **Motion-forward pass:** Lottie library, motion gallery and playground, expanded app (Spending, Goals, Plan, wide layout), embedded app with mobile and desktop modes, design system page, documentation, and an accessibility and performance audit (`docs/motion-system/qa-report.md`)
+- **Not done:** usability testing with people; Rive authoring; a human screen reader pass

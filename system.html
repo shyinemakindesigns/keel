@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keel design system</title>
+<meta name="description" content="Keel’s design and motion system: Mineral & Ember tokens, type, the Keel Motion Language, the hand-authored Lottie library with static fallbacks, Rive specifications, and engineering guidelines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<script>
+  (function () {
+    var d = document.documentElement, t = null, m = null;
+    d.className = 'js';
+    try { t = localStorage.getItem('keel-theme'); m = localStorage.getItem('keel-motion'); } catch (e) {}
+    if (t === 'dark' || t === 'light') d.setAttribute('data-theme', t);
+    if (m === 'reduced') d.setAttribute('data-motion', 'reduced');
+  })();
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--canvas); color: var(--ink); font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent-ink); text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+  img { max-width: 100%; height: auto; display: block; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.05; font-variation-settings: "SOFT" 40, "opsz" 144; }
+  h2 { font-size: 34px; line-height: 1.1; margin: 0 0 14px; font-variation-settings: "SOFT" 40, "opsz" 96; }
+  h3 { font-size: 22px; margin: 32px 0 10px; }
+  p { margin: 0 0 1em; max-width: 68ch; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; }
+  .top { position: sticky; top: 0; z-index: 5; background: var(--canvas); border-bottom: 1px solid var(--rule); }
+  .top .in, .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .top .in { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; }
+  .wordmark { display: flex; align-items: center; gap: 8px; font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--ink); text-decoration: none; }
+  .wordmark svg { width: 26px; height: 26px; }
+  .top nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .tbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 0; background: none; font: 600 15px var(--sans); color: var(--ink); border-radius: var(--r-md); cursor: pointer; text-decoration: none; }
+  .tbtn:hover { background: var(--tertiary-hover); }
+  section { padding: 56px 0; border-top: 1px solid var(--rule); }
+  .lede { font-size: 20px; color: var(--ink-2); max-width: 60ch; }
+  .table-wrap { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow-x: auto; --ink-2: var(--ink-2-on-surface); --ink-3: var(--ink-2-on-surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 640px; }
+  th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--rule); }
+  thead th { border-top: 0; color: var(--ink-2); font-size: 14px; }
+  .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0; border-top: 1px solid var(--rule); margin: 0; padding: 0; list-style: none; }
+  .sw li { padding: 12px 12px 14px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+  .sw i { display: block; height: 52px; border-radius: 8px; border: 1px solid var(--rule); margin-bottom: 8px; }
+  .sw b { display: block; }
+  .sw span { color: var(--ink-2); }
+  .scale > div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .scale dt { color: var(--ink-3); font-size: 14px; }
+  .scale dd { margin: 0; }
+  .lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 16px; --ink-2: var(--ink-2-on-surface); }
+  .card .stage { background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-md); display: grid; place-items: center; padding: 10px; height: 170px; }
+  .card keel-lottie { width: 100%; max-height: 150px; }
+  .card h3 { margin: 12px 0 2px; font-size: 19px; }
+  .card .tech { font-size: 13.5px; color: var(--ink-2); }
+  .card dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: 14px; margin: 10px 0; }
+  .card dt { color: var(--ink-2); }
+  .card dd { margin: 0; }
+  .card .row2 { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px; border-radius: var(--r-md); font: 600 15px var(--sans); cursor: pointer; border: 1px solid var(--secondary-border); background: var(--canvas); color: var(--ink); transition: background-color var(--dur-hover) var(--ease-standard); }
+  .btn:hover { background: var(--surface-2); }
+  .card .row2 a { font-size: 14px; display: inline-flex; align-items: center; min-height: 44px; }
+  ul.plain { padding-left: 1.2em; } ul.plain li { margin-bottom: 8px; }
+  @media (max-width: 560px) { .scale > div { grid-template-columns: 1fr; gap: 4px; } .top .in { padding: 0 16px; } .wrap { padding: 0 16px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="mark" viewBox="0 0 32 32"><path class="s-ink" d="M4 15h24" stroke-width="1.6" stroke-linecap="round"/><path class="f-hull" d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z"/><path class="f-ink" d="M15 17.5h2l-.4 7h-1.2z"/><ellipse class="f-ink" cx="16" cy="25.2" rx="3" ry="1.5"/></symbol>
+</defs></svg>
+
+<header class="top"><div class="in">
+  <a class="wordmark" href="index.html"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</a>
+  <nav aria-label="System">
+    <a class="tbtn" href="#color">Color</a><a class="tbtn" href="#type">Type</a><a class="tbtn" href="#motion">Motion</a><a class="tbtn" href="#library">Library</a><a class="tbtn" href="#rive">Rive</a><a class="tbtn" href="#eng">Engineering</a>
+    <button class="tbtn" id="theme" type="button">Theme</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div style="padding:64px 0 40px">
+    <h1>The Keel design system</h1>
+    <p class="lede" style="margin-top:18px">Mineral &amp; Ember tokens, two typefaces, one motif, and a motion language with sixteen documented animations. This page reads the same tokens as the app, so the theme switch changes everything here too.</p>
+    <p><a href="index.html">Back to the case study</a> · <a href="prototype.html">The app</a> · <a href="docs/motion-system/README.md">Motion system (Markdown)</a></p>
+  </div>
+
+  <section id="color" aria-labelledby="color-h">
+    <h2 id="color-h">Color</h2>
+    <p>Semantic tokens, shown with the values the current theme resolves to. 60% canvas, 30% surface, 10% accent; status colors never use ember.</p>
+    <ul class="sw" id="swatches"></ul>
+  </section>
+
+  <section id="type" aria-labelledby="type-h">
+    <h2 id="type-h">Type, space and shape</h2>
+    <dl class="scale">
+      <div><dt>Reading date · Fraunces 500, 52px</dt><dd><span style="font-family:var(--serif);font-size:52px;line-height:1;font-variation-settings:'SOFT' 30,'opsz' 144">Oct 25</span></dd></div>
+      <div><dt>Page title · Fraunces 500, 30 to 34px</dt><dd><span style="font-family:var(--serif);font-size:32px">This stretch</span></dd></div>
+      <div><dt>Body · Archivo 400, 16 to 17px</dt><dd>Keel looks at your bills, your paydays and your usual spending.</dd></div>
+      <div><dt>Amounts · Archivo 500 to 600, tabular</dt><dd style="font-variant-numeric:tabular-nums;font-weight:600">$1,240.00 · $142.00 · $17.00</dd></div>
+      <div><dt>Radii</dt><dd><code>--r-sm 6px</code> chips · <code>--r-md 10px</code> buttons and inputs · <code>--r-lg 16px</code> panels and sheets</dd></div>
+      <div><dt>Elevation</dt><dd>A 1px hairline first; <code>--lift</code> shadow only for things that float (sheets, the device frame)</dd></div>
+      <div><dt>Targets</dt><dd>44px minimum for every control; switches use an invisible hit area around a 28px visual</dd></div>
+    </dl>
+  </section>
+
+  <section id="motion" aria-labelledby="motion-h">
+    <h2 id="motion-h">Motion: Keel Motion Language</h2>
+    <p>Settle, reveal, connect, respond, reassure. Every animation must answer: what does this movement help someone understand?</p>
+    <div class="table-wrap"><table id="motion-tokens"><thead><tr><th scope="col">Token</th><th scope="col">Value now</th><th scope="col">Use</th></tr></thead><tbody></tbody></table></div>
+    <p style="margin-top:12px">Reduced motion (the OS setting, or the switch on the case study) resolves every duration to 0ms. Refresh this table with it on to see.</p>
+  </section>
+
+  <section id="library" aria-labelledby="lottie-h">
+    <h2 id="lottie-h">Animation library</h2>
+    <p>Twelve hand-authored Lottie animations and four data-bound SVG charts. Each Lottie has a light and a dark file with identical keyframes, and a static SVG fallback of its settled frame. Nothing plays until you ask.</p>
+    <div class="lib" id="lib"></div>
+  </section>
+
+  <section id="rive" aria-labelledby="rive-h">
+    <h2 id="rive-h">Rive library</h2>
+    <p><b>Specification only; no <code>.riv</code> files exist.</b> Four components are specified as state machines with exact input names, and each has a working web implementation that uses those inputs today: the Equilibrium Indicator (<code>steadinessValue</code>, <code>isInteracting</code>, <code>isLoading</code>, <code>hasUpdated</code>), the Interactive Savings Goal, the Onboarding Equilibrium and the Scenario Visualization. <a href="docs/motion-system/rive-spec.md">Read the specification</a>.</p>
+  </section>
+
+  <section id="eng" aria-labelledby="eng-h">
+    <h2 id="eng-h">Engineering</h2>
+    <ul class="plain">
+      <li><b>Components:</b> <code>assets/js/keel-lottie.js</code> (player), <code>assets/js/keel-charts.js</code> (data-bound charts), <code>assets/css/components.css</code> (rows, chips, chart parts). The app and the case study both use them.</li>
+      <li><b>Loading:</b> lottie-web loads on first need; each JSON is fetched once and only within 300px of the viewport; playback pauses off-screen and in hidden tabs.</li>
+      <li><b>Budget:</b> every Lottie under 20 KB raw; all 24 files total 30 KB gzipped.</li>
+      <li><b>Accessibility:</b> named animations are <code>role="img"</code> with a label; decorative ones are hidden; every animation has a static end state; charts have text equivalents.</li>
+      <li><b>Build:</b> <code>python3 source/lottie/build.py</code> regenerates the library; <code>node source/lottie/gen_specs.js</code> regenerates the specs.</li>
+      <li><b>Reports:</b> <a href="docs/motion-system/qa-report.md">QA, accessibility and performance</a> · <a href="docs/motion-system/animation-specifications.md">Animation specifications and storyboards</a></li>
+    </ul>
+  </section>
+</main>
+
+<script src="assets/js/keel-lottie.js" data-base="assets/"></script>
+<script src="assets/js/motion-registry.js"></script>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  var SW = [['--canvas', 'Canvas', '60%: the page'], ['--surface', 'Surface', '30%: panels, rows'], ['--surface-2', 'Deep surface', 'Water, wells'], ['--ink', 'Ink', 'Text, the keel'], ['--ink-2', 'Secondary', 'Supporting text'],
+    ['--accent', 'Accent', '10%: actions, the hull'], ['--accent-ink', 'Accent text', 'Links, focus'], ['--positive', 'Positive', 'Status, with a word'], ['--negative', 'Negative', 'Status, with a word'], ['--warning', 'Warning', 'Status, with a word'], ['--info', 'Info', 'Status, with a word']];
+  var MT = [['--ease-settle', 'Default arrivals'], ['--ease-enter', 'Sheets, reveals'], ['--ease-standard', 'Changes in place'], ['--ease-exit', 'Leaving'], ['--dur-press', 'Press feedback'], ['--dur-hover', 'Hover'], ['--dur-card', 'Rows, confirmations'], ['--dur-chart', 'Data-bound charts'], ['--dur-move', 'Screens, sheets'], ['--dur-settle', 'The keel spring'], ['--stagger', 'Sequential reveals']];
+  function render() {
+    var cs = getComputedStyle(document.documentElement);
+    $('#swatches').innerHTML = SW.map(function (s) {
+      var v = cs.getPropertyValue(s[0]).trim();
+      return '<li><i style="background:var(' + s[0] + ')"></i><b>' + s[1] + '</b><code>' + s[0] + '</code><br><span>' + esc(v) + ' · ' + s[2] + '</span></li>';
+    }).join('');
+    $('#motion-tokens tbody').innerHTML = MT.map(function (m) { return '<tr><th scope="row"><code>' + m[0] + '</code></th><td><code>' + esc(cs.getPropertyValue(m[0]).trim()) + '</code></td><td>' + m[1] + '</td></tr>'; }).join('');
+  }
+  render();
+  $('#theme').addEventListener('click', function () {
+    var dark = window.keelMotion.isDark(), next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('keel-theme', next); } catch (e) {}
+    document.dispatchEvent(new Event('keel-theme')); render();
+  });
+  var lib = $('#lib');
+  window.KEEL_MOTION.forEach(function (m) {
+    var c = document.createElement('article'); c.className = 'card';
+    var stage = m.file
+      ? '<div class="stage"><keel-lottie name="' + m.file + '"' + (m.loop ? ' loop' : '') + ' poster="end" label="' + esc(m.title) + '" style="aspect-ratio:' + m.aspect + '"></keel-lottie></div>'
+      : '<div class="stage"><p style="margin:0;text-align:center;color:var(--ink-2);font-size:14px">Data-bound SVG chart.<br>See <a href="index.html#motion-' + m.id + '">' + esc(m.title) + ' in the gallery</a>, or live in the <a href="prototype.html">app</a>.</p></div>';
+    c.innerHTML = stage + '<h3>' + m.n + ' · ' + esc(m.title) + '</h3><div class="tech">' + esc(m.tech) + '</div>' +
+      '<dl><dt>Trigger</dt><dd>' + esc(m.trigger) + '</dd><dt>Timing</dt><dd>' + esc(m.timing) + '</dd><dt>Loop</dt><dd>' + (m.loop ? 'Only while loading' : 'No') + '</dd></dl>' +
+      '<div class="row2">' + (m.file ? '<button class="btn" type="button">Play ' + esc(m.title) + '</button><a href="assets/lottie/' + m.file + '.json">' + m.file + '.json</a><a href="assets/fallbacks/' + m.file + '.svg">' + m.file + '.svg fallback</a>' : '<a href="assets/js/keel-charts.js">keel-charts.js</a>') + '</div>';
+    lib.appendChild(c);
+    var b = c.querySelector('button');
+    if (b) b.addEventListener('click', function () { var el = c.querySelector('keel-lottie'); if (m.loop && el.isPlaying) { el.stop(); b.textContent = 'Play ' + m.title; } else { el.replay(); if (m.loop) b.textContent = 'Stop ' + m.title; } });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Fallback export</title></head>
+<body>
+<!-- Dev tool: renders each animation's poster frame with lottie-web's SVG renderer and
+     exposes the markup as window.__svgs[name + theme], so a script can save it to
+     assets/fallbacks/. Run through headless Chrome; see docs/motion-system/README.md. -->
+<script src="../../assets/vendor/lottie.min.js"></script>
+<script>
+  var FRAMES = { 'equilibrium': 239, 'line': 86, 'clarity': 215, 'goal': 76, 'check': 44, 'empty': 131, 'goal-created': 131,
+                 'loading': 0, 'onboarding': 240, 'signature': 179, 'complete': 83, 'keel-settle': 299 };
+  window.__svgs = {};
+  var jobs = [];
+  Object.keys(FRAMES).forEach(function (name) {
+    ['', '-dark'].forEach(function (suffix) {
+      jobs.push(fetch('../../assets/lottie/' + name + suffix + '.json').then(function (r) { return r.json(); }).then(function (data) {
+        return new Promise(function (res) {
+          var box = document.createElement('div'); box.style.width = data.w + 'px'; box.style.height = data.h + 'px';
+          document.body.appendChild(box);
+          var a = lottie.loadAnimation({ container: box, renderer: 'svg', autoplay: false, loop: false, animationData: data,
+            rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
+          a.addEventListener('DOMLoaded', function () {
+            a.goToAndStop(Math.min(FRAMES[name], a.totalFrames - 1), true);
+            var svg = box.querySelector('svg');
+            svg.removeAttribute('style'); svg.setAttribute('width', data.w); svg.setAttribute('height', data.h);
+            window.__svgs[name + suffix] = svg.outerHTML;
+            a.destroy(); res();
+          });
+        });
+      }));
+    });
+  });
+  Promise.all(jobs).then(function () { window.__done = true; });
+</script>
+</body></html>

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Keel case study</title>
-<meta name="description" content="A self-directed UX and visual design case study: Keel, a fictional budgeting app built around steadiness instead of restriction. Research review, information architecture, wireframes, identity and motion system, interactive prototype, and a testing plan.">
+<meta name="description" content="A self-directed UX and visual design case study: Keel, a fictional budgeting app built around steadiness instead of restriction. Research review, information architecture, wireframes, identity, an illustration and motion system with a hand-authored Lottie library, an embedded interactive prototype, and a testing plan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..700;1,100,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
@@ -12,9 +12,11 @@
 <link rel="stylesheet" href="assets/tokens.css">
 <script>
   (function () {
-    var t = null;
-    try { t = localStorage.getItem('keel-theme'); } catch (e) {}
-    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    var d = document.documentElement, t = null, m = null;
+    d.className = d.className.replace('no-js', 'js');
+    try { t = localStorage.getItem('keel-theme'); m = localStorage.getItem('keel-motion'); } catch (e) {}
+    if (t === 'dark' || t === 'light') d.setAttribute('data-theme', t);
+    if (m === 'reduced') d.setAttribute('data-motion', 'reduced');
   })();
 </script>
 <style>
@@ -321,6 +323,8 @@
   footer { border-top: 1px solid var(--rule); }
   footer .in { max-width: 1240px; margin: 0 auto; padding: 28px 24px 48px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
 </style>
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/case-study-motion.css">
 </head>
 <body>
 
@@ -343,6 +347,10 @@
     <a class="wordmark" href="#top" aria-label="Keel, back to top"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</a>
     <span class="by">A case study by Shyine Makin</span>
     <div class="right">
+      <button class="btn btn-tertiary theme-toggle motion-toggle" id="motion-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 12h16" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M6 9.5h8c-.4 1.8-1.4 2.6-2.8 2.6H8.8C7.4 12.1 6.4 11.3 6 9.5z" fill="currentColor"/></svg>
+        <span id="motion-label">Reduce motion</span>
+      </button>
       <button class="btn btn-tertiary theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
         <span id="theme-label">Dark</span>
@@ -360,25 +368,31 @@
       <li><a href="#define"><span>3</span>Define</a></li>
       <li><a href="#ia"><span>4</span>Architecture</a></li>
       <li><a href="#lofi"><span>5</span>Wireframes</a></li>
-      <li><a href="#identity"><span>6</span>Identity and motion</a></li>
-      <li><a href="#prototype"><span>7</span>Prototype</a></li>
-      <li><a href="#testing"><span>8</span>Testing plan</a></li>
-      <li><a href="#reflection"><span>9</span>Reflection</a></li>
+      <li><a href="#identity"><span>6</span>Visual identity</a></li>
+      <li><a href="#illustration"><span>7</span>Illustration</a></li>
+      <li><a href="#motion"><span>8</span>Motion system</a></li>
+      <li><a href="#app"><span>9</span>Application</a></li>
+      <li><a href="#prototype"><span>10</span>Experience Keel</a></li>
+      <li><a href="#system"><span>11</span>Design system</a></li>
+      <li><a href="#testing"><span>12</span>Testing plan</a></li>
+      <li><a href="#reflection"><span>13</span>Outcomes</a></li>
       <li><a href="#references"><span>&nbsp;</span>References</a></li>
     </ol>
   </nav>
 
 <main>
-
 <!-- ============================================================ OPENING -->
 <section class="opening" aria-labelledby="title">
-  <h1 id="title">A budgeting app that tells you you’re okay before it tells you anything else.</h1>
+  <h1 id="title"><span class="ln">A budgeting app that tells you</span> <span class="ln">you’re okay before it tells</span> <span class="ln">you anything else.</span></h1>
+  <p class="tag">Money moves. You stay steady.</p>
   <p class="lede">Keel is a personal finance concept built on one idea: confidence with money comes from steadiness, not restriction. This is the full process behind it, from the research that shaped the idea to a working prototype, with the visual and motion system designed alongside the product rather than after it.</p>
 
-  <figure class="open-art">
-    <div class="stage"><div id="hero-illo" role="img" aria-label="Animated illustration: a small sailboat, drawn as a cutaway so its keel shows below the waterline, rocks and settles level."></div></div>
+  <figure class="hero-art">
+    <keel-lottie id="hero-lottie" name="equilibrium" trigger="inview" poster="end" label="Animated illustration: a sculptural balance object starts off level, rocks, and settles; an ember sphere lowers onto the pivot last.">
+      <picture><source srcset="assets/fallbacks/equilibrium-dark.svg" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/equilibrium.svg" alt=""></picture>
+    </keel-lottie>
     <figcaption class="bar caption">
-      <span>The keel metaphor as a hand-authored Lottie animation. It plays once and holds still, because the stillness is the point.</span>
+      <span>Hero Equilibrium, a hand-authored Lottie. It plays once when it comes into view and holds still, because the stillness is the point.</span>
       <button class="btn btn-quiet" id="hero-replay" type="button">Replay</button>
     </figcaption>
   </figure>
@@ -386,7 +400,7 @@
   <dl class="facts-table">
     <div><dt>Role</dt><dd>Everything, solo: research review through prototype</dd></div>
     <div><dt>When</dt><dd>October 2026, self-directed</dd></div>
-    <div><dt>Made with</dt><dd>HTML, CSS, JS, Lottie JSON written by hand, Python for audits</dd></div>
+    <div><dt>Made with</dt><dd>HTML, CSS and JS; 12 Lottie animations written by hand in Python; SVG charts</dd></div>
     <div><dt>Status</dt><dd>Concept and prototype. Not tested with users yet</dd></div>
   </dl>
 
@@ -394,6 +408,7 @@
     <h2 id="about-h">About this project</h2>
     <p><strong>Keel is fictional.</strong> It isn’t a client, an employer’s product, or a real company, and nothing here is affiliated with any financial institution. I made it to show the whole arc of my process in one public, inspectable piece.</p>
     <p><strong>What’s real and what isn’t.</strong> The research section is a desk review of published research and public competitor material. I didn’t interview anyone for this project, and there are no invented personas or quotes on this page. The testing section is a plan, not results. Every number in the prototype is sample data I made up to drive the interaction, and it’s labeled that way where it appears. The cited sources are real and linked at the bottom.</p>
+    <p><strong>How the motion is made.</strong> Every animation is labeled by what it actually is. The Lottie files are JSON I authored in code, not exported from After Effects. Four charts are SVG drawn from live data, because a keyframed file can’t hold exact numbers. There are no Rive files yet: the interactive pieces Rive would own are specified and running as web implementations, clearly marked.</p>
   </aside>
 
   <p class="idea">A keel is the part of a boat you never see. It doesn’t stop the waves. It keeps you upright through them.</p>
@@ -438,6 +453,15 @@
       </div>
     </li>
   </ol>
+
+  <div class="compare reveal">
+    <keel-lottie name="clarity" trigger="inview" poster="end" label="Abstract marks start scattered and drift into a clear, ranked list on a baseline; an ember marker highlights the top row."></keel-lottie>
+    <div class="prose small">
+      <p><b>Clarity, not more data.</b> Most finance apps already have the numbers. What they lack is an order to read them in. This animation (Financial Clarity Reveal) is the whole argument in four seconds: the same marks, arranged so the one that matters is obvious.</p>
+      <p class="muted">An abstract comparison, deliberately not a screenshot of any real product.</p>
+      <button class="btn btn-quiet" type="button" data-replay-prev>Replay</button>
+    </div>
+  </div>
 
   <div class="prose">
     <p>Put together, these sources suggest an uncomfortable inference: if people already avoid financial information when they expect bad news, an app that greets a rough week with red overages is working against its own goal. It teaches people to stop looking. That’s the bet Keel is built on. It’s an inference from published research, not something I’ve measured, and the testing plan in section 8 is designed to check it.</p>
@@ -563,83 +587,51 @@
   <span class="sec-num">4</span>
   <h2 id="ia-h">Information architecture: everything returns to the reading</h2>
   <div class="prose">
-    <p class="lede">Three tabs, and one rule underneath them: any action that moves money shows its effect on the reading before it happens, and returns you to it after.</p>
-    <p>Onboarding collects exactly the three inputs the reading needs (accounts, recurring bills, payday) and nothing else. Goals got a plain name. I considered “Harbors” to extend the nautical theme and dropped it: a metaphor should explain the product, and a tab label that needs explaining is costing clarity to buy charm.</p>
+    <p class="lede">Four tabs, and one rule underneath them: any action that moves money shows its effect on the reading before it happens, and returns you to it after.</p>
+    <p>Onboarding collects exactly the three inputs the reading needs (accounts, recurring bills, payday) and nothing else. Goals got a plain name. I considered “Harbors” to extend the nautical theme and dropped it: a metaphor should explain the product, and a tab label that needs explaining is costing clarity to buy charm. Plan is the newest tab, added in the motion pass so people can try a change before they commit to it. The diagram draws itself as you reach it, in the same order you’d move through the app.</p>
   </div>
 
-  <figure class="figure ia wide">
+  <figure class="figure ia wide ia-draw">
     <div class="scroll-x panel" style="padding: 8px 0;">
-      <svg viewBox="0 0 960 560" role="img" aria-labelledby="ia-title ia-desc">
+      <svg viewBox="0 0 960 620" role="img" aria-labelledby="ia-title ia-desc">
         <title id="ia-title">Keel sitemap and core flow</title>
-        <desc id="ia-desc">Onboarding runs Welcome, Accounts, Bills, Payday, then Taking your first reading, which lands on the Steady tab. The app has three tabs. Steady contains the reading, the purchase check and the coming up list. Activity contains spending weight by category and transactions, each opening a detail sheet. Goals contains the goal and an add-to-goal sheet. The purchase check, the transaction sheet and the add-to-goal sheet all show their effect on the reading.</desc>
+        <desc id="ia-desc">Onboarding runs Welcome, Accounts, Bills, Payday, then First reading, which lands on the Steady tab. Four tabs: Steady holds the reading, the purchase check, spending pace and the coming up timeline. Spending holds category bars, day by day, transactions and a transaction sheet for editing the category. Goals holds goal cards, an add money sheet and a new goal sheet. Plan holds a six month scenario, readouts and an apply action. The purchase check and adding money to a goal both show their effect on the reading.</desc>
         <defs>
           <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="f-ink2s" d="M0 0L10 5L0 10z"/></marker>
           <marker id="arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="f-accent-ink" d="M0 0L10 5L0 10z"/></marker>
         </defs>
-        <g class="f-ink" font-size="13">
-          <!-- onboarding row -->
-          <text x="24" y="34" font-size="14" font-weight="600">Onboarding</text>
-          <text class="f-ink2s" x="118" y="34" font-size="13">collects only what the reading needs</text>
-          <g>
-            <rect class="f-canvas s-node" x="24" y="50" width="128" height="52" rx="8"/>
-            <text x="38" y="73" font-weight="600">Welcome</text><text class="f-ink2s" x="38" y="91" font-size="12">the promise, illustrated</text>
-            <rect class="f-canvas s-node" x="188" y="50" width="128" height="52" rx="8"/>
-            <text x="202" y="73" font-weight="600">Accounts</text><text class="f-ink2s" x="202" y="91" font-size="12">what you have</text>
-            <rect class="f-canvas s-node" x="352" y="50" width="128" height="52" rx="8"/>
-            <text x="366" y="73" font-weight="600">Bills</text><text class="f-ink2s" x="366" y="91" font-size="12">what’s already spoken for</text>
-            <rect class="f-canvas s-node" x="516" y="50" width="128" height="52" rx="8"/>
-            <text x="530" y="73" font-weight="600">Payday</text><text class="f-ink2s" x="530" y="91" font-size="12">the shore to measure to</text>
-            <rect class="f-canvas s-node" x="680" y="50" width="160" height="52" rx="8"/>
-            <text x="694" y="73" font-weight="600">First reading</text><text class="f-ink2s" x="694" y="91" font-size="12">loading, in the motif</text>
-            <path class="s-ink2s" d="M152 76h32M316 76h32M480 76h32M644 76h32" stroke-width="1.5" marker-end="url(#arr)"/>
-            <path class="s-ink2s" d="M760 102v58" stroke-width="1.5" marker-end="url(#arr)"/>
-          </g>
-
-          <!-- the horizon: tab bar -->
-          <path class="s-ink" d="M24 176h912" stroke-width="1.5"/>
-          <text x="24" y="166" font-size="14" font-weight="600">The app</text>
-          <text class="f-ink2s" x="94" y="166" font-size="13">three tabs</text>
-
-          <!-- Steady column -->
-          <rect class="f-hull s-accent-ink" x="24" y="196" width="288" height="300" rx="12" fill-opacity=".10" stroke-opacity=".5"/>
-          <text x="44" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Steady</text>
-          <text class="f-ink2s" x="114" y="226" font-size="12.5">home, opens here</text>
-          <rect class="f-canvas s-node" x="44" y="244" width="248" height="60" rx="8"/>
-          <text x="58" y="268" font-weight="600">The reading</text><text class="f-ink2s" x="58" y="287" font-size="12">steady through a date, keel depth</text>
-          <rect class="f-canvas s-node" x="44" y="316" width="248" height="60" rx="8"/>
-          <text x="58" y="340" font-weight="600">Purchase check</text><text class="f-ink2s" x="58" y="359" font-size="12">preview a spend before you make it</text>
-          <rect class="f-canvas s-node" x="44" y="388" width="248" height="60" rx="8"/>
-          <text x="58" y="412" font-weight="600">Coming up</text><text class="f-ink2s" x="58" y="431" font-size="12">bills, each marked set aside or not</text>
-          <text class="f-ink2s" x="44" y="474" font-size="12">Settings and export: not built in prototype</text>
-
-          <!-- Activity column -->
-          <rect class="f-surface s-col" x="336" y="196" width="288" height="300" rx="12"/>
-          <text x="356" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Activity</text>
-          <text class="f-ink2s" x="436" y="226" font-size="12.5">since last payday</text>
-          <rect class="f-canvas s-node" x="356" y="244" width="248" height="60" rx="8"/>
-          <text x="370" y="268" font-weight="600">Weight by category</text><text class="f-ink2s" x="370" y="287" font-size="12">shares, never limits</text>
-          <rect class="f-canvas s-node" x="356" y="316" width="248" height="60" rx="8"/>
-          <text x="370" y="340" font-weight="600">Transactions</text><text class="f-ink2s" x="370" y="359" font-size="12">grouped by day, filter by category</text>
-          <rect class="f-canvas s-node" x="356" y="388" width="248" height="60" rx="8" stroke-dasharray="4 3"/>
-          <text x="370" y="412" font-weight="600">Transaction sheet</text><text class="f-ink2s" x="370" y="431" font-size="12">its weight, in days</text>
-          <path class="s-ink2s" d="M480 376v8" stroke-width="1.5" marker-end="url(#arr)"/>
-
-          <!-- Goals column -->
-          <rect class="f-surface s-col" x="648" y="196" width="288" height="300" rx="12"/>
-          <text x="668" y="226" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Goals</text>
-          <text class="f-ink2s" x="726" y="226" font-size="12.5">money set aside on purpose</text>
-          <rect class="f-canvas s-node" x="668" y="244" width="248" height="60" rx="8"/>
-          <text x="682" y="268" font-weight="600">Goal</text><text class="f-ink2s" x="682" y="287" font-size="12">progress as ballast filling a hold</text>
-          <rect class="f-canvas s-node" x="668" y="316" width="248" height="60" rx="8" stroke-dasharray="4 3"/>
-          <text x="682" y="340" font-weight="600">Add to goal sheet</text><text class="f-ink2s" x="682" y="359" font-size="12">shows the new reading first</text>
-          <path class="s-ink2s" d="M792 304v8" stroke-width="1.5" marker-end="url(#arr)"/>
-
-          <!-- return-to-reading arrows -->
-          <path class="s-accent-ink" d="M356 418C320 418 318 274 296 274" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
-          <path class="s-accent-ink" d="M668 346C640 346 640 520 330 520C200 520 300 300 296 290" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
-          <path class="s-accent-ink" d="M160 316v-8" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
-          <text class="f-accent-ink" x="384" y="546" font-size="12.5">Dashed: anything that moves money shows and returns to the reading</text>
-          <text class="f-ink2s" x="384" y="470" font-size="12">Dashed box: sheet, not a page</text>
+        <g class="f-ink" font-size="13" font-family="Archivo, sans-serif">
+          <text x="24" y="34" font-size="14" font-weight="600">Onboarding</text><text class="f-ink2s" x="118" y="34" font-size="13">collects only what the reading needs, with one illustration that changes per step</text>
+          <g class="node" style="transition-delay:0ms"><rect class="f-canvas s-node" x="24" y="50" width="160" height="52" rx="8"/><text x="36" y="73" font-weight="600">Welcome</text><text class="f-ink2s" x="36" y="91" font-size="12">the keel, illustrated</text></g>
+          <g class="node" style="transition-delay:70ms"><rect class="f-canvas s-node" x="202" y="50" width="160" height="52" rx="8"/><text x="214" y="73" font-weight="600">Accounts</text><text class="f-ink2s" x="214" y="91" font-size="12">what you have</text></g>
+          <g class="node" style="transition-delay:140ms"><rect class="f-canvas s-node" x="380" y="50" width="160" height="52" rx="8"/><text x="392" y="73" font-weight="600">Bills</text><text class="f-ink2s" x="392" y="91" font-size="12">what’s spoken for</text></g>
+          <g class="node" style="transition-delay:210ms"><rect class="f-canvas s-node" x="558" y="50" width="160" height="52" rx="8"/><text x="570" y="73" font-weight="600">Payday</text><text class="f-ink2s" x="570" y="91" font-size="12">the shore</text></g>
+          <g class="node" style="transition-delay:280ms"><rect class="f-canvas s-node" x="736" y="50" width="200" height="52" rx="8"/><text x="748" y="73" font-weight="600">First reading</text><text class="f-ink2s" x="748" y="91" font-size="12">loading, in the motif</text></g>
+          <path class="draw s-ink2s" d="M184 76h14M362 76h14M540 76h14M718 76h14M836 102v44" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <path class="draw s-ink" d="M24 166h912" stroke-width="1.5"/><text x="24" y="156" font-size="14" font-weight="600">The app</text><text class="f-ink2s" x="94" y="156" font-size="13">four tabs</text>
+          <g class="node" style="transition-delay:400ms"><rect class="f-hull s-accent-ink" fill-opacity=".10" stroke-opacity=".6" x="24" y="184" width="216" height="354" rx="12"/><text x="40" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Steady</text><text class="f-ink2s" x="40" y="232" font-size="12">home, opens here</text></g>
+          <g class="node" style="transition-delay:520ms"><rect class="f-canvas s-node" x="36" y="244" width="192" height="58" rx="8"/><text x="48" y="267" font-weight="600">The reading</text><text class="f-ink2s" x="48" y="285" font-size="12">steady through, keel depth</text></g>
+          <g class="node" style="transition-delay:570ms"><rect class="f-canvas s-node" x="36" y="314" width="192" height="58" rx="8"/><text x="48" y="337" font-weight="600">Purchase check</text><text class="f-ink2s" x="48" y="355" font-size="12">preview a spend first</text></g>
+          <g class="node" style="transition-delay:620ms"><rect class="f-canvas s-node" x="36" y="384" width="192" height="58" rx="8"/><text x="48" y="407" font-weight="600">Spending pace</text><text class="f-ink2s" x="48" y="425" font-size="12">the Equilibrium Line</text></g>
+          <g class="node" style="transition-delay:670ms"><rect class="f-canvas s-node" x="36" y="454" width="192" height="58" rx="8"/><text x="48" y="477" font-weight="600">Coming up</text><text class="f-ink2s" x="48" y="495" font-size="12">timeline and bill list</text></g>
+          <g class="node" style="transition-delay:490ms"><rect class="f-surface s-col"  x="256" y="184" width="216" height="354" rx="12"/><text x="272" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Spending</text><text class="f-ink2s" x="272" y="232" font-size="12">since last payday</text></g>
+          <g class="node" style="transition-delay:610ms"><rect class="f-canvas s-node" x="268" y="244" width="192" height="58" rx="8"/><text x="280" y="267" font-weight="600">By category</text><text class="f-ink2s" x="280" y="285" font-size="12">bars vs last stretch</text></g>
+          <g class="node" style="transition-delay:660ms"><rect class="f-canvas s-node" x="268" y="314" width="192" height="58" rx="8"/><text x="280" y="337" font-weight="600">Day by day</text><text class="f-ink2s" x="280" y="355" font-size="12">the week as a sequence</text></g>
+          <g class="node" style="transition-delay:710ms"><rect class="f-canvas s-node" x="268" y="384" width="192" height="58" rx="8"/><text x="280" y="407" font-weight="600">Transactions</text><text class="f-ink2s" x="280" y="425" font-size="12">filter by category</text></g>
+          <g class="node" style="transition-delay:760ms"><rect class="f-canvas s-node" x="268" y="454" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="280" y="477" font-weight="600">Transaction sheet</text><text class="f-ink2s" x="280" y="495" font-size="12">edit the category</text></g>
+          <g class="node" style="transition-delay:580ms"><rect class="f-surface s-col"  x="488" y="184" width="216" height="284" rx="12"/><text x="504" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Goals</text><text class="f-ink2s" x="504" y="232" font-size="12">set aside on purpose</text></g>
+          <g class="node" style="transition-delay:700ms"><rect class="f-canvas s-node" x="500" y="244" width="192" height="58" rx="8"/><text x="512" y="267" font-weight="600">Goal cards</text><text class="f-ink2s" x="512" y="285" font-size="12">progress, estimate</text></g>
+          <g class="node" style="transition-delay:750ms"><rect class="f-canvas s-node" x="500" y="314" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="512" y="337" font-weight="600">Add money sheet</text><text class="f-ink2s" x="512" y="355" font-size="12">shows the new reading</text></g>
+          <g class="node" style="transition-delay:800ms"><rect class="f-canvas s-node" x="500" y="384" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="512" y="407" font-weight="600">New goal sheet</text><text class="f-ink2s" x="512" y="425" font-size="12">target, per paycheck</text></g>
+          <g class="node" style="transition-delay:670ms"><rect class="f-surface s-col"  x="720" y="184" width="216" height="284" rx="12"/><text x="736" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Plan</text><text class="f-ink2s" x="736" y="232" font-size="12">try before you commit</text></g>
+          <g class="node" style="transition-delay:790ms"><rect class="f-canvas s-node" x="732" y="244" width="192" height="58" rx="8"/><text x="744" y="267" font-weight="600">Scenario</text><text class="f-ink2s" x="744" y="285" font-size="12">two step lines, six months</text></g>
+          <g class="node" style="transition-delay:840ms"><rect class="f-canvas s-node" x="732" y="314" width="192" height="58" rx="8"/><text x="744" y="337" font-weight="600">Readouts</text><text class="f-ink2s" x="744" y="355" font-size="12">dates, totals, per-day cost</text></g>
+          <g class="node" style="transition-delay:890ms"><rect class="f-canvas s-node" x="732" y="384" width="192" height="58" rx="8"/><text x="744" y="407" font-weight="600">Apply</text><text class="f-ink2s" x="744" y="425" font-size="12">updates the goal plan</text></g>
+          <path class="draw s-accent-ink" d="M256 538C230 538 236 268 228 266" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <path class="draw s-accent-ink" d="M500 384C470 384 470 560 250 560C150 560 222 300 228 290" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <path class="draw s-accent-ink" d="M128 314v-6" fill="none" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr-a)"/>
+          <text class="f-accent-ink" x="300" y="588" font-size="12.5">Dashed: anything that moves money shows its effect on the reading first, then returns to it</text>
+          <text class="f-ink2s" x="300" y="606" font-size="12">Dashed boxes are sheets, not pages. Plan never moves today’s reading, and says so.</text>
         </g>
       </svg>
     </div>
@@ -729,6 +721,35 @@
     </figure>
   </div>
 
+  <h3>From the sketch to the screen</h3>
+  <div class="lohi figure reveal">
+    <div>
+      <div class="lohi-stage" id="lohi" style="--cut:50%">
+        <div class="wf" aria-hidden="true">
+          <div class="l d" style="width:40%"></div>
+          <div class="l" style="width:50%;margin-top:10px"></div>
+          <div class="h" style="width:62%;height:22px"></div>
+          <div class="l" style="width:88%"></div>
+          <div style="position:relative;height:90px;margin:6px -16px 0;background:#E6E6E6;border-top:2px solid #6B6B6B">
+            <div style="position:absolute;left:24%;top:-12px;width:30%;height:14px;background:#9A9A9A;border-radius:0 0 10px 10px"></div>
+            <div style="position:absolute;left:37%;top:0;width:4px;height:56px;background:#6B6B6B"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="b" style="height:34px"></div><div class="b" style="height:34px"></div></div>
+          <div class="b" style="height:70px"></div>
+          <div class="tabs"><i></i><i></i><i></i></div>
+        </div>
+        <img class="hi" src="assets/img/screens/m-light-home.webp" alt="The finished Steady screen: Oct 25 in a large serif, the keel below a waterline, and the purchase check." width="780" height="1688" loading="lazy">
+        <span class="seam" aria-hidden="true"></span>
+      </div>
+      <label class="small muted" for="lohi-range" style="display:block;margin-top:10px">Drag to compare the v1 wireframe with the shipped screen</label>
+      <input type="range" id="lohi-range" min="0" max="100" value="50">
+    </div>
+    <div class="prose small">
+      <p>The structure survived almost unchanged: the date first, the waterline under it, two facts, the purchase check, then the list. What changed was weight and material. The keel became the one physical object, the boxes became Mineral &amp; Ember surfaces, and the waterline became payday, labeled.</p>
+      <p class="muted">The wireframe is the real v1 sketch from this project; the screen is a live capture of the prototype.</p>
+    </div>
+  </div>
+
   <h3>What changed on the way to high fidelity</h3>
   <div class="prose">
     <p>Three structural changes happened after these sketches, all from my own review of the rendered screens (there’s no user testing yet, and section 8 says so). They’re documented with before and after in section 8’s change log, but in short: the reading moved out of a card and onto the page itself, category colors became tints of one ink instead of several hues, and the purchase check’s “ghost” keel was redesigned because the first version was illegible at phone size.</p>
@@ -739,10 +760,17 @@
 <div class="horizon" aria-hidden="true"><i></i></div>
 <section id="identity" aria-labelledby="identity-h">
   <span class="sec-num">6</span>
-  <h2 id="identity-h">Visual and motion identity</h2>
+  <h2 id="identity-h">Visual identity</h2>
   <div class="prose">
     <p class="lede">The brief for the identity came straight from the concept: warm instead of clinical, grounded instead of urgent, one confident accent instead of a traffic-light system. Fintech defaults to blue and green because they signal trust and growth. Keel’s promise is closer to shelter, so the palette is Mineral &amp; Ember: porcelain, mineral stone and volcanic ink, with one oxidized ember accent, and a basalt and chalk counterpart for dark mode.</p>
   </div>
+
+  <figure class="figure closing reveal" style="margin-top:8px">
+    <keel-lottie name="signature" trigger="inview" poster="end" label="Keel">
+      <picture><source srcset="assets/fallbacks/signature-dark.svg" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/signature.svg" alt=""></picture>
+    </keel-lottie>
+    <figcaption class="caption">Brand Signature: the waterline draws, the hull drops onto it, the keel extends, and the wordmark rises into place. The letters are Fraunces outlines, so the animation needs no font. <button class="btn-text" type="button" data-replay-prev style="font-size:14.5px">Replay</button></figcaption>
+  </figure>
 
   <h3>Palette: one accent, and restraint as the point</h3>
   <div class="figure">
@@ -794,8 +822,8 @@
     <p>The first measurement of the home screen came back <strong>30% canvas, 68% surface, 2% accent</strong>: the reading lived in a stone card that filled most of the phone, so the structural color had become the background. I took the reading out of the card and set it directly on the canvas, let the water band carry the stone, and turned the tab bar into canvas with a hairline. The re-measure: <strong>64 / 34 / 2</strong>. Both images below are rendered in the Mineral &amp; Ember palette, and the numbers hold within a point in dark mode.</p>
   </div>
   <div class="ba figure">
-    <figure><img src="assets/img/home-v1-before-weight-fix.png" alt="Home screen before: the reading sits inside a large mineral stone card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
-    <figure><img src="assets/img/home-v2-after-weight-fix.png" alt="Home screen after: the reading date sits directly on the porcelain canvas, with a mineral water band below it." loading="lazy" width="780" height="1688"><figcaption><b>After: 64 / 34 / 2</b><span class="muted">Canvas leads, stone structures.</span></figcaption></figure>
+    <figure><img src="assets/img/home-v1-before-weight-fix.webp" alt="Home screen before: the reading sits inside a large mineral stone card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
+    <figure><img src="assets/img/home-v2-after-weight-fix.webp" alt="Home screen after: the reading date sits directly on the porcelain canvas, with a mineral water band below it." loading="lazy" width="780" height="1688"><figcaption><b>After: 64 / 34 / 2</b><span class="muted">Canvas leads, stone structures.</span></figcaption></figure>
   </div>
   <div class="table-wrap figure wide">
     <table class="num">
@@ -892,7 +920,78 @@
   </div>
   <div class="prose small muted"><p>Radii: 6px for chips, 10px for buttons and inputs, 16px for panels and sheets. No pill buttons: a pill reads as a tag or a toy, and Keel’s buttons should feel like a firm handle.</p></div>
 
-  <h3>Motion: settle, don’t startle</h3>
+</section>
+
+<!-- ============================================================ 7 ILLUSTRATION -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="illustration" aria-labelledby="illustration-h">
+  <span class="sec-num">7</span>
+  <h2 id="illustration-h">Illustration system: the equilibrium object</h2>
+  <div class="prose">
+    <p class="lede">Every illustration in Keel is built from the same small set of objects: a beam, a pivot, a plinth, blocks and one ember sphere, resting on a ground line. They are 3D-inspired rather than 3D: drawn in oblique projection with flat shading, so they stay sharp, tiny and animatable as vectors.</p>
+  </div>
+
+  <div class="illo-grid figure reveal">
+    <figure>
+      <keel-lottie name="equilibrium" trigger="inview" poster="end" label="The equilibrium object at rest."></keel-lottie>
+      <figcaption><b>The equilibrium object</b>The signature: two different masses balanced on a basalt pivot, the ember at the point of balance.</figcaption>
+    </figure>
+    <figure>
+      <keel-lottie name="onboarding" poster="240" label="The onboarding composition: a mass, stacked bills, a payday post, and the ember."></keel-lottie>
+      <figcaption><b>The same object, telling a story</b>Onboarding adds one element per step: money lands, bills stack, the shore reaches payday.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Materials</h3>
+  <div class="prose"><p>Five materials, each a step of a Mineral &amp; Ember color, each drawn with exactly three tones: a lit top, a front, and a shaded side. No gradients anywhere except contact shadows, and no gloss.</p></div>
+  <ul class="materials">
+    <li><div class="tri"><i style="background:#FFFFFF"></i><i style="background:#F1EDE5"></i><i style="background:#DDD8CD"></i></div><b>Porcelain</b><span>Light masses, platforms, bills.</span></li>
+    <li><div class="tri"><i style="background:#EEEAE2"></i><i style="background:#DCD7CC"></i><i style="background:#C6C0B3"></i></div><b>Mineral</b><span>Plinths, wells, quiet structure.</span></li>
+    <li><div class="tri"><i style="background:#8C928D"></i><i style="background:#656B66"></i><i style="background:#4C524E"></i></div><b>Slate</b><span>Beams and lintels: the architecture.</span></li>
+    <li><div class="tri"><i style="background:#4A5450"></i><i style="background:#343C39"></i><i style="background:#202725"></i></div><b>Basalt</b><span>Weight: the pivot, the heavy mass.</span></li>
+    <li><div class="tri"><i style="background:#C9664D"></i><i style="background:#B94F36"></i><i style="background:#8F3C29"></i></div><b>Ember</b><span>The focal point. One per composition.</span></li>
+  </ul>
+
+  <h3>Geometry and light</h3>
+  <div class="prose">
+    <ul class="plain">
+      <li><b>Oblique projection.</b> Depth is a fixed offset up and to the right (16:−10 for objects, 22:−14 for plinths), so every object agrees on where the viewer stands.</li>
+      <li><b>One light.</b> Top faces are lit, right faces are shaded, always. Dark mode keeps the same light and lowers it, rather than inverting it.</li>
+      <li><b>Contact shadows only.</b> Soft radial shadows under things that rest on other things. They are the only gradients in the system, and they make weight readable.</li>
+      <li><b>The ember is always last.</b> In every composition the ember is the final element to move, so the eye ends where the meaning is.</li>
+    </ul>
+  </div>
+
+  <h3>The illustration: a boat finding its keel</h3>
+  <div class="prose">
+    <p>There’s no After Effects export path in the environment I built this in, so the animation is written directly as Lottie JSON from a Python script (<code>source/gen_lottie.py</code>, and for everything since, <code>source/lottie/build.py</code>), the same approach I used for Clearstep. The boat is drawn as a cutaway so the keel shows below the water: the hidden thing made visible, which is the whole product in one picture.</p>
+    <p>Three colors only per theme: Volcanic Ink, Oxidized Ember and deep mineral in light; Chalk, lifted ember and deep basalt in dark. Lottie colors are baked into the file, so each theme has its own JSON with identical keyframes, and the page swaps them when the theme changes. The boat starts heeled 9° and rocks about a pivot near the center of buoyancy, so the hull and keel swing in opposition like a real righting moment. Each swing keeps about 62% of the last one’s amplitude and is slightly quicker, which is what damping looks like. It’s level by frame 180 and then holds still for two seconds before it stops. I rendered and reviewed every keyframe before using it; the strip below is the live file, not screenshots.</p>
+  </div>
+  <div class="strip figure" style="--n:4">
+    <figure><keel-lottie name="keel-settle" poster="0" no-fallback style="aspect-ratio:3/2"></keel-lottie><figcaption><b>Frame 0</b>Heeled 9°</figcaption></figure>
+    <figure><keel-lottie name="keel-settle" poster="44" no-fallback style="aspect-ratio:3/2"></keel-lottie><figcaption><b>Frame 44</b>Past level</figcaption></figure>
+    <figure><keel-lottie name="keel-settle" poster="120" no-fallback style="aspect-ratio:3/2"></keel-lottie><figcaption><b>Frame 120</b>Small swings</figcaption></figure>
+    <figure><keel-lottie name="keel-settle" poster="299" no-fallback style="aspect-ratio:3/2"></keel-lottie><figcaption><b>Frame 299</b>At rest</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================================================ 8 MOTION -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="motion" aria-labelledby="motion-h">
+  <span class="sec-num">8</span>
+  <h2 id="motion-h">Motion as a design language</h2>
+  <div class="prose">
+    <p class="lede">Every animation in Keel has to answer one question: what does this movement help someone understand? If the answer is “nothing, it’s nice”, it doesn’t ship. Five principles decide the rest.</p>
+  </div>
+  <ol class="mprinciples reveal">
+    <li><b>Settle</b><span>Things move toward a stable position and stop. Decelerate into rest.</span></li>
+    <li><b>Reveal</b><span>Information arrives in the order it should be read, never all at once.</span></li>
+    <li><b>Connect</b><span>What changes keeps its place: bars move rather than redraw, the tab marker travels.</span></li>
+    <li><b>Respond</b><span>Every action gets immediate, specific feedback, then gets out of the way.</span></li>
+    <li><b>Reassure</b><span>Done feels done. Waiting shows signs of life. Nothing shakes, flashes or celebrates.</span></li>
+  </ol>
+
+  <h3>The pacing argument</h3>
   <div class="prose">
     <p>This is the part of the identity I’d most want to defend in a review, because the pacing is an argument, not a style. In my previous motion study, Clearstep, the payment confirmation uses a 350ms curve with overshoot (<code>cubic-bezier(.17,.89,.32,1.28)</code>). That’s right for a checkout: the moment is a small win and should feel crisp. Keel’s moments are different. A reading changing isn’t a win or a loss, it’s information about your footing, so it should feel like weight finding its level: slower, decelerating, with at most one small overshoot that damps out.</p>
   </div>
@@ -921,56 +1020,158 @@
     <table class="num t-min">
       <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Used for</th><th scope="col">Reduced motion</th></tr></thead>
       <tbody>
-        <tr><th scope="row"><code>--dur-press</code></th><td>180ms, ease-settle</td><td>Button press, switch, chip</td><td>Instant</td></tr>
-        <tr><th scope="row"><code>--dur-move</code></th><td>420ms, ease-settle</td><td>Screen changes (fade plus 12px rise), sheets, tab marker</td><td>Instant</td></tr>
-        <tr><th scope="row"><code>--dur-settle</code></th><td>about 900ms, spring</td><td>The keel finding a new depth; goal ballast filling</td><td>Jumps to the end state</td></tr>
-        <tr><th scope="row">Illustration</th><td>5s, 60fps, plays once</td><td>Welcome screen</td><td>Shows the settled last frame</td></tr>
-        <tr><th scope="row">Loading</th><td>about 2.3s</td><td>First reading: line draws, hull drops, keel sinks</td><td>0.6s, no movement</td></tr>
+        <tr><th scope="row"><code>--dur-press</code></th><td>140ms, ease-standard</td><td>Button press, switch, chip</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-hover</code></th><td>200ms, ease-standard</td><td>Hover color</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-card</code></th><td>280ms, ease-settle</td><td>Rows, confirmations, timeline marks</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-chart</code></th><td>520ms, ease-standard</td><td>Every data-bound chart: bars, steps, scrubs</td><td>Jumps to the new values</td></tr>
+        <tr><th scope="row"><code>--dur-move</code></th><td>420ms, ease-settle or ease-enter</td><td>Screens (fade plus 12px rise), sheets, the tab indicator</td><td>Instant</td></tr>
+        <tr><th scope="row"><code>--dur-settle</code></th><td>about 900ms, spring</td><td>The keel finding a new depth</td><td>Jumps to the end state</td></tr>
+        <tr><th scope="row"><code>--dur-illustration</code></th><td>0.75 to 2.2s</td><td>Feedback Lotties: check, empty, goal created, completion</td><td>Shows the final frame</td></tr>
+        <tr><th scope="row"><code>--dur-hero</code></th><td>3 to 5s</td><td>Equilibrium, Signature, the keel boat</td><td>Shows the final frame</td></tr>
       </tbody>
     </table>
   </div>
   <div class="prose small muted"><p>There is no error shake, no success burst and no attention pulse anywhere in the system. When something goes wrong, Keel says what and what would fix it, in words.</p></div>
 
-  <h3>The illustration: a boat finding its keel</h3>
-  <div class="prose">
-    <p>There’s no After Effects export path in the environment I built this in, so the animation is written directly as Lottie JSON from a Python script (<code>source/gen_lottie.py</code>), the same approach I used for Clearstep. The boat is drawn as a cutaway so the keel shows below the water: the hidden thing made visible, which is the whole product in one picture.</p>
-    <p>Three colors only per theme: Volcanic Ink, Oxidized Ember and deep mineral in light; Chalk, lifted ember and deep basalt in dark. Lottie colors are baked into the file, so each theme has its own JSON with identical keyframes, and the page swaps them when the theme changes. The boat starts heeled 9° and rocks about a pivot near the center of buoyancy, so the hull and keel swing in opposition like a real righting moment. Each swing keeps about 62% of the last one’s amplitude and is slightly quicker, which is what damping looks like. It’s level by frame 180 and then holds still for two seconds before it stops. I rendered and reviewed every keyframe before using it; the strip below is the live file, not screenshots.</p>
+
+  <h3 id="gallery-h">Motion gallery</h3>
+  <div class="prose"><p>All sixteen animations, each with the problem it solves, how it behaves, and what it’s made of. They play once as you reach them; use the controls to replay, pause, or step through the storyboard. The storyboards are frames of the shipped files, not sketches.</p></div>
+  <div class="gallery" id="gallery" aria-labelledby="gallery-h">
+    <noscript><p>The gallery needs JavaScript to play the animations. Every file is in <code>assets/lottie/</code>, with static versions in <code>assets/fallbacks/</code>.</p></noscript>
   </div>
-  <div class="illo-main figure"><div class="stage"><div id="illo-big" role="img" aria-label="The keel illustration, larger."></div></div></div>
-  <div class="lottie-strip figure" id="strip" aria-label="Frames 0, 44, 84, 120, 180 and 299 of the animation."></div>
-  <div class="motion-controls"><button class="btn btn-quiet" id="illo-replay" type="button">Replay</button><a class="small" href="assets/lottie/keel-settle.json">Download the JSON</a></div>
+
+  <h3 id="pg-h" style="margin-top:72px">Explore the motion system</h3>
+  <div class="prose"><p>The same components the app uses, pulled out so you can trigger them. Try them with motion reduced too (the switch in the header): every one still changes state, it just doesn’t travel.</p></div>
+  <div class="pg" aria-labelledby="pg-h">
+    <section aria-labelledby="pg1">
+      <h3 id="pg1">Button feedback</h3>
+      <p class="why"><b>Respond.</b> Press, wait, done: three states a person can tell apart without reading the label twice.</p>
+      <div class="demo">
+        <div class="ctrls"><button class="btn btn-primary fb-btn" id="fb-btn" type="button"><span class="lbl">Move $50 to goal</span></button><button class="btn btn-quiet" type="button" disabled>Disabled</button></div>
+        <p class="small muted" id="fb-note" aria-live="polite">Press it: 140ms press, a short loading loop, then a clear done state.</p>
+      </div>
+    </section>
+    <section aria-labelledby="pg2">
+      <h3 id="pg2">Navigation transition</h3>
+      <p class="why"><b>Connect.</b> One indicator travels between tabs, so you see where you came from and where you went.</p>
+      <div class="demo">
+        <div class="nav-demo" role="tablist" aria-label="Demo tabs"><button role="tab" aria-selected="true" data-i="0">Steady</button><button role="tab" aria-selected="false" data-i="1">Spending</button><button role="tab" aria-selected="false" data-i="2">Plan</button><span class="ind" aria-hidden="true"></span></div>
+        <div class="nav-panels"><p class="on">Steady through Oct 25.</p><p>$306 in 7 days, $30 lighter than usual.</p><p>$100 more each paycheck: done by Nov 27.</p></div>
+      </div>
+    </section>
+    <section aria-labelledby="pg3">
+      <h3 id="pg3">Chart transition</h3>
+      <p class="why"><b>Explain.</b> Move a transaction and watch both totals change. The bars travel from old to new, exactly.</p>
+      <div class="demo"><div class="rows cats" id="pg-bars"></div><div class="ctrls"><button class="btn btn-quiet" type="button" id="pg-move">Move dinner ($38.50) to Groceries</button></div></div>
+    </section>
+    <section aria-labelledby="pg4">
+      <h3 id="pg4">Goal progress</h3>
+      <p class="why"><b>Explain, Settle.</b> A progress-mapped Lottie: the slider sets the real value, the animation eases to the matching frame. At 100% the block seats itself.</p>
+      <div class="demo"><keel-lottie id="pg-goal" name="goal" poster="start" label="Goal progress"></keel-lottie><label class="small" for="pg-goal-r">Saved: <b id="pg-goal-v">$380</b> of $1,000</label><input type="range" id="pg-goal-r" min="0" max="1000" step="10" value="380"></div>
+    </section>
+    <section aria-labelledby="pg5">
+      <h3 id="pg5">Transaction confirmation</h3>
+      <p class="why"><b>Respond, Reassure.</b> A quiet check, a sentence, and the consequence. Under a second.</p>
+      <div class="demo" style="justify-items:center;text-align:center"><keel-lottie id="pg-check" name="check" poster="end" style="width:96px;height:96px" label=""></keel-lottie><p class="small" id="pg-check-t" aria-live="polite">Hana Sushi: Eating out</p><div class="ctrls"><button class="btn btn-quiet" type="button" id="pg-check-b">Recategorize</button></div></div>
+    </section>
+    <section aria-labelledby="pg6">
+      <h3 id="pg6">Financial equilibrium</h3>
+      <p class="why"><b>Settle.</b> The one physical object: the keel finds its new depth on a damped spring. Drag days past payday.</p>
+      <div class="demo">
+        <svg class="eq-svg" id="pg-eq" viewBox="0 0 300 150" aria-hidden="true"><rect class="f-water" x="0" y="34" width="300" height="116"/><path class="s-ink" d="M0 34h300" stroke-width="1.5"/><path class="f-ink" id="pg-eq-fin"/><ellipse class="f-ink" id="pg-eq-bulb" cx="120" rx="13" ry="5.5"/><path class="f-hull" d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z"/></svg>
+        <label class="small" for="pg-eq-r">Days past payday: <b id="pg-eq-v">9</b></label><input type="range" id="pg-eq-r" min="0" max="14" value="9">
+      </div>
+    </section>
+    <section aria-labelledby="pg7">
+      <h3 id="pg7">Loading</h3>
+      <p class="why"><b>Respond.</b> Loops only while something is actually loading, and stops the moment it isn’t.</p>
+      <div class="demo" style="justify-items:center"><keel-lottie id="pg-load" name="loading" loop poster="start" style="width:200px;aspect-ratio:200/80" label=""></keel-lottie><div class="ctrls"><button class="btn btn-quiet" type="button" id="pg-load-b" aria-pressed="false">Start loading</button></div></div>
+    </section>
+    <section aria-labelledby="pg8">
+      <h3 id="pg8">Onboarding progression</h3>
+      <p class="why"><b>Connect, Orient.</b> One object across the steps. Back plays the segment in reverse, so it undoes exactly what the step added.</p>
+      <div class="demo"><keel-lottie id="pg-onb" name="onboarding" poster="60" label=""></keel-lottie><p class="small" id="pg-onb-t" aria-live="polite">Step 1 of 4: what you have</p><div class="ctrls"><button class="btn btn-quiet" type="button" id="pg-onb-back">Back</button><button class="btn btn-primary" type="button" id="pg-onb-next">Next</button></div></div>
+    </section>
+  </div>
+
+  <h3>Rive: specified, not yet authored</h3>
+  <div class="prose">
+    <p>Four components would be better as Rive state machines than as anything else: they respond to state rather than play once. Rive files are made in the Rive editor, which isn’t available where I built this, so I have not made any, and nothing here is labeled as Rive. What exists instead: a written state-machine specification for each (inputs, states, transitions, accessibility), and a working web implementation that already uses those exact input names, so the eventual <code>.riv</code> file drops in behind the same interface.</p>
+  </div>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Component</th><th scope="col">Inputs (as specified)</th><th scope="col">Web implementation today</th><th scope="col">Status</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Equilibrium Indicator</th><td><code>steadinessValue</code> number, <code>isInteracting</code> bool, <code>isLoading</code> bool, <code>hasUpdated</code> trigger</td><td>The keel on the Steady screen: SVG plus a JS spring, driven through <code>window.keelEquilibrium</code></td><td class="status">Pending Rive authoring</td></tr>
+        <tr><th scope="row">Interactive Savings Goal</th><td><code>progress</code> number, <code>isComplete</code> bool, <code>contributed</code> trigger</td><td>Goal Progress Lottie, progress-mapped</td><td class="status">Pending Rive authoring</td></tr>
+        <tr><th scope="row">Onboarding Equilibrium</th><td><code>step</code> number 0 to 3, <code>direction</code> number</td><td>Onboarding Transition Lottie with segments</td><td class="status">Pending Rive authoring</td></tr>
+        <tr><th scope="row">Scenario Visualization</th><td><code>extraPerPaycheck</code> number, <code>applied</code> trigger</td><td>SVG step chart, data-bound</td><td class="status">Pending Rive authoring</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small"><a href="docs/motion-system/rive-spec.md">Read the Rive specification</a> · <a href="system.html">The full motion design system</a></p>
 </section>
 
-<!-- ============================================================ 7 PROTOTYPE -->
+<!-- ============================================================ 9 APP -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="app" aria-labelledby="app-h">
+  <span class="sec-num">9</span>
+  <h2 id="app-h">Application design</h2>
+  <div class="prose">
+    <p class="lede">Four tabs, each built around one question. Steady: am I okay? Spending: where did it go? Goals: what am I setting aside? Plan: what if I changed something? These are live captures of the prototype in the next section, with its sample data.</p>
+  </div>
+  <div class="screens reveal">
+    <figure><img src="assets/img/screens/m-light-home.webp" alt="Steady: steady through Oct 25, the keel nine days past payday, the purchase check." width="780" height="1688" loading="lazy"><figcaption><b>Steady</b>The answer first. The keel is the Equilibrium Indicator; below it, spending pace and the coming-up timeline.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-spending.webp" alt="Spending: category bars with ticks for last stretch." width="780" height="1688" loading="lazy"><figcaption><b>Spending</b>Weight, not walls: categories as shares with a tick for last stretch, never a limit.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-goals.webp" alt="Goals: the car repair fund at $380 of $1,000." width="780" height="1688" loading="lazy"><figcaption><b>Goals</b>Progress as ballast filling a well, with a date estimate in words.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-plan.webp" alt="Plan: two step lines comparing the current plan with $100 more each paycheck." width="780" height="1688" loading="lazy"><figcaption><b>Plan</b>Try a change first. The ember line is the change; the dashed line is today’s plan.</figcaption></figure>
+  </div>
+  <div class="screens wide reveal">
+    <figure><img src="assets/img/screens/d-light-home.webp" alt="The Steady screen on a laptop: side rail, reading on the left, purchase check and timeline on the right." width="1600" height="1000" loading="lazy"><figcaption><b>The same app, wide</b>A side rail replaces the tab bar; the reading keeps the left column so it’s still read first.</figcaption></figure>
+    <figure><img src="assets/img/screens/d-dark-spending.webp" alt="The Spending screen in dark mode on a laptop." width="1600" height="1000" loading="lazy"><figcaption><b>Dark, by design</b>Basalt surfaces, chalk type, a lifted ember. The illustrations ship as separate dark files, not inverted.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================================================ 10 PROTOTYPE -->
 <div class="horizon" aria-hidden="true"><i></i></div>
 <section id="prototype" aria-labelledby="proto-h">
-  <span class="sec-num">7</span>
-  <h2 id="proto-h">High fidelity: the working prototype</h2>
+  <span class="sec-num">10</span>
+  <h2 id="proto-h">Experience Keel</h2>
   <div class="prose">
-    <p class="lede">Onboarding through to the steadiness view, built in HTML, CSS and JavaScript. It’s live: the reading is computed, not drawn, so turning off a bill, choosing a different payday, checking a purchase or moving money into a goal all change it.</p>
+    <p class="lede">Explore how financial clarity comes to life through thoughtful interaction, motion, and visual design. This is the real app, not a mockup: every figure is computed, every change carries through, and your changes are kept on this device until you reset.</p>
   </div>
-
-  <div class="proto figure">
-    <div class="device">
-      <div class="screen-wrap" id="screen-wrap">
-        <iframe id="proto-frame" src="prototype.html?embed=1" title="Keel prototype, interactive" loading="lazy"></iframe>
+  <div class="exp-bar">
+    <div class="seg" role="group" aria-label="Preview size">
+      <button type="button" data-mode="mobile" aria-pressed="true">Mobile</button>
+      <button type="button" data-mode="desktop" aria-pressed="false">Desktop</button>
+    </div>
+    <div class="exp-links">
+      <button class="btn btn-quiet" type="button" id="exp-reset">Reset sample data</button>
+      <a class="btn btn-primary" href="prototype.html" target="_blank" rel="noopener">Open the full experience</a>
+    </div>
+  </div>
+  <div class="exp figure" id="exp">
+    <div class="frame-shell mobile" id="frame-shell">
+      <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>Keel · sample data</span></div>
+      <div class="viewport" id="viewport">
+        <iframe id="proto-frame" src="prototype.html?embed=1" title="Keel prototype, interactive" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy"></iframe>
+        <div class="frame-state" id="frame-state"><keel-lottie name="loading" loop label=""></keel-lottie><p class="small muted" id="frame-msg">Loading the prototype</p></div>
       </div>
     </div>
-    <div class="proto-side">
-      <p class="small muted">Use the phone directly, or jump to a moment:</p>
+    <div class="exp-side proto-side">
+      <p class="small muted">Use it directly, or jump to a moment:</p>
       <ol class="walk" id="walk">
-        <li><button data-jump="welcome"><span>1</span><span><b>Welcome</b><small>The illustration plays once and settles.</small></span></button></li>
-        <li><button data-jump="bills"><span>2</span><span><b>Confirm bills</b><small>Turn one off; it changes your first reading.</small></span></button></li>
-        <li><button data-jump="payday"><span>3</span><span><b>Payday</b><small>The shore the reading measures toward.</small></span></button></li>
-        <li><button data-jump="taking"><span>4</span><span><b>First reading</b><small>Loading built from the motif.</small></span></button></li>
-        <li><button data-jump="home"><span>5</span><span><b>Steady</b><small>The answer first: a date, and depth past payday.</small></span></button></li>
-        <li><button data-whatif="300"><span>6</span><span><b>Check a $300 purchase</b><small>The keel rises and settles; “Now” stays dashed.</small></span></button></li>
-        <li><button data-whatif="700"><span>7</span><span><b>Check a $700 purchase</b><small>Short before payday, said plainly, with the first bill it would reach. No red.</small></span></button></li>
-        <li><button data-jump="activity"><span>8</span><span><b>Activity</b><small>Weight by category; tap a row to see it in days.</small></span></button></li>
-        <li><button data-jump="goals"><span>9</span><span><b>Goals</b><small>Adding money shows the new reading before you confirm.</small></span></button></li>
+        <li><button data-jump="welcome"><span>1</span><span><b>Welcome</b><small>The keel boat settles.</small></span></button></li>
+        <li><button data-jump="bills"><span>2</span><span><b>Confirm bills</b><small>The equilibrium object changes with each step.</small></span></button></li>
+        <li><button data-jump="taking"><span>3</span><span><b>First reading</b><small>Loading built from the motif.</small></span></button></li>
+        <li><button data-jump="home"><span>4</span><span><b>Steady</b><small>The answer first; pace and the timeline reveal below.</small></span></button></li>
+        <li><button data-whatif="300"><span>5</span><span><b>Check a $300 purchase</b><small>The keel rises and settles; “Now” stays dashed.</small></span></button></li>
+        <li><button data-whatif="700"><span>6</span><span><b>Check a $700 purchase</b><small>Short before payday, said plainly. No red.</small></span></button></li>
+        <li><button data-jump="spending"><span>7</span><span><b>Spending</b><small>Tap a transaction and change its category.</small></span></button></li>
+        <li><button data-jump="goals"><span>8</span><span><b>Goals</b><small>Add money, or create a goal.</small></span></button></li>
+        <li><button data-jump="plan"><span>9</span><span><b>Plan</b><small>Drag the slider; the ember line follows the numbers.</small></span></button></li>
       </ol>
-      <p class="small"><a href="prototype.html">Open the prototype on its own</a> (works on a phone).</p>
-      <p class="small muted">All amounts are sample data. The reading uses a fixed “today” of Thursday, October 8, 2026, so the dates make sense whenever you open it.</p>
+      <p class="small muted">All amounts are sample data. “Today” is fixed at Thursday, October 8, 2026, so the dates make sense whenever you open it. Nothing connects to a bank and nothing asks for credentials.</p>
     </div>
   </div>
 
@@ -981,10 +1182,62 @@
   </div>
 </section>
 
+<!-- ============================================================ 11 SYSTEM -->
+<div class="horizon" aria-hidden="true"><i></i></div>
+<section id="system" aria-labelledby="system-h">
+  <span class="sec-num">11</span>
+  <h2 id="system-h">Design system</h2>
+  <div class="prose">
+    <p class="lede">The components the app is made of, live. They read the same tokens as the app, so the theme and motion switches in the header apply here too.</p>
+  </div>
+  <div class="ds">
+    <div>
+      <h3 class="ds-h">Buttons</h3>
+      <div class="stack"><button class="btn btn-primary" type="button">Primary</button><button class="btn btn-quiet" type="button">Secondary</button><button class="btn btn-tertiary" type="button" style="text-decoration:underline;text-underline-offset:3px">Tertiary</button><button class="btn btn-primary" type="button" disabled>Disabled</button></div>
+      <p class="note2">White on ember 4.96:1; disabled stays readable at 4.85:1.</p>
+    </div>
+    <div>
+      <h3 class="ds-h">Input and validation</h3>
+      <label class="small" for="ds-in" style="display:block;margin-bottom:6px">Amount</label>
+      <div class="dsfield" id="ds-field"><span class="muted">$</span><input id="ds-in" inputmode="decimal" placeholder="0" aria-describedby="ds-msg"></div>
+      <p class="small" id="ds-msg" role="status" style="margin-top:6px">Type an amount, or a letter to see the error.</p>
+    </div>
+    <div>
+      <h3 class="ds-h">Selection</h3>
+      <div class="stack">
+        <div class="chips" role="group" aria-label="Demo chips"><button class="chip" type="button" aria-pressed="true">Every two weeks</button><button class="chip" type="button" aria-pressed="false">Monthly</button></div>
+        <div style="display:flex;align-items:center;gap:10px"><button class="dsw" id="ds-sw" role="switch" aria-checked="true" aria-labelledby="ds-sw-l" type="button"></button><span id="ds-sw-l">Rent is a regular bill</span></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="ds-h">Status, never color alone</h3>
+      <div class="status-row">
+        <span class="status pos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>Payday arrived</span>
+        <span class="status neg"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg>Short by $40</span>
+        <span class="status warn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2l7 12H1z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7v3" stroke="currentColor" stroke-width="1.8"/></svg>Bill not covered yet</span>
+        <span class="status info"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7v4M8 4.6v.4" stroke="currentColor" stroke-width="1.8"/></svg>Sample data</span>
+      </div>
+      <p class="note2">Ember is never a status. Each status has a word and an icon.</p>
+    </div>
+    <div>
+      <h3 class="ds-h">Rows</h3>
+      <div class="rows" style="background:var(--canvas)"><div class="row"><div class="grow"><div class="title">Phone</div><div class="meta">Set aside</div></div><div class="amt">$65</div></div><div class="row"><div class="grow"><div class="title">Internet</div><div class="meta">Set aside</div></div><div class="amt">$70</div></div></div>
+    </div>
+    <div>
+      <h3 class="ds-h">Confirmation</h3>
+      <div class="stack">
+        <button class="btn btn-quiet" type="button" id="ds-confirm-b">Add $50 to goal</button>
+        <div class="confirm" id="ds-confirm" aria-live="polite" style="display:flex;align-items:center;gap:10px;opacity:0;transition:opacity var(--dur-card) var(--ease-settle)"><keel-lottie name="complete" poster="end" style="width:44px;height:44px" label=""></keel-lottie><span class="small"><b>Added $50.</b> Steady through Oct 24.</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="small" style="margin-top:16px"><a href="system.html">Open the full design and motion system</a>: tokens, the Lottie library with fallbacks, Rive specifications, components, and engineering guidelines.</p>
+</section>
+
 <!-- ============================================================ 8 TESTING -->
 <div class="horizon" aria-hidden="true"><i></i></div>
 <section id="testing" aria-labelledby="testing-h">
-  <span class="sec-num">8</span>
+  <span class="sec-num">12</span>
   <h2 id="testing-h">Testing and iteration: a plan, plus what my own review changed</h2>
   <div class="prose">
     <p class="lede">Nobody outside this project has used the prototype yet. So this section is two honest things: the test I’d run next, and the changes that came from my own review of rendered screens. Neither is presented as user research.</p>
@@ -1047,14 +1300,24 @@
       <div class="was"><b>Was</b>On the first render, the Coming up list and the category bar shrank to zero height inside the flex layout, so the screen looked finished but was missing its content.</div>
       <div class="now"><b>Now</b>Fixed in layout, and the reason I don’t trust a screen until I’ve seen it scrolled to the bottom.</div>
     </li>
+    <li>
+      <h4>The next bill’s label sat on the payday pennant</h4>
+      <div class="was"><b>Was</b>In the motion pass, the upcoming-expenses timeline labeled the next bill just above the line, where it collided with the payday flag when the two were close.</div>
+      <div class="now"><b>Now</b>The label sits above the flag’s height and anchors to whichever side keeps it inside the frame.</div>
+    </li>
+    <li>
+      <h4>“About 1 days”</h4>
+      <div class="was"><b>Was</b>A $61.20 grocery run rounded to “about 1 days of your usual spending”.</div>
+      <div class="now"><b>Now</b>Days are phrased in words up to two (“about a day”, “about two days”). Small, but it’s the sentence that carries the product’s tone.</div>
+    </li>
   </ol>
 </section>
 
 <!-- ============================================================ 9 REFLECTION -->
 <div class="horizon" aria-hidden="true"><i></i></div>
 <section id="reflection" aria-labelledby="reflection-h">
-  <span class="sec-num">9</span>
-  <h2 id="reflection-h">Reflection</h2>
+  <span class="sec-num">13</span>
+  <h2 id="reflection-h">Outcomes and reflection</h2>
   <div class="prose">
     <p class="lede">What I wanted this project to show is that the brand and the product can be the same decision. The ember hull, the date set in Fraunces, the 900ms settle and the “weight, not walls” copy aren’t a skin on top of a budgeting app. They’re the product’s argument, made visible.</p>
     <p>The test I used at the end was to hide the name and ask whether this could be any budgeting app’s case study. I don’t think it could. The headline metric is a forward-looking date that ignores income on purpose. The visualization encodes exactly one thing, room past payday, as the depth of a keel below a waterline that always means payday. Spending is shown as days of room rather than overages. The motion is slower than a fintech default for a stated reason. Take away “Keel” and those choices still only belong to this idea.</p>
@@ -1068,8 +1331,30 @@
         <tr><td>The cited research and competitor positioning, linked below and checkable</td><td>Keel itself: the name, the product, the brand</td></tr>
         <tr><td>The prototype’s logic: the reading, the purchase check, the goal preview all compute live</td><td>Every amount, bill, merchant and date in the prototype</td></tr>
         <tr><td>The contrast audit and the 60/30/10 measurements, with the scripts that produced them</td><td>The success criteria targets, which are proposals</td></tr>
-        <tr><td>The Lottie animation, hand-authored and rendered for review</td><td>Any claim about how users would react. Untested.</td></tr>
+        <tr><td>Twelve Lottie animations, hand-authored in code, rendered and reviewed frame by frame, in light and dark</td><td>Any claim about how users would react. Untested.</td></tr>
+        <tr><td>Four data-bound SVG charts whose motion preserves exact values</td><td>Rive: specified with working web stand-ins, no <code>.riv</code> files yet</td></tr>
         <tr><td>The four changes in section 8, made from my own review</td><td>None of section 8 is user research, and it isn’t presented as such</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What was delivered, and in what state</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Deliverable</th><th scope="col">State</th><th scope="col">Where</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Motion-forward application</th><td class="state-word">Functional prototype</td><td>prototype.html, sample data only</td></tr>
+        <tr><th scope="row">Interactive case study</th><td class="state-word">Complete</td><td>This page</td></tr>
+        <tr><th scope="row">Lottie library, 12 animations</th><td class="state-word">Complete</td><td>assets/lottie, source/lottie/build.py</td></tr>
+        <tr><th scope="row">Data-bound chart motion, 4 charts</th><td class="state-word">Complete</td><td>assets/js/keel-charts.js</td></tr>
+        <tr><th scope="row">Rive interactions</th><td class="state-word">Specification, pending external authoring</td><td>docs/motion-system/rive-spec.md</td></tr>
+        <tr><th scope="row">Motion gallery and playground</th><td class="state-word">Complete</td><td>Section 8</td></tr>
+        <tr><th scope="row">Embedded prototype, mobile and desktop</th><td class="state-word">Complete</td><td>Section 10</td></tr>
+        <tr><th scope="row">Storyboards</th><td class="state-word">Complete, from real frames</td><td>Gallery; docs/motion-system/storyboards</td></tr>
+        <tr><th scope="row">Motion design system documentation</th><td class="state-word">Complete</td><td>system.html, docs/motion-system</td></tr>
+        <tr><th scope="row">Reduced-motion alternatives and static fallbacks</th><td class="state-word">Complete</td><td>assets/fallbacks, header switch</td></tr>
+        <tr><th scope="row">Performance and QA reports</th><td class="state-word">Complete, measured</td><td>docs/motion-system/qa-report.md</td></tr>
+        <tr><th scope="row">Usability testing</th><td class="state-word">Plan only, not run</td><td>Section 12</td></tr>
       </tbody>
     </table>
   </div>
@@ -1080,11 +1365,14 @@
       <li><b>Talk to people before designing the reading.</b> I’d start with interviews with people who quit budgeting apps, and I’d expect them to change the metric. Desk research told me what to worry about; only people can tell me what the number should be called.</li>
       <li><b>Pressure-test the calculation with someone who builds financial products.</b> “Usual daily spending” is doing a lot of quiet work. Irregular income needs its own model, not an average.</li>
       <li><b>Design the bad day properly.</b> The prototype handles “short before payday” with calm copy. A real version needs a path to do something about it, designed with the same care as the happy path.</li>
-      <li><b>Build the illustration in a real motion tool.</b> Writing Lottie by hand forced me to understand the format deeply. With After Effects or Rive, I’d iterate on the rocking curve with a motion designer in minutes instead of hours.</li>
+      <li><b>Author the Rive state machines, and move the hero to a real motion tool.</b> Writing Lottie in code forced me to understand the format deeply, and it makes every animation reproducible. But the four interactive pieces belong in Rive, and with After Effects I’d iterate on curves with a motion designer in minutes instead of rebuilding them.</li>
       <li><b>Run the accessibility audit with people, not just scripts.</b> Ratios pass, but a screen reader pass on the reading and the keel visualization is the real test.</li>
     </ul>
     <p>This project is the public, inspectable version of work I’ve done in professional settings, like scenario-based testing and interviews with technicians and clients, where the findings stayed internal. Keel is the version I can show all the way through.</p>
   </div>
+  <figure class="closing reveal" aria-label="Keel">
+    <keel-lottie name="signature" trigger="inview" poster="end" label="Keel"></keel-lottie>
+  </figure>
 </section>
 
 <!-- ============================================================ REFERENCES -->
@@ -1093,8 +1381,8 @@
   <h2 id="refs-h">References</h2>
   <ol class="refs">
     <li id="ref-1"><b>1</b><span>American Psychological Association (2015). <em>Stress in America: Paying With Our Health.</em> Survey conducted by Harris Poll, August 2014, 3,068 adults. <a href="https://www.apa.org/news/press/releases/stress/2014/stress-report.pdf">apa.org</a></span></li>
-    <li id="ref-2"><b>2</b><span>Karlsson, N., Loewenstein, G., &amp; Seppi, D. (2009). The ostrich effect: Selective attention to information. <em>Journal of Risk and Uncertainty</em>, 38, 95 to 115. <a href="https://www.cmu.edu/tepper/faculty-and-research/assets/docs/ppaper-61264983153898-ostrich-effect-1.pdf">cmu.edu (PDF)</a></span></li>
-    <li id="ref-3"><b>3</b><span>Sicherman, N., Loewenstein, G., Seppi, D. J., &amp; Utkus, S. P. (2016). Financial Attention. <em>The Review of Financial Studies</em>, 29(4). <a href="https://www.cmu.edu/dietrich/sds/docs/loewenstein/FinancialAttention.pdf">cmu.edu (PDF)</a></span></li>
+    <li id="ref-2"><b>2</b><span>Karlsson, N., Loewenstein, G., &amp; Seppi, D. (2009). The ostrich effect: Selective attention to information. <em>Journal of Risk and Uncertainty</em>, 38, 95 to 115. <a href="https://www.cmu.edu/tepper/faculty-and-research/assets/docs/ppaper-61264983153898-ostrich-effect-1.pdf">The ostrich effect, cmu.edu (PDF)</a></span></li>
+    <li id="ref-3"><b>3</b><span>Sicherman, N., Loewenstein, G., Seppi, D. J., &amp; Utkus, S. P. (2016). Financial Attention. <em>The Review of Financial Studies</em>, 29(4). <a href="https://www.cmu.edu/dietrich/sds/docs/loewenstein/FinancialAttention.pdf">Financial Attention, cmu.edu (PDF)</a></span></li>
     <li id="ref-4"><b>4</b><span>Consumer Financial Protection Bureau (2015). <em>Financial well-being: The goal of financial education.</em> <a href="https://www.consumerfinance.gov/data-research/research-reports/financial-well-being/">consumerfinance.gov</a></span></li>
     <li id="ref-5"><b>5</b><span>YNAB. The YNAB Method. <a href="https://www.ynab.com/method">ynab.com/method</a>, read October 2026.</span></li>
     <li id="ref-6"><b>6</b><span>YNAB Support. Age of Money. <a href="https://support.ynab.com/en_us/age-of-money-H1ZS84W1s">support.ynab.com</a>, read October 2026.</span></li>
@@ -1115,181 +1403,9 @@
   </div>
 </footer>
 
-<script src="assets/vendor/lottie.min.js"></script>
-<script>
-(function () {
-  'use strict';
-  var $ = function (s) { return document.querySelector(s); };
-  function reduced() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-
-  // ---------------------------------------------------------------- theme
-  function isDark() {
-    var t = document.documentElement.getAttribute('data-theme');
-    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  function syncToggle() {
-    var dark = isDark();
-    $('#theme-label').textContent = dark ? 'Light' : 'Dark';
-    $('#theme-toggle').setAttribute('aria-pressed', String(dark));
-    $('#theme-toggle').setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-  var themed = []; // every Lottie on the page, so it can be reloaded in the other theme's colors
-
-  // ---------------------------------------------------------------- Lottie
-  function src() { return isDark() ? 'assets/lottie/keel-settle-dark.json' : 'assets/lottie/keel-settle.json'; }
-  function illo(el, frame) {
-    var a = lottie.loadAnimation({ container: el, renderer: 'svg', loop: false, autoplay: false, path: src(), rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
-    themed.push({ el: el, frame: frame, anim: a });
-    a.addEventListener('DOMLoaded', function () {
-      if (frame !== undefined) a.goToAndStop(frame, true);
-      else if (reduced()) a.goToAndStop(a.totalFrames - 1, true);
-    });
-    return a;
-  }
-  var hero = illo($('#hero-illo'));
-  var big = illo($('#illo-big'));
-  function playWhenSeen(anim, el) {
-    if (!('IntersectionObserver' in window)) { anim.play(); return; }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting && !reduced()) { anim.goToAndPlay(0, true); io.disconnect(); } });
-    }, { threshold: 0.5 });
-    io.observe(el);
-  }
-  playWhenSeen(hero, $('#hero-illo'));
-  playWhenSeen(big, $('#illo-big'));
-  function current(el) { for (var i = 0; i < themed.length; i++) if (themed[i].el === el) return themed[i].anim; }
-  $('#hero-replay').addEventListener('click', function () { current($('#hero-illo')).goToAndPlay(0, true); });
-  $('#illo-replay').addEventListener('click', function () { current($('#illo-big')).goToAndPlay(0, true); });
-  [0, 44, 84, 120, 180, 299].forEach(function (f, i) {
-    var fig = document.createElement('figure');
-    var d = document.createElement('div'); d.className = 'f';
-    var cap = document.createElement('figcaption');
-    cap.textContent = 'Frame ' + f + ['', ', heel left', ', swing right', '', ', level', ', held'][i];
-    fig.appendChild(d); fig.appendChild(cap); $('#strip').appendChild(fig);
-    illo(d, f);
-  });
-
-  // ---------------------------------------------------------------- contrast table
-  // Generated from source/contrast_audit.json (python3 source/contrast_audit.py)
-  var AUDIT = [["light", "Ink", "#252A28", "canvas", "#F6F3ED", "Headings, body, balances", 13.16, 4.5], ["light", "Ink", "#252A28", "surface", "#E6E2D9", "Text on panels and rows", 11.28, 4.5], ["light", "Ink", "#252A28", "surface-2", "#DCD7CC", "Chart labels in the water band", 10.16, 4.5], ["light", "Secondary", "#656B66", "canvas", "#F6F3ED", "Supporting copy, metadata", 4.93, 4.5], ["light", "Secondary on surface", "#555B56", "surface", "#E6E2D9", "Metadata in rows and panels", 5.38, 4.5], ["light", "Secondary on surface", "#555B56", "surface-2", "#DCD7CC", "Depth ticks in the water band", 4.85, 4.5], ["light", "Accent text", "#9E412B", "canvas", "#F6F3ED", "Links, text-button underline color", 5.84, 4.5], ["light", "Accent text", "#9E412B", "surface", "#E6E2D9", "Links on panels", 5.01, 4.5], ["light", "Label", "#FFFFFF", "accent", "#B94F36", "Primary button, selected chip", 4.96, 4.5], ["light", "Label", "#FFFFFF", "accent hover", "#A4452F", "Primary button, hover", 6.05, 4.5], ["light", "Label", "#FFFFFF", "accent pressed", "#8F3C29", "Primary button, pressed", 7.38, 4.5], ["light", "Disabled label", "#555B56", "disabled", "#DCD7CC", "Disabled buttons stay readable", 4.85, 4.5], ["light", "Positive", "#2E6A4E", "canvas", "#F6F3ED", "Positive status text", 5.77, 4.5], ["light", "Positive", "#2E6A4E", "surface", "#E6E2D9", "Positive status text on panels", 4.94, 4.5], ["light", "Negative", "#9B2C3A", "canvas", "#F6F3ED", "Negative status text", 6.74, 4.5], ["light", "Negative", "#9B2C3A", "surface", "#E6E2D9", "Negative status text on panels", 5.77, 4.5], ["light", "Warning", "#7D5300", "canvas", "#F6F3ED", "Warning status text", 6.1, 4.5], ["light", "Warning", "#7D5300", "surface", "#E6E2D9", "Warning status text on panels", 5.22, 4.5], ["light", "Info", "#3B5A72", "canvas", "#F6F3ED", "Info status text", 6.56, 4.5], ["light", "Info", "#3B5A72", "surface", "#E6E2D9", "Info status text on panels", 5.62, 4.5], ["light", "Control border", "#7D7E7B", "canvas", "#F6F3ED", "Inputs, chips, switches", 3.69, 3.0], ["light", "Control border", "#767772", "surface", "#E6E2D9", "Inputs on panels", 3.49, 3.0], ["light", "Accent fill", "#B94F36", "canvas", "#F6F3ED", "Primary button and active tab marker", 4.48, 3.0], ["light", "Focus ring", "#9E412B", "canvas", "#F6F3ED", "Keyboard focus", 5.84, 3.0], ["light", "Focus ring", "#9E412B", "surface", "#E6E2D9", "Keyboard focus on panels", 5.01, 3.0], ["light", "Switch thumb on", "#FFFFFF", "accent", "#B94F36", "Switch, on state", 4.96, 3.0], ["light", "Keel (chart mark)", "#252A28", "surface-2", "#DCD7CC", "The reading: keel depth", 10.16, 3.0], ["light", "Hull (chart mark)", "#B94F36", "canvas", "#F6F3ED", "The reading: hull on the waterline", 4.48, 3.0], ["light", "Data 1", "#252A28", "canvas", "#F6F3ED", "Largest category share", 13.16, 3.0], ["light", "Data 3", "#7A7F79", "canvas", "#F6F3ED", "Mid category share", 3.69, 3.0], ["light", "Hairline", "#CFCCC4", "canvas", "#F6F3ED", "Card edges (fill already separates)", 1.45, null], ["light", "Row rule", "#C3C1B9", "surface", "#E6E2D9", "Row dividers inside lists", 1.39, null], ["light", "Data 4", "#A6A9A2", "canvas", "#F6F3ED", "Small category share; same text equivalent as Data 5", 2.15, null], ["light", "Data 5", "#C9C8BF", "canvas", "#F6F3ED", "Smallest category share; labeled with name and percent in a chip", 1.52, null], ["dark", "Ink", "#F4F0E7", "canvas", "#202725", "Headings, body, balances", 13.4, 4.5], ["dark", "Ink", "#F4F0E7", "surface", "#2A322F", "Text on panels and rows", 11.57, 4.5], ["dark", "Ink", "#F4F0E7", "surface-2", "#353E3A", "Chart labels in the water band", 9.71, 4.5], ["dark", "Secondary", "#B3B6AE", "canvas", "#202725", "Supporting copy, metadata", 7.41, 4.5], ["dark", "Secondary on surface", "#B3B6AE", "surface", "#2A322F", "Metadata in rows and panels", 6.4, 4.5], ["dark", "Secondary on surface", "#B3B6AE", "surface-2", "#353E3A", "Depth ticks in the water band", 5.37, 4.5], ["dark", "Accent text", "#E38A6C", "canvas", "#202725", "Links, text-button underline color", 5.89, 4.5], ["dark", "Accent text", "#E38A6C", "surface", "#2A322F", "Links on panels", 5.09, 4.5], ["dark", "Label", "#202725", "accent", "#E07F60", "Primary button, selected chip", 5.35, 4.5], ["dark", "Label", "#202725", "accent hover", "#E68D70", "Primary button, hover", 6.1, 4.5], ["dark", "Label", "#202725", "accent pressed", "#D9714F", "Primary button, pressed", 4.66, 4.5], ["dark", "Disabled label", "#B3B6AE", "disabled", "#353E3A", "Disabled buttons stay readable", 5.37, 4.5], ["dark", "Positive", "#7FC4A0", "canvas", "#202725", "Positive status text", 7.48, 4.5], ["dark", "Positive", "#7FC4A0", "surface", "#2A322F", "Positive status text on panels", 6.46, 4.5], ["dark", "Negative", "#F09AA3", "canvas", "#202725", "Negative status text", 7.15, 4.5], ["dark", "Negative", "#F09AA3", "surface", "#2A322F", "Negative status text on panels", 6.18, 4.5], ["dark", "Warning", "#E2B45C", "canvas", "#202725", "Warning status text", 7.92, 4.5], ["dark", "Warning", "#E2B45C", "surface", "#2A322F", "Warning status text on panels", 6.84, 4.5], ["dark", "Info", "#9DBCD6", "canvas", "#202725", "Info status text", 7.69, 4.5], ["dark", "Info", "#9DBCD6", "surface", "#2A322F", "Info status text on panels", 6.64, 4.5], ["dark", "Control border", "#8A8C86", "canvas", "#202725", "Inputs, chips, switches", 4.48, 3.0], ["dark", "Control border", "#8F918B", "surface", "#2A322F", "Inputs on panels", 4.13, 3.0], ["dark", "Accent fill", "#E07F60", "canvas", "#202725", "Primary button and active tab marker", 5.35, 3.0], ["dark", "Focus ring", "#E38A6C", "canvas", "#202725", "Keyboard focus", 5.89, 3.0], ["dark", "Focus ring", "#E38A6C", "surface", "#2A322F", "Keyboard focus on panels", 5.09, 3.0], ["dark", "Switch thumb on", "#202725", "accent", "#E07F60", "Switch, on state", 5.35, 3.0], ["dark", "Keel (chart mark)", "#F4F0E7", "surface-2", "#353E3A", "The reading: keel depth", 9.71, 3.0], ["dark", "Hull (chart mark)", "#E07F60", "canvas", "#202725", "The reading: hull on the waterline", 5.35, 3.0], ["dark", "Data 1", "#F4F0E7", "canvas", "#202725", "Largest category share", 13.4, 3.0], ["dark", "Data 3", "#9A9E97", "canvas", "#202725", "Mid category share", 5.59, 3.0], ["dark", "Hairline", "#424945", "canvas", "#202725", "Card edges (fill already separates)", 1.65, null], ["dark", "Row rule", "#4A504C", "surface", "#2A322F", "Row dividers inside lists", 1.59, null], ["dark", "Data 4", "#6E746E", "canvas", "#202725", "Small category share; same text equivalent as Data 5", 3.18, null], ["dark", "Data 5", "#4D5550", "canvas", "#202725", "Smallest category share; labeled with name and percent in a chip", 1.98, null]];
-  function renderAudit() {
-    var theme = isDark() ? 'dark' : 'light';
-    $('#contrast-rows').innerHTML = AUDIT.filter(function (r) { return r[0] === theme; }).map(function (r) {
-      var res = r[7] === null ? '<span class="exempt">Exempt, decorative</span>' : '<span class="pass">Pass</span>';
-      return '<tr><td><span class="pair"><i style="background:' + r[4] + ';color:' + r[2] + '">Aa</i>' + r[1] + ' on ' + r[3] + '</span></td><td>' + r[5] + '</td><td>' + r[6].toFixed(2) + ':1</td><td>' + (r[7] ? r[7] + ':1' : 'n/a') + '</td><td>' + res + '</td></tr>';
-    }).join('');
-    $('#audit-theme').textContent = (theme === 'dark' ? 'Dark' : 'Light') + ' theme contrast audit';
-  }
-
-  // ---------------------------------------------------------------- easing curves
-  function bez(p1x, p1y, p2x, p2y, t) {
-    var u = 1 - t;
-    return [3 * u * u * t * p1x + 3 * u * t * t * p2x + t * t * t, 3 * u * u * t * p1y + 3 * u * t * t * p2y + t * t * t];
-  }
-  function plot(id, pts, color) {
-    var W = 200, H = 110, ox = 10, oy = 128;
-    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + (ox + p[0] * W).toFixed(1) + ' ' + (oy - p[1] * H).toFixed(1); }).join('');
-    $(id).innerHTML =
-      '<rect class="f-surface" x="' + ox + '" y="' + (oy - H) + '" width="' + W + '" height="' + H + '"/>' +
-      '<path class="s-ink" d="M' + ox + ' ' + (oy - H) + 'h' + W + '" stroke-width="1.25" stroke-dasharray="3 3"/>' +
-      '<path class="s-ink2s" d="M' + ox + ' ' + oy + 'h' + W + '" stroke-width="1"/>' +
-      '<path class="' + color + '" d="' + d + '" fill="none" stroke-width="2.5" stroke-linejoin="round"/>';
-  }
-  var s = []; for (var t = 0; t <= 1.0001; t += 0.01) s.push(bez(0.2, 0.7, 0.2, 1, t));
-  plot('#curve-settle', s, 's-ink');
-  var n = []; for (t = 0; t <= 1.0001; t += 0.01) n.push(bez(0.17, 0.89, 0.32, 1.28, t));
-  plot('#curve-snap', n, 's-ink2s');
-  var sp = [], x = 0, v = 0, dt = 1 / 600;
-  for (var i = 0; i <= 600; i++) { if (i % 6 === 0) sp.push([i / 600, x]); var a = -70 * (x - 1) - 15 * v; v += a * dt; x += v * dt; }
-  plot('#curve-spring', sp, 's-accent-ink');
-
-  // ---------------------------------------------------------------- snap vs settle demo
-  var TOP = 38, PER = 7, X = 130;
-  function fin(days) { return 'M' + (X - 5) + ' ' + TOP + 'h10l-2 ' + (8 + days * PER) + 'h-6z'; }
-  function draw(prefix, days) {
-    $('#' + prefix + '-path').setAttribute('d', fin(days));
-    $('#' + prefix + '-bulb').setAttribute('cy', TOP + 9 + days * PER);
-  }
-  var cur = 3; draw('snap', cur); draw('settle', cur);
-  $('#motion-run').addEventListener('click', function () {
-    var from = cur, to = cur === 3 ? 13 : 3; cur = to;
-    if (reduced()) { draw('snap', to); draw('settle', to); $('#motion-note').textContent = 'Reduced motion is on, so both jump straight to the new depth.'; return; }
-    var t0 = performance.now();
-    var sx = from, sv = 0, last = t0;
-    (function frame(now) {
-      // snap: the Clearstep curve over 350ms
-      var p = Math.min(1, (now - t0) / 350);
-      // solve bezier x for t (few Newton steps)
-      var tt = p;
-      for (var k = 0; k < 6; k++) { var bx = bez(0.17, 0.89, 0.32, 1.28, tt)[0] - p; var d = (bez(0.17, 0.89, 0.32, 1.28, tt + 0.001)[0] - bez(0.17, 0.89, 0.32, 1.28, tt)[0]) / 0.001; if (Math.abs(d) < 1e-6) break; tt -= bx / d; tt = Math.max(0, Math.min(1, tt)); }
-      draw('snap', from + (to - from) * bez(0.17, 0.89, 0.32, 1.28, tt)[1]);
-      // settle: spring
-      var dt = Math.min(0.032, (now - last) / 1000); last = now;
-      var a = -70 * (sx - to) - 15 * sv; sv += a * dt; sx += sv * dt;
-      draw('settle', sx);
-      if (p < 1 || Math.abs(sx - to) > 0.01 || Math.abs(sv) > 0.01) requestAnimationFrame(frame);
-      else { draw('snap', to); draw('settle', to); }
-    })(t0);
-  });
-
-  // ---------------------------------------------------------------- prototype embed
-  var frame = $('#proto-frame'), wrap = $('#screen-wrap');
-  function fit() {
-    var w = wrap.clientWidth;
-    var s = Math.min(1, w / 390);
-    frame.style.transform = s < 1 ? 'scale(' + s + ')' : '';
-    wrap.style.height = (844 * s) + 'px';
-  }
-  window.addEventListener('resize', fit); fit();
-  var walkBtns = Array.prototype.slice.call(document.querySelectorAll('#walk button'));
-  function mark(btn) { walkBtns.forEach(function (b) { b.setAttribute('aria-current', b === btn ? 'true' : 'false'); }); }
-  walkBtns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      if (b.dataset.jump) frame.contentWindow.postMessage({ keel: 'go', name: b.dataset.jump }, '*');
-      if (b.dataset.whatif) frame.contentWindow.postMessage({ keel: 'whatif', amount: +b.dataset.whatif }, '*');
-      mark(b);
-    });
-  });
-
-  // ---------------------------------------------------------------- table of contents
-  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
-  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
-  function onScroll() {
-    var y = window.scrollY + 140, idx = -1;
-    secs.forEach(function (s, i) { if (s && s.offsetTop <= y) idx = i; });
-    links.forEach(function (a, i) { a.setAttribute('aria-current', i === idx ? 'true' : 'false'); });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
-
-  // ---------------------------------------------------------------- theme switching
-  function applyTheme() {
-    syncToggle();
-    renderAudit();
-    // Lottie colors are baked in: swap each animation to the matching file, held on its frame.
-    themed.forEach(function (t) {
-      t.anim.destroy();
-      t.el.innerHTML = '';
-      var hold = t.frame === undefined ? 'end' : t.frame;
-      t.anim = lottie.loadAnimation({ container: t.el, renderer: 'svg', loop: false, autoplay: false, path: src(), rendererSettings: { preserveAspectRatio: 'xMidYMid meet' } });
-      (function (a, h) { a.addEventListener('DOMLoaded', function () { a.goToAndStop(h === 'end' ? a.totalFrames - 1 : h, true); }); })(t.anim, hold);
-    });
-    try { frame.contentWindow.postMessage({ keel: 'theme', value: isDark() ? 'dark' : 'light' }, '*'); } catch (e) {}
-  }
-  $('#theme-toggle').addEventListener('click', function () {
-    var next = isDark() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('keel-theme', next); } catch (e) {}
-    applyTheme();
-  });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-    if (!document.documentElement.getAttribute('data-theme')) applyTheme();
-  });
-  frame.addEventListener('load', function () {
-    try { frame.contentWindow.postMessage({ keel: 'theme', value: isDark() ? 'dark' : 'light' }, '*'); } catch (e) {}
-  });
-  syncToggle();
-  renderAudit();
-})();
-</script>
+<script src="assets/js/keel-lottie.js" data-base="assets/"></script>
+<script src="assets/js/keel-charts.js"></script>
+<script src="assets/js/motion-registry.js"></script>
+<script src="assets/js/case-study.js"></script>
 </body>
 </html>

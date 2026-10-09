@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,400,100&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <script>
   // Theme and motion before first paint: ?theme= / ?motion= win, then saved choices, else the OS.
@@ -46,6 +47,7 @@
     <keel-lottie id="onb-lottie" name="onboarding" poster="start" label=""></keel-lottie>
   </div>
 
+  <main id="main" class="screens-main">
   <!-- 1. Welcome -->
   <section class="screen welcome" data-screen="welcome" aria-labelledby="w-h">
     <div class="brandline wordmark"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</div>
@@ -167,19 +169,19 @@
 
     <!-- Spending pace: Equilibrium Line (Lottie 02, progress-mapped) -->
     <section class="pace" aria-labelledby="pace-h">
-      <div class="section-label"><span style="color:var(--ink);font-weight:600;font-size:15px" id="pace-h">Spending pace</span><span>since payday on Oct 2</span></div>
+      <div class="section-label"><h2 class="sl-h" id="pace-h">Spending pace</h2><span>since payday on Oct 2</span></div>
       <keel-lottie id="pace-lottie" name="line" poster="start" label=""></keel-lottie>
       <div class="scale" aria-hidden="true"><span>Lighter</span><span>Your usual</span><span>Heavier</span></div>
       <p class="read" id="pace-read" aria-live="polite"></p>
     </section>
 
     <section class="upcoming-block" aria-labelledby="up-h">
-      <div class="section-label"><span style="color:var(--ink);font-weight:600;font-size:15px" id="up-h">Coming up</span><span id="upcoming-sub">all set aside</span></div>
+      <div class="section-label"><h2 class="sl-h" id="up-h">Coming up</h2><span id="upcoming-sub">all set aside</span></div>
       <!-- Upcoming Expenses timeline (SVG, data-bound) -->
       <svg class="timeline" id="timeline" viewBox="0 0 340 74" role="img" aria-labelledby="tl-desc"><desc id="tl-desc"></desc></svg>
       <div class="rows" id="upcoming"></div>
     </section>
-    <p class="note foot-note">Usual day-to-day spending: about $48 a day, from the sample’s last 8 weeks. <button class="btn-text" data-reset style="font-size:13.5px;padding:6px 4px">Reset sample data</button></p>
+    <p class="note foot-note">Usual day-to-day spending: about $48 a day, from the sample’s last 8 weeks. <button class="btn-text" data-reset style="font-size:13.5px">Reset sample data</button></p>
   </section>
 
   <!-- 7. Spending -->
@@ -189,15 +191,15 @@
       <p class="meta" style="margin-top:4px">Since payday on Oct 2, 7 days</p>
     </div>
     <div class="col-a">
-      <div class="section-label">By category <span>tap to filter</span></div>
+      <div class="section-label"><h2 class="sl-h">By category</h2><span>tap to filter</span></div>
       <div class="rows cats" id="cats" role="group" aria-label="Spending by category. Select one to filter transactions."></div>
       <p class="legend-key"><i></i> By this point last stretch</p>
-      <div class="section-label">Day by day <span id="wk-sub"></span></div>
+      <div class="section-label"><h2 class="sl-h">Day by day</h2><span id="wk-sub"></span></div>
       <!-- Weekly Summary (SVG, data-bound) -->
       <svg class="week" id="week" viewBox="0 0 340 150" role="img" aria-labelledby="wk-desc"><desc id="wk-desc"></desc></svg>
     </div>
     <div class="col-b">
-      <div class="section-label" id="tx-head">Transactions <span id="tx-sub"></span></div>
+      <div class="section-label" id="tx-head"><h2 class="sl-h">Transactions</h2><span id="tx-sub"></span></div>
       <div id="tx-list"></div>
     </div>
   </section>
@@ -227,7 +229,7 @@
       <!-- Scenario Comparison (SVG, data-bound) -->
       <svg class="scenario" id="scenario" viewBox="0 0 340 210" role="img" aria-labelledby="sc-desc"><desc id="sc-desc"></desc></svg>
       <div class="legend2" aria-hidden="true"><span><i class="dash"></i>Current plan</span><span><i class="ember"></i>With the change</span></div>
-      <table class="sr" id="sc-table"></table>
+      <div class="sr"><table id="sc-table"></table></div>
     </div>
     <div class="col-b">
       <ul class="readouts" id="pl-read" aria-live="polite"></ul>
@@ -239,6 +241,8 @@
     </div>
   </section>
 
+  </main>
+
   <nav class="tabbar" id="tabbar" aria-label="Main">
     <div class="rail-brand wordmark"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</div>
     <span class="tab-ind" id="tab-ind" aria-hidden="true"></span>
@@ -246,7 +250,7 @@
     <button data-tab="spending"><svg aria-hidden="true"><use href="#i-activity"/></svg>Spending</button>
     <button data-tab="goals"><svg aria-hidden="true"><use href="#i-goals"/></svg>Goals</button>
     <button data-tab="plan"><svg aria-hidden="true"><use href="#i-plan"/></svg>Plan</button>
-    <p class="rail-foot">Prototype with sample data. <button class="btn-text" data-reset style="font-size:13px;padding:4px 2px">Reset</button></p>
+    <p class="rail-foot">Prototype with sample data. <button class="btn-text" data-reset style="font-size:13px">Reset</button></p>
   </nav>
 
   <div class="scrim" id="scrim"></div>
@@ -260,6 +264,7 @@
 </div>
 
 <script src="assets/js/keel-lottie.js" data-base="assets/"></script>
+<script src="assets/js/keel-charts.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>
