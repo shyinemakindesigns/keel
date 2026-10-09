@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Rive inspect</title>
+<style>body{margin:0;background:#F6F3ED;font:13px system-ui;padding:10px} .row{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px} canvas{width:240px;height:160px;border:1px solid #ccc;background:transparent} pre{font-size:11px;white-space:pre-wrap;max-width:600px}</style></head>
+<body>
+<!-- Dev tool: lists a .riv file's artboards, state machines and inputs, and renders it. ?file=toggle-switch -->
+<div class="row"><canvas id="c" width="480" height="320"></canvas><pre id="out">loading</pre></div>
+<script src="../assets/vendor/rive.js"></script>
+<script>
+  rive.RuntimeLoader.setWasmUrl('../assets/vendor/rive.wasm');
+  var q = new URLSearchParams(location.search), file = q.get('file') || 'keel-toggle'; if (q.get('bg')) document.body.style.background = q.get('bg');
+  var r = new rive.Rive({ src: '../assets/rive/' + file + '.riv', canvas: document.getElementById('c'), autoplay: true,
+    onLoad: function () {
+      r.resizeDrawingSurfaceToCanvas();
+      var c = r.contents, out = [];
+      (c.artboards || []).forEach(function (ab) {
+        out.push('artboard: ' + ab.name);
+        out.push('  animations: ' + (ab.animations || []).join(', '));
+        (ab.stateMachines || []).forEach(function (sm) { out.push('  state machine: ' + sm.name + ' inputs: ' + JSON.stringify(sm.inputs)); });
+      });
+      document.getElementById('out').textContent = out.join('\n');
+      window.__contents = c; window.__r = r; window.__ready = true;
+    },
+    onLoadError: function (e) { document.getElementById('out').textContent = 'ERROR ' + e; window.__ready = true; }
+  });
+</script></body></html>

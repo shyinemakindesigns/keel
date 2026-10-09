@@ -408,7 +408,7 @@
     <h2 id="about-h">About this project</h2>
     <p><strong>Keel is fictional.</strong> It isn’t a client, an employer’s product, or a real company, and nothing here is affiliated with any financial institution. I made it to show the whole arc of my process in one public, inspectable piece.</p>
     <p><strong>What’s real and what isn’t.</strong> The research section is a desk review of published research and public competitor material. I didn’t interview anyone for this project, and there are no invented personas or quotes on this page. The testing section is a plan, not results. Every number in the prototype is sample data I made up to drive the interaction, and it’s labeled that way where it appears. The cited sources are real and linked at the bottom.</p>
-    <p><strong>How the motion is made.</strong> Every animation is labeled by what it actually is. The Lottie files are JSON I authored in code, not exported from After Effects. Four charts are SVG drawn from live data, because a keyframed file can’t hold exact numbers. There are no Rive files yet: the interactive pieces Rive would own are specified and running as web implementations, clearly marked.</p>
+    <p><strong>How the motion is made.</strong> Every animation is labeled by what it actually is. The Lottie files are JSON I authored in code, not exported from After Effects. Four charts are SVG drawn from live data, because a keyframed file can’t hold exact numbers. Rive: one real <code>.riv</code> runs on this page, a CC BY community toggle I recolored and wired to the app’s model, credited where it appears. The four Keel-specific state machines are specified and running as web implementations, clearly marked, until they’re authored.</p>
   </aside>
 
   <p class="idea">A keel is the part of a boat you never see. It doesn’t stop the waves. It keeps you upright through them.</p>
@@ -1096,7 +1096,7 @@
 
   <h3>Rive: specified, not yet authored</h3>
   <div class="prose">
-    <p>Four components would be better as Rive state machines than as anything else: they respond to state rather than play once. Rive files are made in the Rive editor, which isn’t available where I built this, so I have not made any, and nothing here is labeled as Rive. What exists instead: a written state-machine specification for each (inputs, states, transitions, accessibility), and a working web implementation that already uses those exact input names, so the eventual <code>.riv</code> file drops in behind the same interface.</p>
+    <p>Four components would be better as Rive state machines than as anything else: they respond to state rather than play once. Rive files are made in the Rive editor, which isn’t available where I built this, so I haven’t authored these four. The one Rive file on this page (below) is a credited community file, and nothing else is labeled as Rive. What exists instead: a written state-machine specification for each (inputs, states, transitions, accessibility), and a working web implementation that already uses those exact input names, so the eventual <code>.riv</code> file drops in behind the same interface.</p>
   </div>
   <div class="table-wrap figure wide">
     <table class="t-min">
@@ -1110,6 +1110,26 @@
     </table>
   </div>
   <p class="small"><a href="docs/motion-system/rive-spec.md">Read the Rive specification</a> · <a href="system.html">The full motion design system</a></p>
+
+  <h3>Rive in practice: one real state machine</h3>
+  <div class="rive-demo reveal">
+    <div class="rive-stage">
+      <div class="rive-row">
+        <button class="rive-switch" id="rv-switch" type="button" role="switch" aria-checked="false" aria-labelledby="rv-label" disabled>
+          <canvas id="rv-canvas" width="336" height="224" aria-hidden="true"></canvas>
+        </button>
+        <span id="rv-label">Pause the gym membership</span>
+      </div>
+      <p class="rv-read" id="rv-read" aria-live="polite">Steady through <b>Oct 25</b>: 9 days past payday.</p>
+      <p class="small muted" id="rv-status">The Rive runtime loads when this section is close.</p>
+    </div>
+    <div class="prose small">
+      <p>This switch is a genuine <code>.riv</code> file running in the Rive web runtime, driven by its own state machine (<code>Switch</code>, trigger <code>Pressed</code>). It isn’t mine: it’s <a href="https://rive.app/community/files/2795-5761-toggle-switch">“Toggle switch” by ashishb</a> from the Rive Community, licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p><b>What I changed:</b> colors only. A script (<code>source/rive/recolor_toggle.py</code>) rewrites the color values inside the binary: the glossy blue and grey become flat Mineral &amp; Ember, the dark background becomes transparent, and a dark-theme file is written alongside. Geometry, animations and the state machine are untouched.</p>
+      <p><b>How it’s wired:</b> a native button with <code>role="switch"</code> owns the state and fires <code>Pressed</code>; the file’s own pointer listeners are switched off so the two can’t drift apart. The reading comes from the app’s model: pausing the $40 gym bill on Oct 21 moves “steady through” from Oct 25 to Oct 26. With motion reduced, the runtime jumps straight to the end of the On or Off animation instead of playing it.</p>
+      <p><b>The cost, stated:</b> the Rive runtime is 51 KB plus a 431 KB WebAssembly module (gzipped), loaded only when this section comes near. For one switch that’s a poor trade, which is why the app still uses a CSS switch. It pays off for the four state machines specified above, not for this demo.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ============================================================ 9 APP -->
@@ -1332,7 +1352,7 @@
         <tr><td>The prototype’s logic: the reading, the purchase check, the goal preview all compute live</td><td>Every amount, bill, merchant and date in the prototype</td></tr>
         <tr><td>The contrast audit and the 60/30/10 measurements, with the scripts that produced them</td><td>The success criteria targets, which are proposals</td></tr>
         <tr><td>Twelve Lottie animations, hand-authored in code, rendered and reviewed frame by frame, in light and dark</td><td>Any claim about how users would react. Untested.</td></tr>
-        <tr><td>Four data-bound SVG charts whose motion preserves exact values</td><td>Rive: specified with working web stand-ins, no <code>.riv</code> files yet</td></tr>
+        <tr><td>Four data-bound SVG charts whose motion preserves exact values; one Rive state machine running in the Rive runtime</td><td>The Rive file is a CC BY community toggle, recolored by me; the four Keel Rive components are specified, not authored</td></tr>
         <tr><td>The four changes in section 8, made from my own review</td><td>None of section 8 is user research, and it isn’t presented as such</td></tr>
       </tbody>
     </table>
@@ -1348,6 +1368,7 @@
         <tr><th scope="row">Lottie library, 12 animations</th><td class="state-word">Complete</td><td>assets/lottie, source/lottie/build.py</td></tr>
         <tr><th scope="row">Data-bound chart motion, 4 charts</th><td class="state-word">Complete</td><td>assets/js/keel-charts.js</td></tr>
         <tr><th scope="row">Rive interactions</th><td class="state-word">Specification, pending external authoring</td><td>docs/motion-system/rive-spec.md</td></tr>
+        <tr><th scope="row">Rive runtime integration</th><td class="state-word">Complete, third-party file</td><td>Section 8; source/rive/recolor_toggle.py</td></tr>
         <tr><th scope="row">Motion gallery and playground</th><td class="state-word">Complete</td><td>Section 8</td></tr>
         <tr><th scope="row">Embedded prototype, mobile and desktop</th><td class="state-word">Complete</td><td>Section 10</td></tr>
         <tr><th scope="row">Storyboards</th><td class="state-word">Complete, from real frames</td><td>Gallery; docs/motion-system/storyboards</td></tr>

@@ -23,6 +23,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `assets/js/motion-registry.js` | One description of every animation, read by the gallery, the system page and the specs |
 | `assets/js/app.js`, `case-study.js` | Page behavior |
 | `assets/lottie/` | 12 hand-authored Lottie animations, light and dark (30 KB gzip in total) |
+| `assets/rive/`, `source/rive/` | The recolored CC BY Rive toggle (light and dark), the original file, and the recolor script |
 | `assets/fallbacks/` | Static SVG of each animation’s settled frame, both themes |
 | `assets/img/` | Screenshots (WebP) |
 | `source/lottie/` | `build.py` and `kit.py` (the Lottie builder), preview, export and player-test pages, `gen_specs.js`, the Fraunces wordmark outlines |
@@ -91,11 +92,11 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 - **12 Lottie animations**, written in code with `source/lottie/kit.py` (no After Effects export). Three are progress-mapped: their timelines are linear in one value, and the app eases to the frame that matches real state.
 - **4 data-bound SVG charts** (spending by category, day by day, upcoming expenses, scenario comparison), because exact numbers can’t live in a keyframed file.
-- **No Rive files.** Four state machines are specified in `docs/motion-system/rive-spec.md`, with web implementations that already use the specified input names.
+- **Rive:** one real `.riv` runs in the Rive web runtime on the case study: a CC BY community toggle by ashishb, recolored by `source/rive/recolor_toggle.py` and wired to the app’s model. The four Keel-specific state machines are specified in `docs/motion-system/rive-spec.md`, with web implementations that already use the specified input names.
 
 ## Status
 
 - **v1:** case study, prototype, identity, animation and audits
 - **Mineral & Ember color system:** palette, semantic tokens, dark theme, recolored animation, re-run audits
 - **Motion-forward pass:** Lottie library, motion gallery and playground, expanded app (Spending, Goals, Plan, wide layout), embedded app with mobile and desktop modes, design system page, documentation, and an accessibility and performance audit (`docs/motion-system/qa-report.md`)
-- **Not done:** usability testing with people; Rive authoring; a human screen reader pass
+- **Not done:** usability testing with people; authoring the four Keel Rive state machines; a human screen reader pass

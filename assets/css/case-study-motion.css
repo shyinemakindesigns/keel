@@ -230,3 +230,13 @@ input[type=range] { min-height: 44px; }
 /* images keep their aspect ratio: width/height attributes reserve space, CSS sets the height */
 img { height: auto; }
 .lohi-stage img { height: 100%; }
+
+/* ---------- Rive demo ---------- */
+.rive-demo { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 32px; align-items: start; margin-top: 16px; }
+.rive-stage { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 22px; --ink-2: var(--ink-2-on-surface); --ink-3: var(--ink-2-on-surface); }
+.rive-row { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+.rive-switch { padding: 0; border: 0; background: none; cursor: pointer; border-radius: 14px; width: 168px; height: 112px; margin: -24px -48px -24px -50px; display: grid; place-items: center; }
+.rive-switch:disabled { cursor: progress; }
+.rive-switch canvas { width: 168px; height: 112px; display: block; }
+.rv-read { margin: 14px 0 6px; font-size: 16px; }
+@media (max-width: 760px) { .rive-demo { grid-template-columns: 1fr; } }

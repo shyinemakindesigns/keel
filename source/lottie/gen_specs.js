@@ -18,7 +18,7 @@ Every animation is labeled by what it actually is:
 - **Lottie, progress-mapped**: a Lottie whose timeline is linear in one value; the app eases to the frame that equals real state.
 - **SVG + JS, data-bound**: drawn from data by \`assets/js/keel-charts.js\`, because a keyframed file can't hold exact values.
 
-There are no Rive files. See [rive-spec.md](rive-spec.md).
+Rive: Keel’s four state machines are specified, not authored; one CC BY community toggle runs in the Rive runtime on the case study. See [rive-spec.md](rive-spec.md).
 
 | # | Animation | Technology | Trigger | Timing | Loop | Files |
 | --- | --- | --- | --- | --- | --- | --- |

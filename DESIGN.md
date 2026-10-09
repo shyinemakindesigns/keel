@@ -36,7 +36,7 @@ Keel Motion Language: **settle, reveal, connect, respond, reassure.** Movement d
 
 - Decorative and narrative motion: Lottie, authored for Keel (`source/lottie/`), never stock
 - Exact data: progress-mapped Lottie for one value, data-bound SVG for many
-- Interactive state machines: Rive specification plus a web implementation until `.riv` files are authored
+- Interactive state machines: Rive specification plus a web implementation until Keel’s own `.riv` files are authored. Third-party Rive or Lottie files are allowed only if they’re licensed for reuse, recolored to these tokens, and credited where they appear (the one example: the CC BY toggle in `assets/rive/`)
 - Reduced motion: show the settled final state; never hide information behind animation
 
 ## Lottie runtime decision
