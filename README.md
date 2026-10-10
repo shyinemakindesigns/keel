@@ -14,7 +14,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | --- | --- |
 | `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
 | `prototype.html` | The app, onboarding through Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout |
-| `system.html` | The design and motion system: live tokens, the animation library with fallbacks, Rive specs, engineering notes |
+| `system.html` | The design and motion system: live tokens, the animation library with fallbacks, the Rive state machines, engineering notes |
 | `DESIGN.md` | Short brand brief |
 | `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
 | `assets/css/` | `components.css` (shared), `app.css` (the app), `case-study-motion.css` (the case study) |
@@ -23,13 +23,15 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `assets/js/motion-registry.js` | One description of every animation, read by the gallery, the system page and the specs |
 | `assets/js/app.js`, `case-study.js` | Page behavior |
 | `assets/lottie/` | 12 hand-authored Lottie animations, light and dark (30 KB gzip in total) |
-| `assets/rive/`, `source/rive/` | The recolored CC BY Rive toggle (light and dark), the original file, and the recolor script |
+| `assets/rive/`, `source/rive/` | Keel’s four Rive state machines and the code that writes them (`rivewriter.py`, `build_rive.py`, `rive-check.html`); the recolored CC BY toggle, its original and the recolor script |
 | `assets/fallbacks/` | Static SVG of each animation’s settled frame, both themes |
 | `assets/img/` | Screenshots (WebP) |
 | `source/lottie/` | `build.py` and `kit.py` (the Lottie builder), preview, export and player-test pages, `gen_specs.js`, the Fraunces wordmark outlines |
 | `source/*.py` | Contrast audit, 60/30/10 check, the v1 keel animation generator |
 | `docs/motion-system/` | Motion system README, animation specifications and storyboards, Rive specification, QA report, phase audit |
 | `docs/stillform/` | Color-system audit |
+| `portfolio/` | Portfolio thumbnail, link-preview image, LinkedIn carousel (PNG and PDF), post copy and interview talking points; editable sources in `portfolio/source/` |
+| `netlify.toml` | Static deploy config: publishes the repository root |
 
 ## Run it
 
@@ -41,11 +43,15 @@ python3 -m http.server 4317
 
 Then open <http://localhost:4317/> for the case study and <http://localhost:4317/prototype.html> for the prototype.
 
+**Deploy:** it’s a static site. Connect the repo to Netlify (or drag the folder in) and it publishes the root, per `netlify.toml`. The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
+
 Regenerate the animations or rerun the audits:
 
 ```bash
 python3 source/lottie/build.py      # every Lottie, light and dark
 node source/lottie/gen_specs.js     # docs/motion-system/animation-specifications.md
+python3 source/rive/build_rive.py   # the four Rive files, light and dark artboards
+node portfolio/source/export.mjs    # thumbnail, link preview and LinkedIn carousel (needs Chrome)
 python3 source/contrast_audit.py
 python3 source/weight_check.py path/to/screenshot.png   # needs Pillow
 ```
