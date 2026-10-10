@@ -240,3 +240,31 @@ img { height: auto; }
 .rive-switch canvas { width: 168px; height: 112px; display: block; }
 .rv-read { margin: 14px 0 6px; font-size: 16px; }
 @media (max-width: 760px) { .rive-demo { grid-template-columns: 1fr; } }
+
+/* Rive: Keel's four state machines */
+.rive-four { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
+.rv4 { margin: 0; display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 18px; --ink-2: var(--ink-2-on-surface); --ink-3: var(--ink-2-on-surface); }
+.rv4-stage { background: var(--canvas); border-radius: var(--r-md, 10px); overflow: hidden; }
+.rv4-canvas { position: relative; }
+.rv4-canvas canvas { display: block; width: 100%; height: auto; }
+.rv4-ticks, .rv4-axis { position: absolute; inset: 0; pointer-events: none; font-size: 12px; color: var(--ink-2-on-surface); font-variant-numeric: tabular-nums; }
+.rv4-ticks span { position: absolute; left: 68.8%; transform: translateY(-50%); }
+.rv4-ticks b { color: var(--ink); }
+.rv4-axis span { position: absolute; right: 88.5%; transform: translateY(-50%); }
+.rv4-ctl { display: flex; flex-direction: column; gap: 8px; }
+.rv4-ctl label { font-weight: 600; }
+.rv4-ctl output { font-variant-numeric: tabular-nums; }
+.rv4-btns { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.rv4-read { margin: 0; }
+.rv4 figcaption { font-size: 14px; color: var(--ink-2); }
+.rv4 figcaption b { display: block; color: var(--ink); }
+@media (max-width: 760px) { .rive-four { grid-template-columns: 1fr; } }
+.rv4 input[type=range] { width: 100%; accent-color: var(--accent); }
+/* Header at very small widths: toggles go icon-only; the label stays as the accessible name */
+@media (max-width: 400px) {
+  #motion-label, #theme-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .top .theme-toggle { min-width: 44px; padding: 0 10px; }
+  .top .open { font-size: 14px; }
+}
+.rv4-canvas { container-type: inline-size; }
+@container (max-width: 380px) { .rv4-ticks span:nth-child(2) { display: none; } .rv4-ticks, .rv4-axis { font-size: 11px; } }

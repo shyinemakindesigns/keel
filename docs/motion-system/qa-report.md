@@ -6,7 +6,7 @@ Judged against: WCAG 2.2 AA, the project’s own tokens (`assets/tokens.css`) an
 
 ## Summary
 
-- **Accessibility:** 0 open AA failures after fixes. 9 defects found and fixed in this pass (below). 1 measured advisory kept with a reason.
+- **Accessibility:** 0 open AA failures after fixes. 10 defects found and fixed in this pass (below). 1 measured advisory kept with a reason.
 - **Functional:** all primary flows pass the scripted run: onboarding, bill toggle, purchase check, recategorizing, adding to a goal, creating a goal, applying a plan, reset.
 - **Performance:** 61fps with the CPU throttled 4×, worst frame 17ms, no long tasks during the hero and welcome animations.
 - **Not done:** usability testing with people (planned, see the case study, section 12); a screen reader pass by a person (scripts can’t replace it).
@@ -24,6 +24,7 @@ Judged against: WCAG 2.2 AA, the project’s own tokens (`assets/tokens.css`) an
 | 07 | Accessibility, 2.4.4 | Case study, research | Two different links with the same text | `"cmu.edu (pdf)" ×2`, different PDFs | Link text names the paper |
 | 08 | Major | App | Text buttons ignored the `hidden` attribute after a style change | “Clear” visible with no purchase entered | `[hidden] { display: none !important }`; verified height 0 |
 | 09 | Major | Case study | Before/after screenshots rendered stretched | 348×1688 for a 780×1688 image | `img { height: auto }`; now 348×751 |
+| 10 | Accessibility, 1.4.10 | Case study header, 320px wide | The two toggles plus “Open the prototype” pushed the page to 386px | `scrollWidth 386, clientWidth 320`, from `div.right` | Under 400px the toggle labels become visually hidden (still their accessible names); now `scrollWidth 320` |
 
 ## Advisory kept
 
@@ -50,7 +51,8 @@ Judged against: WCAG 2.2 AA, the project’s own tokens (`assets/tokens.css`) an
 | All 24 Lottie files | 229 KB raw, 30 KB gzip; largest 16.3 KB |
 | Lottie requests, case study | 12 unique fetches for 28 players (was 28 before the fetch cache) |
 | Static fallbacks | 24 SVGs, 36.5 KB gzip |
-| Rive runtime (case study only) | 51 KB JS + 431 KB WASM gzip, loaded only near the Rive demo; not loaded by the app |
+| Rive runtime (case study only) | 51 KB JS + 431 KB WASM gzip, loaded only near the Rive demos; not loaded by the app |
+| Keel Rive files | 4 files, 24 KB raw total (equilibrium 4.9, goal 3.7, onboarding 10.1, scenario 5.6), light and dark artboards in each |
 | Screenshots | WebP, 31 to 47 KB each, served at 2.6 to 3.6× displayed size (sharp on high-density screens) |
 
 ## Not verified

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rive check</title>
+<style>
+  body { margin: 0; padding: 16px; font: 13px/1.4 system-ui, sans-serif; background: #F6F3ED; color: #252A28; }
+  body.dark { background: #202725; color: #F4F0E7; }
+  .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+  figure { margin: 0; }
+  canvas { display: block; outline: 1px dashed rgba(127,127,127,.4); }
+  figcaption { margin-top: 4px; font-family: ui-monospace, monospace; font-size: 11px; }
+</style>
+</head>
+<body>
+<!--
+  Loads a Keel .riv in the Rive web runtime and renders it with given inputs.
+  ?file=equilibrium&ab=light&sm=Equilibrium&w=680&h=312
+  &cases=[{"steadinessValue":9},{"steadinessValue":0.4,"isInteracting":true,"ghostValue":9}]
+  Each case gets its own canvas. window.__check holds {ok, errors, inputs}.
+-->
+<div class="grid" id="grid"></div>
+<script src="../../assets/vendor/rive.js"></script>
+<script>
+  var q = new URLSearchParams(location.search);
+  var file = q.get('file'), ab = q.get('ab') || 'light', sm = q.get('sm'), W = +q.get('w'), H = +q.get('h');
+  var scale = +(q.get('scale') || 0.5);
+  var cases = JSON.parse(q.get('cases') || '[{}]');
+  var fires = JSON.parse(q.get('fire') || '[]');
+  if (ab === 'dark') document.body.classList.add('dark');
+  rive.RuntimeLoader.setWasmUrl('../../assets/vendor/rive.wasm');
+  window.__check = { ok: 0, errors: [], inputs: null, done: false };
+  var pending = cases.length;
+  cases.forEach(function (cs, i) {
+    var fig = document.createElement('figure');
+    var cv = document.createElement('canvas');
+    cv.width = W; cv.height = H; cv.style.width = W * scale + 'px'; cv.style.height = H * scale + 'px';
+    var cap = document.createElement('figcaption'); cap.textContent = JSON.stringify(cs);
+    fig.appendChild(cv); fig.appendChild(cap); document.getElementById('grid').appendChild(fig);
+    var r = new rive.Rive({
+      src: '../../assets/rive/' + file + '.riv', canvas: cv, artboard: ab, stateMachines: sm, autoplay: true,
+      onLoad: function () {
+        var ins = r.stateMachineInputs(sm) || [];
+        window.__check.inputs = ins.map(function (x) { return x.name; });
+        Object.keys(cs).forEach(function (k) {
+          var inp = ins.filter(function (x) { return x.name === k; })[0];
+          if (!inp) { window.__check.errors.push('no input ' + k); return; }
+          if (cs[k] === 'fire') inp.fire(); else inp.value = cs[k];
+        });
+        window.__check.ok++;
+        if (--pending === 0) window.__check.done = true;
+      },
+      onLoadError: function (e) { window.__check.errors.push('load error ' + (e && e.data || e)); if (--pending === 0) window.__check.done = true; }
+    });
+    window['__r' + i] = r;
+  });
+</script>
+</body>
+</html>
