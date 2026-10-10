@@ -56,7 +56,7 @@ The keel on the Steady screen. Today: SVG plus a JS spring in `assets/js/app.js`
 | --- | --- | --- |
 | Idle | default | Hull on the waterline, keel at `steadinessValue` depth, still |
 | Loading | `isLoading` true | Waterline draws, hull drops, keel sinks (matches the CSS loader) |
-| Changing | `hasUpdated` fires or `steadinessValue` changes | Keel springs to the new depth, one small overshoot |
+| Changing | `hasUpdated` fires or `steadinessValue` changes | Keel springs to the new depth (host-driven spring, damping ratio 0.9: no visible bounce) |
 | Previewing | `isInteracting` true | Keel moves to the preview depth; dashed outline remains at the old depth, labeled |
 | Needs attention | `steadinessValue` < 0.5 | Stub keel. No color change, no shake: the copy says what happened |
 | Reduced motion | `reducedMotion` true | Same states, zero-duration transitions |

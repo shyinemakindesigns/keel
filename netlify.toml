@@ -1,0 +1,8 @@
+# Static site: no build step. Publish the repository root.
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/assets/rive/*"
+  [headers.values]
+    Content-Type = "application/octet-stream"

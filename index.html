@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Keel case study</title>
 <meta name="description" content="A self-directed UX and visual design case study: Keel, a fictional budgeting app built around steadiness instead of restriction. Research review, information architecture, wireframes, identity, an illustration and motion system with a hand-authored Lottie library, an embedded interactive prototype, and a testing plan.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keel: a calm money app, UX and visual design case study">
+<meta property="og:description" content="A budgeting app that tells you you’re okay before anything else. Research, IA, identity, a motion system written in code, and a working prototype.">
+<meta property="og:url" content="https://keel-casestudy.netlify.app/">
+<meta property="og:image" content="https://keel-casestudy.netlify.app/portfolio/keel-og-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Keel wordmark beside the app's Steady screen: steady through Oct 25, with the keel under the payday waterline.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..700;1,100,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
@@ -552,7 +561,7 @@
       <h3><small>Principle 2</small>Weight, not walls</h3>
       <p class="why">Spending shifts weight; it doesn’t break limits. Every change is expressed as what it does to your room, in days.</p>
       <dl>
-        <dt>This means</dt><dd>A $16.80 lunch is “about half a day of your usual spending”. A planned purchase shows its effect on your reading before you spend.</dd>
+        <dt>This means</dt><dd>A $16.80 lunch is “about a third of a day of your usual spending”. A planned purchase shows its effect on your reading before you spend.</dd>
         <dt>This rules out</dt><dd>Red overages, per-category ceilings that “break”, guilt copy like “you overspent”.</dd>
       </dl>
     </li>
@@ -1003,7 +1012,7 @@
     </figure>
     <figure>
       <svg viewBox="0 0 260 150" aria-hidden="true"><rect class="f-water" x="0" y="36" width="260" height="114"/><path class="s-ink" d="M0 36h260" stroke-width="1.5"/><path class="f-hull" d="M80 20h100c-2.4 12-10.5 18-23 18h-54c-12.5 0-20.6-6-23-18z"/><g><path class="f-ink" id="settle-path"/><ellipse class="f-ink" id="settle-bulb" cx="130" rx="13" ry="5.5"/></g></svg>
-      <figcaption><b>Keel: damped spring, about 900ms</b><span>Stiffness 70, damping 15. One small overshoot, then rest.</span></figcaption>
+      <figcaption><b>Keel: damped spring, about 900ms</b><span>Stiffness 70, damping 15: just short of critical damping, so it eases in and stops with no visible bounce.</span></figcaption>
     </figure>
   </div>
   <div class="motion-controls">
@@ -1312,7 +1321,7 @@
     <li><b>“Steady through Oct 25” might be read as “my money runs out on Oct 25”.</b> Literally true, emotionally the opposite of the intent. If people read it as a deadline, the reading creates the anxiety it was meant to remove.</li>
     <li><b>Ignoring income may confuse more than it reassures.</b> People know they’re getting paid on the 16th. A number that pretends they aren’t could feel wrong.</li>
     <li><b>“Usual daily spending” assumes a usual.</b> For people with irregular income or spending, which overlaps heavily with the people most stressed about money, an average could be misleading.</li>
-    <li><b>Expressing cost in days might feel like a judgment in disguise.</b> “About half a day” is meant to be neutral; it could still land as guilt.</li>
+    <li><b>Expressing cost in days might feel like a judgment in disguise.</b> “About a third of a day” is meant to be neutral; it could still land as guilt.</li>
   </ol>
 
   <h3>The plan</h3>

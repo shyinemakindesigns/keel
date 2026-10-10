@@ -152,8 +152,8 @@
   var kvCurrent = null, kvRaf = null;
   function setKeel(days, instant) {
     if (kvCurrent === null || instant || reduced()) { cancelAnimationFrame(kvRaf); kvCurrent = days; renderKeel(days); return; }
-    // A damped spring: the keel finds its new depth and settles. One small
-    // overshoot, then rest, in about 900ms. The one physical object in the UI.
+    // A damped spring: the keel finds its new depth and settles in about 900ms.
+    // Damping ratio 0.9, so any overshoot is about 0.2%: no visible bounce. The one physical object in the UI.
     cancelAnimationFrame(kvRaf);
     var x = kvCurrent, v = 0, k = 70, c = 15, last = performance.now();
     kvCurrent = days;
@@ -365,7 +365,8 @@
   }
   function weightPhrase(amt) {
     var d = amt / DAILY;
-    return d < 0.4 ? 'a few hours of an ordinary day' : d < 0.75 ? 'about half a day' : d < 1.5 ? 'about a day' : d < 2.5 ? 'about two days' : 'about ' + Math.round(d) + ' days';
+    // Each phrase completes "… of your usual spending". $16.80 at $48 a day is 0.35: about a third of a day.
+    return d < 0.2 ? 'a small slice of a day' : d < 0.42 ? 'about a third of a day' : d < 0.75 ? 'about half a day' : d < 1.5 ? 'about a day' : d < 2.5 ? 'about two days' : 'about ' + Math.round(d) + ' days';
   }
   function txSheet(id) {
     var t = S.tx.filter(function (x) { return x.id === id; })[0]; if (!t) return;
