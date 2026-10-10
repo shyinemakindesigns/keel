@@ -43,6 +43,8 @@ python3 -m http.server 4317
 
 Then open <http://localhost:4317/> for the case study and <http://localhost:4317/prototype.html> for the prototype.
 
+**Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
+
 **Deploy:** it’s a static site. Connect the repo to Netlify (or drag the folder in) and it publishes the root, per `netlify.toml`. The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
 
 Regenerate the animations or rerun the audits:
