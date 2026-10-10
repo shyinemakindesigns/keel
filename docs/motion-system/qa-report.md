@@ -26,6 +26,26 @@ Judged against: WCAG 2.2 AA, the project’s own tokens (`assets/tokens.css`) an
 | 09 | Major | Case study | Before/after screenshots rendered stretched | 348×1688 for a 780×1688 image | `img { height: auto }`; now 348×751 |
 | 10 | Accessibility, 1.4.10 | Case study header, 320px wide | The two toggles plus “Open the prototype” pushed the page to 386px | `scrollWidth 386, clientWidth 320`, from `div.right` | Under 400px the toggle labels become visually hidden (still their accessible names); now `scrollWidth 320` |
 
+## Responsive and mobile-first (October 10, 2026)
+
+All three pages are written mobile-first: base styles are the phone layout, and wider layouts are added with `min-width` queries. The app always was; the case study and system page were converted from 33 desktop-first `max-width` overrides.
+
+- **The conversion changed nothing it shouldn’t.** Every element’s box, display, grid, borders and padding was recorded at 24 widths (320 to 1440) before and after. The case study is identical at all 24 widths; the system page differs only at 320px, where the fix below applies.
+- **Checked at 10 widths** (320, 360, 390, 414, 600, 768, 820, 1024, 1280, 1440): page overflow, elements off-screen, clipped text, text under 12px, controls under 24px. The app was checked on all 9 screens at each width: 90 of 90 clean.
+
+| # | Where | Finding | Fix |
+| --- | --- | --- | --- |
+| R1 | System page, 320px | The animation library grid needed a 320px column inside a 288px space: page 336px wide | Column minimum is now `min(100%, 320px)` |
+| R2 | System page header, phones | Seven links wrapped into four rows: a 195px sticky header, 28% of a 640px screen | Links sit in one sideways-scrolling row under the wordmark: 98px |
+| R3 | Case study header, 401 to 720px | “Reduce motion” wrapped and “Open the prototype” was cut off at the edge | Icon-only toggles and a “prototype” link until 721px; full labels stay as accessible names |
+| R4 | Case study, Rive toggle, up to 820px | Negative margins put the button 11px past the left edge | The button is a 72 × 44 window onto the canvas |
+| R5 | Case study, hero, phones | Three fixed headline lines each wrapped again: a ragged five-line headline, and the intro held to 26 characters | Below 641px the headline wraps naturally and the intro uses the full width |
+| R6 | Case study header link | 22px tall on phones | 44px |
+| R7 | Rive demo labels | Dropped to 11px in narrow cards; “Payday” touched the waterline | 12px always; “Payday” sits under the line |
+| R8 | Text buttons | A disabled “Back” still looked clickable | Disabled style for text buttons |
+
+Also fixed while converting: a garbled block of hero animation CSS, where a selector could never match and the tagline’s fade-in was always switched off.
+
 ## Advisory kept
 
 - **Switch height 28px (2.5.5, AAA).** Bill switches measure 46×28. They pass 2.5.8 (24px minimum) and their touch area is 46×46 through an invisible hit area, which the probe can’t see because it measures the element box.

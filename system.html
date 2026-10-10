@@ -33,11 +33,16 @@
   p { margin: 0 0 1em; max-width: 68ch; }
   code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; }
   .top { position: sticky; top: 0; z-index: 5; background: var(--canvas); border-bottom: 1px solid var(--rule); }
-  .top .in, .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .top .in, .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   .top .in { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; }
   .wordmark { display: flex; align-items: center; gap: 8px; font-family: var(--serif); font-weight: 600; font-size: 22px; color: var(--ink); text-decoration: none; }
   .wordmark svg { width: 26px; height: 26px; }
-  .top nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  /* phones: wordmark on one row, the section links in a single sideways-scrolling row below it */
+  html { scroll-padding-top: 124px; }
+  .top .in { flex-wrap: wrap; row-gap: 2px; padding-top: 10px; }
+  .top nav { display: flex; gap: 6px; align-items: center; order: 3; flex: 1 0 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 10px 6px; }
+  .top nav::-webkit-scrollbar { display: none; }
+  .top nav .tbtn { flex: none; }
   .tbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 0; background: none; font: 600 15px var(--sans); color: var(--ink); border-radius: var(--r-md); cursor: pointer; text-decoration: none; }
   .tbtn:hover { background: var(--tertiary-hover); }
   section { padding: 56px 0; border-top: 1px solid var(--rule); }
@@ -51,10 +56,10 @@
   .sw i { display: block; height: 52px; border-radius: 8px; border: 1px solid var(--rule); margin-bottom: 8px; }
   .sw b { display: block; }
   .sw span { color: var(--ink-2); }
-  .scale > div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .scale > div { display: grid; grid-template-columns: 1fr; gap: 4px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule); }
   .scale dt { color: var(--ink-3); font-size: 14px; }
   .scale dd { margin: 0; }
-  .lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
   .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 16px; --ink-2: var(--ink-2-on-surface); }
   .card .stage { background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-md); display: grid; place-items: center; padding: 10px; height: 170px; }
   .card keel-lottie { width: 100%; max-height: 150px; }
@@ -68,7 +73,8 @@
   .btn:hover { background: var(--surface-2); }
   .card .row2 a { font-size: 14px; display: inline-flex; align-items: center; min-height: 44px; }
   ul.plain { padding-left: 1.2em; } ul.plain li { margin-bottom: 8px; }
-  @media (max-width: 560px) { .scale > div { grid-template-columns: 1fr; gap: 4px; } .top .in { padding: 0 16px; } .wrap { padding: 0 16px; } }
+  @media (min-width: 561px) { .scale > div { grid-template-columns: 160px 1fr; gap: 16px; } .top .in, .wrap { padding: 0 24px; } .top nav { margin: 0 -24px; padding: 0 18px 6px; } }
+  @media (min-width: 821px) { html { scroll-padding-top: 76px; } .top .in { flex-wrap: nowrap; padding-top: 0; } .top nav { order: 0; flex: 0 1 auto; flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; } }
 </style>
 </head>
 <body>
