@@ -457,6 +457,156 @@
     read();
   })();
 
+  // ================================================================ Rive: Keel's four state machines
+  // assets/rive/{equilibrium,goal,onboarding,scenario}.riv, authored in code by
+  // source/rive/build_rive.py. Each canvas is aria-hidden; its wrapper carries
+  // role="img" and a label updated from the same state that feeds the inputs.
+  (function riveFour() {
+    var root = $('#rive-four');
+    if (!root) return;
+    var loading = null, inst = {}, visible = false;
+    var BILLS = [[10, 17], [12, 65], [14, 70], [15, 142], [21, 40], [32, 1450]], PAYDAY = new Date(2026, 9, 16);
+    function through(spend) {
+      var bal = 1240 - spend;
+      if (bal < 0) return new Date(2026, 9, 7);
+      for (var i = 0; i < 90; i++) {
+        var day = 8 + i, due = BILLS.filter(function (b) { return b[0] === day; }).reduce(function (t, b) { return t + b[1]; }, 0);
+        var next = bal - 48 - due;
+        if (next < 0) return new Date(2026, 9, day - 1);
+        bal = next;
+      }
+      return new Date(2026, 9, 97);
+    }
+    function margin(spend) { return Math.round((through(spend) - PAYDAY) / 864e5); }
+    function depth(m) { return Math.max(0.4, Math.min(14, m)); }
+    function days(n) { n = Math.abs(n); return n + (n === 1 ? ' day' : ' days'); }
+    function runtime() {
+      if (window.rive && window.rive.Rive) return Promise.resolve();
+      if (loading) return loading;
+      loading = new Promise(function (res, rej) {
+        var sc = document.createElement('script'); sc.src = 'assets/vendor/rive.js';
+        sc.onload = function () { window.rive.RuntimeLoader.setWasmUrl('assets/vendor/rive.wasm'); res(); };
+        sc.onerror = rej; document.head.appendChild(sc);
+      });
+      return loading;
+    }
+    var SM = { equilibrium: 'Equilibrium', goal: 'Goal', onboarding: 'Onboarding', scenario: 'Scenario' };
+    function input(name, key) {
+      var r = inst[name]; if (!r || !r.__ready) return null;
+      return (r.stateMachineInputs(SM[name]) || []).filter(function (i) { return i.name === key; })[0] || null;
+    }
+    function set(name, key, v) { var i = input(name, key); if (i) { i.value = v; wake(name); } }
+    function fire(name, key) { var i = input(name, key); if (i && !reduced()) { i.fire(); wake(name); } }
+    // Render only while something can move, then stop (rive-spec: rendering rule).
+    function wake(name) {
+      var r = inst[name]; if (!r || !visible) return;
+      r.startRendering(); clearTimeout(r.__sleep);
+      r.__sleep = setTimeout(function () { if (inst[name] === r) r.stopRendering(); }, 1600);
+    }
+    // Host-side easing: the spec keeps springs and settles out of the file.
+    var tw = {};
+    function ease(name, key, from, to, dur, curve) {
+      cancelAnimationFrame(tw[name + key]);
+      if (reduced() || dur === 0 || from === to) { set(name, key, to); return; }
+      var t0 = performance.now();
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / dur);
+        set(name, key, from + (to - from) * curve(k));
+        if (k < 1) tw[name + key] = requestAnimationFrame(step);
+      })(t0);
+    }
+    function settleCurve(k) { return 1 - Math.pow(1 - k, 3); }
+    function spring(name, key, from, to) {
+      cancelAnimationFrame(tw[name + key]);
+      if (reduced()) { set(name, key, to); return; }
+      var x = from, v = 0, last = performance.now();
+      (function step(now) {
+        var dt = Math.min(0.032, Math.max(0, (now - last) / 1000)); last = now;
+        v += (-70 * (x - to) - 15 * v) * dt; x += v * dt;
+        set(name, key, x);
+        if (Math.abs(x - to) > 0.01 || Math.abs(v) > 0.01) tw[name + key] = requestAnimationFrame(step); else set(name, key, to);
+      })(last);
+    }
+
+    // ---- state, owned by the page; the files only draw it
+    var st = { buy: 0, eqShown: depth(margin(0)), saved: 380, step: 0, extra: 0 };
+    var STEPS = ['what you have', 'what’s spoken for', 'when you’re paid', 'your first reading'];
+    function eqSync(animate) {
+      var m = margin(st.buy), t = through(st.buy), d = depth(m);
+      $('#rv4-buy-out').textContent = C.money(st.buy);
+      $('#rv4-eq-read').innerHTML = (m >= 0 ? 'Steady through <b>' : 'Covered through <b>') + C.fmtDate(t) + '</b>: ' + days(m) + (m >= 0 ? ' past' : ' before') + ' payday.' + (st.buy ? ' Before the purchase: Oct 25.' : '');
+      $('#rv4-eq-img').setAttribute('aria-label', 'Keel depth: covered ' + days(m) + (m >= 0 ? ' past' : ' before') + ' payday' + (st.buy ? ', down from 9 days before the purchase.' : '.'));
+      set('equilibrium', 'ghostValue', depth(margin(0)));
+      set('equilibrium', 'isInteracting', st.buy > 0);
+      if (animate) spring('equilibrium', 'steadinessValue', st.eqShown, d); else set('equilibrium', 'steadinessValue', d);
+      st.eqShown = d;
+    }
+    function goalSync(from) {
+      var p = Math.min(1, st.saved / 1000);
+      $('#rv4-goal-read').innerHTML = st.saved >= 1000 ? 'Car repair fund: <b>done</b>, $1,000 set aside.' : 'Car repair fund: <b>' + C.money(st.saved) + '</b> of $1,000.';
+      $('#rv4-goal-img').setAttribute('aria-label', st.saved >= 1000 ? 'Car repair fund complete: $1,000 of $1,000.' : 'Car repair fund: ' + C.money(st.saved) + ' of $1,000.');
+      $('#rv4-add').disabled = st.saved >= 1000;
+      if (from === undefined) { set('goal', 'progress', p); set('goal', 'isComplete', p >= 1); return; }
+      ease('goal', 'progress', from, p, 900, settleCurve);
+      setTimeout(function () { set('goal', 'isComplete', p >= 1); }, reduced() ? 0 : 900);
+    }
+    function onbSync() {
+      $('#rv4-onb-read').innerHTML = 'Step ' + (st.step + 1) + ' of 4: <b>' + STEPS[st.step] + '</b>.';
+      $('#rv4-onb-img').setAttribute('aria-label', 'Step ' + (st.step + 1) + ' of 4: ' + STEPS[st.step] + '.');
+      $('#rv4-back').disabled = st.step === 0; $('#rv4-next').disabled = st.step === 3;
+      set('onboarding', 'step', st.step);
+    }
+    var END = new Date(2027, 3, 2);
+    function scSync(animate, from) {
+      var cur = 380 + 50 * 13, wth = 380 + (50 + st.extra) * 13;
+      $('#rv4-extra-out').textContent = C.money(st.extra);
+      $('#rv4-sc-read').innerHTML = st.extra ? 'By Apr 2, 2027: <b>' + C.money(wth) + '</b> set aside instead of ' + C.money(cur) + '.' : 'By Apr 2, 2027: <b>' + C.money(cur) + '</b> set aside on the current plan.';
+      $('#rv4-sc-img').setAttribute('aria-label', 'Projected savings to Apr 2, 2027: ' + C.money(cur) + ' on the current plan' + (st.extra ? ', ' + C.money(wth) + ' with ' + C.money(st.extra) + ' more each paycheck.' : '.'));
+      $('#rv4-apply').disabled = st.extra === 0;
+      if (animate) ease('scenario', 'extraPerPaycheck', from, st.extra, 520, function (k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; });
+      else set('scenario', 'extraPerPaycheck', st.extra);
+    }
+    function syncAll() { eqSync(false); goalSync(); onbSync(); scSync(false); }
+
+    $('#rv4-buy').addEventListener('input', function () { st.buy = +this.value; eqSync(true); });
+    $('#rv4-buy').addEventListener('change', function () { fire('equilibrium', 'hasUpdated'); });
+    $('#rv4-add').addEventListener('click', function () { var from = Math.min(1, st.saved / 1000); st.saved = Math.min(1000, st.saved + 100); fire('goal', 'contributed'); goalSync(from); });
+    $('#rv4-goal-reset').addEventListener('click', function () { st.saved = 380; goalSync(); $('#rv4-add').focus(); });
+    $('#rv4-next').addEventListener('click', function () { if (st.step < 3) { st.step++; set('onboarding', 'direction', 1); onbSync(); } if (st.step === 3) $('#rv4-back').focus(); });
+    $('#rv4-back').addEventListener('click', function () { if (st.step > 0) { st.step--; set('onboarding', 'direction', -1); onbSync(); } if (st.step === 0) $('#rv4-next').focus(); });
+    var scFrom = 0;
+    $('#rv4-extra').addEventListener('input', function () { var f = scFrom; st.extra = +this.value; scFrom = st.extra; scSync(true, f); });
+    $('#rv4-apply').addEventListener('click', function () { fire('scenario', 'applied'); $('#rv4-sc-read').innerHTML += ' Applied.'; });
+
+    function build(name) {
+      if (inst[name]) { inst[name].cleanup(); inst[name] = null; }
+      var fig = root.querySelector('[data-rv="' + name + '"]'), canvas = fig.querySelector('canvas');
+      var r = new window.rive.Rive({
+        src: 'assets/rive/' + name + '.riv', canvas: canvas, artboard: isDark() ? 'dark' : 'light',
+        stateMachines: SM[name], autoplay: true, shouldDisableRiveListeners: true,
+        onLoad: function () {
+          r.resizeDrawingSurfaceToCanvas(); r.__ready = true;
+          set(name, 'reducedMotion', reduced());
+          syncAll(); wake(name);
+          if (Object.keys(inst).every(function (k) { return inst[k] && inst[k].__ready; })) $('#rv4-status').textContent = 'All four are running in the Rive web runtime' + (reduced() ? ', with motion reduced: every transition is instant.' : '.');
+        },
+        onLoadError: function () { $('#rv4-status').textContent = 'A Rive file didn’t load here; the readouts and controls still work.'; }
+      });
+      inst[name] = r;
+    }
+    function buildAll() { Object.keys(SM).forEach(build); }
+    var io = new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible && !loading) runtime().then(buildAll).catch(function () { $('#rv4-status').textContent = 'The Rive runtime didn’t load; the readouts and controls still work.'; });
+      Object.keys(inst).forEach(function (k) { var r = inst[k]; if (r) { if (visible) wake(k); else r.stopRendering(); } });
+    }, { rootMargin: '300px 0px' });
+    io.observe(root);
+    document.addEventListener('keel-theme', function () { if (Object.keys(inst).length) buildAll(); });
+    document.addEventListener('keel-motion', function () { Object.keys(SM).forEach(function (k) { set(k, 'reducedMotion', reduced()); }); });
+    window.__keelRiveFour = function () { var o = {}; Object.keys(SM).forEach(function (k) { var r = inst[k]; o[k] = r && r.__ready ? (r.stateMachineInputs(SM[k]) || []).reduce(function (a, i) { a[i.name] = i.value; return a; }, {}) : null; }); return o; };
+    syncAll();
+  })();
+
   // ================================================================ table of contents
   var links = $$('.toc a'), secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
   function onScroll() {

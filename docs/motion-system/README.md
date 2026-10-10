@@ -48,7 +48,7 @@ Reduced motion (OS setting, or `data-motion="reduced"` on `<html>`) sets every d
 | Narrative or feedback illustration | Lottie | Vector, small, designer-controlled timing |
 | One exact value over time | Lottie, progress-mapped | Timeline is linear in the value; the app eases to the matching frame |
 | Several exact values | SVG + JS (`keel-charts.js`) | Lottie can’t hold arbitrary data |
-| Continuous response to state | Rive (Keel’s four specified; one CC BY community toggle runs today) | State machines; see [rive-spec.md](rive-spec.md) |
+| Continuous response to state | Rive (Keel’s four, authored in code; plus one CC BY community toggle) | State machines; see [rive-spec.md](rive-spec.md) |
 | Simple UI transitions | CSS with tokens | Compositor-only, zero JS |
 
 ## The player: `<keel-lottie>` (`assets/js/keel-lottie.js`)

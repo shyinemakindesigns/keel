@@ -92,7 +92,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 - **12 Lottie animations**, written in code with `source/lottie/kit.py` (no After Effects export). Three are progress-mapped: their timelines are linear in one value, and the app eases to the frame that matches real state.
 - **4 data-bound SVG charts** (spending by category, day by day, upcoming expenses, scenario comparison), because exact numbers can’t live in a keyframed file.
-- **Rive:** one real `.riv` runs in the Rive web runtime on the case study: a CC BY community toggle by ashishb, recolored by `source/rive/recolor_toggle.py` and wired to the app’s model. The four Keel-specific state machines are specified in `docs/motion-system/rive-spec.md`, with web implementations that already use the specified input names.
+- **Rive:** Keel’s four state machines (Equilibrium Indicator, Savings Goal, Onboarding Equilibrium, Scenario Visualization) are `.riv` files written in code by `source/rive/build_rive.py` with a small format writer (`source/rive/rivewriter.py`), and run live in the case study. Rebuild with `python3 source/rive/build_rive.py`; check renders with `source/rive/rive-check.html`. The app keeps the lighter web implementations, which use the same input names. One more `.riv` is a CC BY community toggle by ashishb, recolored by `source/rive/recolor_toggle.py`.
 
 ## Status
 
