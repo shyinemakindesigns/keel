@@ -288,8 +288,13 @@ async function journeys() {
     await b.run(`document.getElementById('rive-four').scrollIntoView()`); await sleep(3500);
     await check('rive demos run', `JSON.stringify(window.__keelRiveFour && window.__keelRiveFour())`, (g) => g && !g.includes('null'));
     // redirect
-    await b.go(BASE + '/prototype.html?screen=plan', 1500);
-    await check('old prototype link redirects', `location.pathname + location.search`, '/prototype/?screen=plan');
+    // the old address is a Netlify rule (netlify.toml), so it only redirects on Netlify
+    if (/netlify\.app/.test(BASE)) {
+      await b.go(BASE + '/prototype.html?screen=plan', 2500);
+      await check('old prototype link redirects', `location.pathname + location.search`, '/prototype/?screen=plan');
+    } else {
+      res.push({ name: 'old prototype link has a redirect rule', ok: /from = "\/prototype\.html"\s+to = "\/prototype\/"/.test(fs.readFileSync(path.join(ROOT, 'netlify.toml'), 'utf8')) });
+    }
     res.push({ name: 'no script errors during journeys', ok: b.log.errors.length === 0, got: b.log.errors.slice(0, 5) });
   } finally { b.close(); }
   return res;
