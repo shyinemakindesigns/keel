@@ -16,3 +16,12 @@
   for = "/_app/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# The prototype used to live at /prototype.html. A file by that name next to
+# /prototype/index.html makes Netlify's pretty URLs loop, so the old address is a
+# redirect rule instead of a page. The query string (?screen=plan) carries over.
+[[redirects]]
+  from = "/prototype.html"
+  to = "/prototype/"
+  status = 301
+  force = true

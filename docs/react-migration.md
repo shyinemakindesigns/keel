@@ -7,7 +7,7 @@ layout, responsive and accessibility probes used before the move.
 | Phase | Page | Status |
 | --- | --- | --- |
 | 1 | Design system (`/design-system/`), shared tokens, header and site navigation | Done |
-| 2 | Prototype (`/prototype/`; `/prototype.html` now redirects), plus the first-visit welcome, overview and guided tour | Done |
+| 2 | Prototype (`/prototype/`; `/prototype.html` redirects through a rule in `netlify.toml`), plus the first-visit welcome, overview and guided tour | Done |
 | 3 | Case study (`/`) and animation library (`/system.html`) | Next |
 
 ## How it fits together during the move
