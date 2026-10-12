@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/copy-static.mjs",
-    "preview": "vite preview --port 4318"
+    "preview": "vite preview --port 4318",
+    "test": "node tests/run.mjs"
   },
   "dependencies": {
     "react": "18.3.1",

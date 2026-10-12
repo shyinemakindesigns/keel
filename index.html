@@ -198,7 +198,8 @@
   .pass { color: var(--ink); font-weight: 600; }
   .exempt { color: var(--ink-2); }
   .pair { display: inline-flex; align-items: center; gap: 8px; }
-  .pair i { width: 28px; height: 20px; border-radius: 4px; display: inline-grid; place-items: center; font-style: normal; font-size: 12px; font-weight: 700; border: 1px solid var(--rule); }
+  .pair i { flex-shrink: 0; width: 28px; height: 20px; border-radius: 4px; display: inline-grid; place-items: center; font-style: normal; font-size: 12px; font-weight: 700; border: 1px solid var(--rule); }
+  .pair i.nt b { width: 16px; height: 4px; border-radius: 2px; } /* non-text pairs: a stroke sample, since these colors never carry text */
 
   .ba { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 720px; }
   .ba figure { margin: 0; }
@@ -1460,7 +1461,7 @@
   <h2 id="refs-h">References</h2>
   <ol class="refs">
     <li id="ref-1"><b>1</b><span>American Psychological Association (2015). <em>Stress in America: Paying With Our Health.</em> Survey conducted by Harris Poll, August 2014, 3,068 adults. <a href="https://www.apa.org/news/press/releases/stress/2014/stress-report.pdf">apa.org</a></span></li>
-    <li id="ref-2"><b>2</b><span>Karlsson, N., Loewenstein, G., &amp; Seppi, D. (2009). The ostrich effect: Selective attention to information. <em>Journal of Risk and Uncertainty</em>, 38, 95 to 115. <a href="https://www.cmu.edu/tepper/faculty-and-research/assets/docs/ppaper-61264983153898-ostrich-effect-1.pdf">The ostrich effect, cmu.edu (PDF)</a></span></li>
+    <li id="ref-2"><b>2</b><span>Karlsson, N., Loewenstein, G., &amp; Seppi, D. (2009). The ostrich effect: Selective attention to information. <em>Journal of Risk and Uncertainty</em>, 38, 95 to 115. <a href="https://doi.org/10.1007/s11166-009-9060-6">The ostrich effect, doi.org</a></span></li>
     <li id="ref-3"><b>3</b><span>Sicherman, N., Loewenstein, G., Seppi, D. J., &amp; Utkus, S. P. (2016). Financial Attention. <em>The Review of Financial Studies</em>, 29(4). <a href="https://www.cmu.edu/dietrich/sds/docs/loewenstein/FinancialAttention.pdf">Financial Attention, cmu.edu (PDF)</a></span></li>
     <li id="ref-4"><b>4</b><span>Consumer Financial Protection Bureau (2015). <em>Financial well-being: The goal of financial education.</em> <a href="https://www.consumerfinance.gov/data-research/research-reports/financial-well-being/">consumerfinance.gov</a></span></li>
     <li id="ref-5"><b>5</b><span>YNAB. The YNAB Method. <a href="https://www.ynab.com/method">ynab.com/method</a>, read October 2026.</span></li>

@@ -67,7 +67,7 @@
 .illo-grid figure { margin: 0; padding: 18px; }
 .illo-grid figure + figure { border-top: 1px solid var(--rule); }
 .illo-grid keel-lottie { width: 100%; }
-.illo-grid figcaption { font-size: 14.5px; color: var(--ink-2); margin-top: 8px; }
+.illo-grid figcaption { font-size: 14.5px; color: var(--ink-2-on-surface); margin-top: 8px; }
 .illo-grid figcaption b { color: var(--ink); display: block; }
 @media (min-width: 721px) { .illo-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .illo-grid figure + figure { border-top: 0; border-left: 1px solid var(--rule); } }
 .strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
@@ -122,7 +122,7 @@
 .pg { display: grid; grid-template-columns: 1fr; border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; background: var(--surface); margin-top: 28px; }
 .pg > section { padding: 22px 22px 24px; border-bottom: 1px solid var(--rule); min-width: 0; }
 .pg h3 { margin: 0 0 4px; font-size: 21px; }
-.pg .why { font-size: 14.5px; color: var(--ink-2); margin: 0 0 16px; }
+.pg .why { font-size: 14.5px; color: var(--ink-2-on-surface); margin: 0 0 16px; }
 .pg .why b { color: var(--ink); font-weight: 600; }
 .pg .demo { background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-md); padding: 16px; display: grid; gap: 12px; min-height: 150px; align-content: center; }
 .pg .ctrls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -153,7 +153,7 @@
 /* ---------- Experience KEEL ---------- */
 .exp-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 18px; }
 .seg { display: inline-flex; border: 1px solid var(--control); border-radius: var(--r-md); padding: 3px; background: var(--surface); }
-.seg button { border: 0; background: none; min-height: 40px; padding: 0 16px; border-radius: 7px; font: 600 15px var(--sans); color: var(--ink-2); cursor: pointer; transition: background-color var(--dur-hover) var(--ease-standard), color var(--dur-hover) var(--ease-standard); }
+.seg button { border: 0; background: none; min-height: 40px; padding: 0 16px; border-radius: 7px; font: 600 15px var(--sans); color: var(--ink-2-on-surface); cursor: pointer; transition: background-color var(--dur-hover) var(--ease-standard), color var(--dur-hover) var(--ease-standard); }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 .exp-links { display: flex; gap: 8px; flex-wrap: wrap; }
 .exp-links .btn { min-height: 40px; font-size: 15px; padding: 0 14px; }
@@ -195,7 +195,7 @@
 .ds h4 { margin: 0 0 12px; }
 .ds .stack { display: grid; gap: 10px; justify-items: start; }
 .ds .btn { min-height: 44px; font-size: 15px; }
-.ds .note2 { font-size: 13.5px; color: var(--ink-2); margin-top: 10px; }
+.ds .note2 { font-size: 13.5px; color: var(--ink-2-on-surface); margin-top: 10px; }
 .status-row { display: grid; gap: 8px; }
 .status { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; }
 .status svg { width: 16px; height: 16px; flex: none; }

@@ -36,7 +36,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 
 ## Run it
 
-Keel is moving to React in phases (`docs/react-migration.md`). The design system is React; the case study, prototype and animation library are still plain HTML and are copied into the build as they are.
+Keel is moving to React in phases (`docs/react-migration.md`). The design system and the prototype are React; the case study and the animation library are still plain HTML and are copied into the build as they are.
 
 ```bash
 npm install
@@ -44,15 +44,23 @@ npm run dev       # http://localhost:5173/design-system/
 npm run build     # the whole site in dist/ (this is what Netlify runs)
 ```
 
-The plain pages also still run from a static server:
-
-The pages load the Lottie JSON with `fetch`, so serve the folder rather than opening the files directly:
+The plain pages also run from a static server. They load the Lottie JSON with `fetch`, so serve the folder rather than opening the files directly:
 
 ```bash
 python3 -m http.server 4317
 ```
 
 Then open <http://localhost:4317/> for the case study. The React pages (design system, prototype) need `npm run dev` or a build.
+
+**Test:** `npm test` drives headless Chrome (no extra packages) against a served build:
+
+```bash
+npm run build
+python3 -m http.server 4319 --directory dist
+npm test                         # or: node tests/run.mjs journeys keyboard
+```
+
+Six suites: `pages` (every page and app state, light and dark, at 320, 390, 768 and 1280px: script errors, failed requests, sideways scrolling, text contrast, accessible names, target size, alt text, headings), `links` (every internal URL returns 200; external links reported), `clicks` (presses every control and watches for errors), `keyboard` (tabs through each page: focus visible, on screen, never stuck), `journeys` (the guided tour, explore, returning visitor and the app's numbers, design system interactions, the case study embed) and `media` (portfolio image sizes, carousel PDF pages, the video decodes). Results go to `tests/results/`; the command exits non-zero on any problem.
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 
