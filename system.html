@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Keel design system</title>
+<title>Keel animation library</title>
 <meta name="description" content="Keel’s design and motion system: Mineral & Ember tokens, type, the Keel Motion Language, the hand-authored Lottie library with static fallbacks, Rive specifications, and engineering guidelines.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,9 +40,11 @@
   /* phones: wordmark on one row, the section links in a single sideways-scrolling row below it */
   html { scroll-padding-top: 124px; }
   .top .in { flex-wrap: wrap; row-gap: 2px; padding-top: 10px; }
-  .top nav { display: flex; gap: 6px; align-items: center; order: 3; flex: 1 0 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 10px 6px; }
-  .top nav::-webkit-scrollbar { display: none; }
-  .top nav .tbtn { flex: none; }
+  .navrow { order: 3; flex: 1 0 100%; display: flex; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 10px 6px; }
+  .navrow::-webkit-scrollbar { display: none; }
+  .navrow nav { display: flex; gap: 6px; align-items: center; flex: none; }
+  .navrow .tbtn { flex: none; }
+  .site-nav { padding-right: 8px; margin-right: 6px; border-right: 1px solid var(--rule); }
   .tbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 0; background: none; font: 600 15px var(--sans); color: var(--ink); border-radius: var(--r-md); cursor: pointer; text-decoration: none; }
   .tbtn:hover { background: var(--tertiary-hover); }
   section { padding: 56px 0; border-top: 1px solid var(--rule); }
@@ -73,8 +75,8 @@
   .btn:hover { background: var(--surface-2); }
   .card .row2 a { font-size: 14px; display: inline-flex; align-items: center; min-height: 44px; }
   ul.plain { padding-left: 1.2em; } ul.plain li { margin-bottom: 8px; }
-  @media (min-width: 561px) { .scale > div { grid-template-columns: 160px 1fr; gap: 16px; } .top .in, .wrap { padding: 0 24px; } .top nav { margin: 0 -24px; padding: 0 18px 6px; } }
-  @media (min-width: 821px) { html { scroll-padding-top: 76px; } .top .in { flex-wrap: nowrap; padding-top: 0; } .top nav { order: 0; flex: 0 1 auto; flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; } }
+  @media (min-width: 561px) { .scale > div { grid-template-columns: 160px 1fr; gap: 16px; } .top .in, .wrap { padding: 0 24px; } .navrow { margin: 0 -24px; padding: 0 18px 6px; } }
+  @media (min-width: 821px) { html { scroll-padding-top: 76px; } .top .in { flex-wrap: nowrap; padding-top: 0; } .navrow { order: 0; flex: 0 1 auto; overflow: visible; margin: 0; padding: 0; } .navrow nav { flex-wrap: wrap; } .site-nav { order: 2; border-right: 0; margin: 0 0 0 6px; padding: 0 0 0 8px; border-left: 1px solid var(--rule); } }
 </style>
 </head>
 <body>
@@ -84,16 +86,19 @@
 
 <header class="top"><div class="in">
   <a class="wordmark" href="index.html"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</a>
-  <nav aria-label="System">
+  <div class="navrow">
+  <nav class="site-nav" aria-label="Site"><a class="tbtn" href="/">Case study</a><a class="tbtn" href="/design-system/">Design system</a></nav>
+  <nav class="sec-nav" aria-label="Animation library sections">
     <a class="tbtn" href="#color">Color</a><a class="tbtn" href="#type">Type</a><a class="tbtn" href="#motion">Motion</a><a class="tbtn" href="#library">Library</a><a class="tbtn" href="#rive">Rive</a><a class="tbtn" href="#eng">Engineering</a>
     <button class="tbtn" id="theme" type="button">Theme</button>
   </nav>
+  </div>
 </div></header>
 
 <main class="wrap">
   <div style="padding:64px 0 40px">
-    <h1>The Keel design system</h1>
-    <p class="lede" style="margin-top:18px">Mineral &amp; Ember tokens, two typefaces, one motif, and a motion language with sixteen documented animations. This page reads the same tokens as the app, so the theme switch changes everything here too.</p>
+    <h1>The Keel animation library</h1>
+    <p class="lede" style="margin-top:18px">Every animation in Keel, playable, with its static fallback, plus the tokens and engineering notes behind them. It reads the same tokens as the app, so the theme switch changes everything here too. Color, type and components live in the <a href="/design-system/">design system</a>.</p>
     <p><a href="index.html">Back to the case study</a> · <a href="prototype.html">The app</a> · <a href="docs/motion-system/README.md">Motion system (Markdown)</a></p>
   </div>
 

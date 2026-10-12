@@ -279,3 +279,17 @@ a[href^="#ref-"] { padding: 6px 3px; margin: -6px -3px; }
 /* labels stay 12px; in a narrow card the "+3 days" tick drops its label so nothing collides */
 .rv4-ticks span:nth-child(2) { display: none; }
 @container (min-width: 381px) { .rv4-ticks span:nth-child(2) { display: inline; } }
+
+/* Site switcher (case study | design system). Phones and tablets: its own row under the
+   header bar. From 961px, where the section list moves to the sidebar, it joins the bar. */
+.top .in { flex-wrap: wrap; row-gap: 0; }
+.site-nav { order: 3; flex: 1 0 100%; display: flex; gap: 2px; margin: 0 -10px; padding-bottom: 2px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; color: var(--ink-2); text-decoration: none; font-size: 15px; font-weight: 500; }
+.site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 8px; }
+@media (min-width: 961px) {
+  .top .in { flex-wrap: nowrap; }
+  .site-nav { order: 0; flex: none; margin: 0 auto 0 8px; padding: 0 0 0 16px; border-left: 1px solid var(--rule); }
+  .top .by { display: none; }
+}
+@media (min-width: 1280px) { .top .by { display: inline; order: 1; } .site-nav { order: 0; } }
