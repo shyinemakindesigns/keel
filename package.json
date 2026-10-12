@@ -1,0 +1,20 @@
+{
+  "name": "keel",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Keel: a calm money app concept. Case study, design system and prototype.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/copy-static.mjs",
+    "preview": "vite preview --port 4318"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.11"
+  }
+}

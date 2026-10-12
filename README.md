@@ -12,9 +12,10 @@ Keel is not a real company, product or client project, and it is not affiliated 
 
 | Path | What it is |
 | --- | --- |
+| `design-system/`, `src/` | The design system page in React (Vite): Mineral & Ember tokens, calculated contrast, type, spacing, motion, and live accessible components. Shared React code in `src/shared`. See `docs/react-migration.md` |
 | `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
 | `prototype.html` | The app, onboarding through Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout |
-| `system.html` | The design and motion system: live tokens, the animation library with fallbacks, the Rive state machines, engineering notes |
+| `system.html` | The animation library: every Lottie and Rive file, playable, with fallbacks and engineering notes |
 | `DESIGN.md` | Short brand brief |
 | `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
 | `assets/css/` | `components.css` (shared), `app.css` (the app), `case-study-motion.css` (the case study) |
@@ -35,6 +36,16 @@ Keel is not a real company, product or client project, and it is not affiliated 
 
 ## Run it
 
+Keel is moving to React in phases (`docs/react-migration.md`). The design system is React; the case study, prototype and animation library are still plain HTML and are copied into the build as they are.
+
+```bash
+npm install
+npm run dev       # http://localhost:5173/design-system/
+npm run build     # the whole site in dist/ (this is what Netlify runs)
+```
+
+The plain pages also still run from a static server:
+
 The pages load the Lottie JSON with `fetch`, so serve the folder rather than opening the files directly:
 
 ```bash
@@ -45,7 +56,7 @@ Then open <http://localhost:4317/> for the case study and <http://localhost:4317
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 
-**Deploy:** it’s a static site. Connect the repo to Netlify (or drag the folder in) and it publishes the root, per `netlify.toml`. The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
+**Deploy:** connect the repo to Netlify; it runs `npm run build` and publishes `dist`, per `netlify.toml`. The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
 
 Regenerate the animations or rerun the audits:
 

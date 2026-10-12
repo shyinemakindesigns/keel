@@ -1,0 +1,197 @@
+/* =====================================================================
+   Keel tokens: Mineral & Ember
+   One source for every React page. Values match assets/tokens.css, which
+   the pages not yet ported still use (docs/react-migration.md).
+   ===================================================================== */
+
+/* 1. Primitive tokens ------------------------------------------------- */
+:root {
+  --oxidized-ember: #B94F36;
+  --porcelain-clay: #F6F3ED;
+  --mineral-stone: #E6E2D9;
+  --volcanic-ink: #252A28;
+  --weathered-slate: #656B66;
+
+  --basalt: #202725;
+  --chalk: #F4F0E7;
+
+  /* derived */
+  --mineral-deep: #DCD7CC;
+  --slate-deep: #555B56;
+  --ember-text: #9E412B;
+  --ember-hover: #A4452F;
+  --ember-pressed: #8F3C29;
+  --basalt-raised: #2A322F;
+  --basalt-deep: #353E3A;
+  --chalk-muted: #B3B6AE;
+  --ember-lifted: #E07F60;
+
+  /* derived for dark-theme interaction: lifted ember, one step lighter and darker.
+     Basalt label on each: 6.1:1 and 4.66:1 (calculated in the Color section). */
+  --ember-lifted-hover: #E68D70;
+  --ember-lifted-pressed: #D9714F;
+
+  /* status */
+  --status-positive: #2E6A4E;
+  --status-negative: #9B2C3A;
+  --status-warning: #7D5300;
+  --status-info: #3B5A72;
+
+  /* status applied on dark surfaces: the light-theme hues fail there, so the
+     same four roles step up in lightness */
+  --status-positive-lifted: #7FC4A0;
+  --status-negative-lifted: #F09AA3;
+  --status-warning-lifted: #E2B45C;
+  --status-info-lifted: #9DBCD6;
+
+  /* data visualization */
+  --data-1: #252A28;
+  --data-2: #4A504C;
+  --data-3: #7A7F79;
+  --data-4: #A6A9A2;
+  --data-5: #C9C8BF;
+  --data-highlight: #B94F36;
+}
+
+/* 2. Semantic tokens: light -------------------------------------------- */
+:root,
+[data-theme="light"] {
+  --canvas: var(--porcelain-clay);
+  --surface: var(--mineral-stone);
+  --surface-2: var(--mineral-deep);
+
+  --ink: var(--volcanic-ink);
+  --ink-2: var(--weathered-slate);
+  --ink-2-on-surface: var(--slate-deep); /* Weathered Slate is 4.22:1 on stone; this is 5.38:1 */
+
+  --accent: var(--oxidized-ember);
+  --accent-hover: var(--ember-hover);
+  --accent-pressed: var(--ember-pressed);
+  --on-accent: #FFFFFF;
+  --accent-ink: var(--ember-text);
+  --focus: var(--ember-text);
+
+  --hairline: rgba(37, 42, 40, 0.12);
+  --rule: rgba(37, 42, 40, 0.18);
+  --control: rgba(37, 42, 40, 0.58);
+  --tint: rgba(37, 42, 40, 0.06);
+
+  --positive: var(--status-positive);
+  --negative: var(--status-negative);
+  --warning: var(--status-warning);
+  --info: var(--status-info);
+
+  --chart-1: var(--data-1);
+  --chart-2: var(--data-2);
+  --chart-3: var(--data-3);
+  --chart-4: var(--data-4);
+  --chart-5: var(--data-5);
+  --chart-highlight: var(--data-highlight);
+
+  /* illustration materials: faces built only from palette values */
+  --m-ember-top: var(--ember-lifted);   --m-ember-front: var(--oxidized-ember); --m-ember-side: var(--ember-pressed);
+  --m-mineral-top: var(--porcelain-clay); --m-mineral-front: var(--mineral-stone); --m-mineral-side: var(--mineral-deep);
+  --m-basalt-top: var(--basalt-deep);   --m-basalt-front: var(--basalt-raised); --m-basalt-side: var(--basalt);
+  --m-porcelain-top: #FFFFFF;           --m-porcelain-front: var(--chalk);      --m-porcelain-side: var(--mineral-stone);
+  --m-line: var(--volcanic-ink);
+  --m-water: var(--mineral-deep);
+  --m-edge: rgba(37, 42, 40, 0.18);
+
+  --lift: 0 1px 2px rgba(37, 42, 40, 0.05), 0 12px 32px -16px rgba(37, 42, 40, 0.22);
+  --scrim: rgba(32, 39, 37, 0.42);
+  color-scheme: light;
+}
+
+/* 3. Semantic tokens: dark (designed, not inverted) -------------------- */
+[data-theme="dark"] {
+  --canvas: var(--basalt);
+  --surface: var(--basalt-raised);
+  --surface-2: var(--basalt-deep);
+
+  --ink: var(--chalk);
+  --ink-2: var(--chalk-muted);
+  --ink-2-on-surface: var(--chalk-muted);
+
+  --accent: var(--ember-lifted);
+  --accent-hover: var(--ember-lifted-hover);
+  --accent-pressed: var(--ember-lifted-pressed);
+  --on-accent: var(--basalt);
+  --accent-ink: var(--ember-lifted);
+  --focus: var(--ember-lifted);
+
+  --hairline: rgba(244, 240, 231, 0.12);
+  --rule: rgba(244, 240, 231, 0.18);
+  --control: rgba(244, 240, 231, 0.58);
+  --tint: rgba(244, 240, 231, 0.07);
+
+  --positive: var(--status-positive-lifted);
+  --negative: var(--status-negative-lifted);
+  --warning: var(--status-warning-lifted);
+  --info: var(--status-info-lifted);
+
+  --chart-1: var(--chalk);
+  --chart-2: var(--data-5);
+  --chart-3: #9A9E97;
+  --chart-4: #6E746E;
+  --chart-5: #4D5550;
+  --chart-highlight: var(--ember-lifted);
+
+  --m-ember-top: var(--ember-lifted-hover); --m-ember-front: var(--ember-lifted); --m-ember-side: var(--oxidized-ember);
+  --m-mineral-top: var(--slate-deep);   --m-mineral-front: var(--basalt-deep);  --m-mineral-side: var(--basalt-raised);
+  --m-basalt-top: var(--chalk-muted);   --m-basalt-front: var(--weathered-slate); --m-basalt-side: var(--slate-deep);
+  --m-porcelain-top: var(--chalk);      --m-porcelain-front: var(--mineral-deep); --m-porcelain-side: var(--chalk-muted);
+  --m-line: var(--chalk);
+  --m-water: var(--basalt-deep);
+  --m-edge: rgba(244, 240, 231, 0.16);
+
+  --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 36px -16px rgba(0, 0, 0, 0.6);
+  --scrim: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+/* 4. Spacing, radius, type, motion -------------------------------------- */
+:root {
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --ease-settle: cubic-bezier(.2, .7, .2, 1);
+  --ease-enter: cubic-bezier(.22, 1, .36, 1);
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(.4, 0, .2, 1);
+
+  --duration-press: 140ms;
+  --duration-hover: 200ms;
+  --duration-card: 280ms;
+  --duration-move: 420ms;
+  --duration-chart: 520ms;
+  --duration-settle: 900ms;
+  --duration-illustration: 1400ms;
+  --duration-hero: 4000ms;
+  --duration-stagger: 60ms;
+
+  --target: 44px;
+  --header-h: 64px;
+}
+
+/* 5. Reduced motion: every duration becomes zero; states still change --- */
+:root[data-motion="reduced"] {
+  --duration-press: 0ms; --duration-hover: 0ms; --duration-card: 0ms; --duration-move: 0ms;
+  --duration-chart: 0ms; --duration-settle: 0ms; --duration-illustration: 0ms; --duration-hero: 0ms;
+  --duration-stagger: 0ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) {
+    --duration-press: 0ms; --duration-hover: 0ms; --duration-card: 0ms; --duration-move: 0ms;
+    --duration-chart: 0ms; --duration-settle: 0ms; --duration-illustration: 0ms; --duration-hero: 0ms;
+    --duration-stagger: 0ms;
+  }
+}

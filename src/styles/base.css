@@ -1,0 +1,25 @@
+/* Reset and base, shared by Keel's React pages. Mobile-first. */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--header-h) + 8px); -webkit-text-size-adjust: 100%; }
+html:not([data-motion="reduced"]) { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html:not([data-motion="full"]) { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--canvas); color: var(--ink);
+  font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  transition: background-color var(--duration-hover) var(--ease-standard), color var(--duration-hover) var(--ease-standard);
+}
+img, svg { max-width: 100%; }
+p { margin: 0 0 1em; }
+a { color: var(--accent-ink); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+code, kbd { font-family: var(--mono); font-size: 0.86em; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; margin: 0; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+[tabindex="-1"]:focus { outline: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums; }
+.small { font-size: 14px; }
+.muted { color: var(--ink-2); }
+.skip { position: absolute; left: 16px; top: -60px; z-index: 50; background: var(--canvas); padding: 10px 14px; border-radius: var(--radius-md); }
+.skip:focus { top: 12px; }

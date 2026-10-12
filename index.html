@@ -358,6 +358,7 @@
   <div class="in">
     <a class="wordmark" href="#top" aria-label="Keel, back to top"><svg aria-hidden="true"><use href="#mark"/></svg>Keel</a>
     <span class="by">A case study by Shyine Makin</span>
+    <nav class="site-nav" aria-label="Site"><a href="/" aria-current="page">Case study</a><a href="/design-system/">Design system</a></nav>
     <div class="right">
       <button class="btn btn-tertiary theme-toggle motion-toggle" id="motion-toggle" type="button" aria-pressed="false">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 12h16" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M6 9.5h8c-.4 1.8-1.4 2.6-2.8 2.6H8.8C7.4 12.1 6.4 11.3 6 9.5z" fill="currentColor"/></svg>
@@ -1165,7 +1166,7 @@
   <div class="prose">
     <p><b>Why the app still ships the web versions:</b> the four files total 24 KB, but the Rive runtime is 51 KB plus a 431 KB WebAssembly module (gzipped). The app’s whole first load is about 110 KB. The files use the same input names as the web implementations, so the swap is a loading decision, not a redesign. <b>What changed from the spec while authoring:</b> the ghost needed its own depth, so the Equilibrium Indicator gained a <code>ghostValue</code> input; and <code>direction</code> turned out to be unnecessary, because blending between poses reverses exactly on its own. It stays as an input so the interface matches the spec.</p>
   </div>
-  <p class="small"><a href="docs/motion-system/rive-spec.md">Read the Rive specification</a> · <a href="system.html">The full motion design system</a></p>
+  <p class="small"><a href="docs/motion-system/rive-spec.md">Read the Rive specification</a> · <a href="/design-system/#motion">Motion in the design system</a> · <a href="system.html#library">The animation library</a></p>
 
   <h3>Rive in practice: a community file, recolored</h3>
   <div class="rive-demo reveal">
@@ -1307,7 +1308,7 @@
       </div>
     </div>
   </div>
-  <p class="small" style="margin-top:16px"><a href="system.html">Open the full design and motion system</a>: tokens, the Lottie library with fallbacks, the Rive state machines, components, and engineering guidelines.</p>
+  <p class="small" style="margin-top:16px"><a href="/design-system/">Open the full design system</a>: color with calculated contrast, type, spacing, motion, and live, accessible components. The <a href="system.html">animation library</a> documents every Lottie and Rive file.</p>
 </section>
 
 <!-- ============================================================ 8 TESTING -->
@@ -1428,7 +1429,7 @@
         <tr><th scope="row">Motion gallery and playground</th><td class="state-word">Complete</td><td>Section 8</td></tr>
         <tr><th scope="row">Embedded prototype, mobile and desktop</th><td class="state-word">Complete</td><td>Section 10</td></tr>
         <tr><th scope="row">Storyboards</th><td class="state-word">Complete, from real frames</td><td>Gallery; docs/motion-system/storyboards</td></tr>
-        <tr><th scope="row">Motion design system documentation</th><td class="state-word">Complete</td><td>system.html, docs/motion-system</td></tr>
+        <tr><th scope="row">Motion design system documentation</th><td class="state-word">Complete</td><td>design-system/ (React), system.html, docs/motion-system</td></tr>
         <tr><th scope="row">Reduced-motion alternatives and static fallbacks</th><td class="state-word">Complete</td><td>assets/fallbacks, header switch</td></tr>
         <tr><th scope="row">Performance and QA reports</th><td class="state-word">Complete, measured</td><td>docs/motion-system/qa-report.md</td></tr>
         <tr><th scope="row">Usability testing</th><td class="state-word">Plan only, not run</td><td>Section 12</td></tr>
