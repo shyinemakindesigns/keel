@@ -17,6 +17,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         'design-system': page('./design-system/index.html'),
+        prototype: page('./prototype/index.html'),
       },
     },
   },

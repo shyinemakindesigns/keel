@@ -365,7 +365,7 @@
       setTimeout(function () {
         if (ready) return;
         $('keel-lottie', state).stop();
-        $('#frame-msg').innerHTML = 'The prototype didn’t load here. <a href="prototype.html" target="_blank" rel="noopener">Open it in its own tab</a>.';
+        $('#frame-msg').innerHTML = 'The prototype didn’t load here. <a href="/prototype/" target="_blank" rel="noopener">Open it in its own tab</a>.';
       }, 12000);
     });
     watch.observe(state);

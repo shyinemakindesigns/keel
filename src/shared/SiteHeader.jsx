@@ -8,7 +8,7 @@ import { usePrefs, setTheme, setReducedMotion, isReduced } from './prefs.js';
 // The active section is marked with aria-current="location" and a 2px ember underline
 // that moves between links (420ms, ease-settle; instant with reduced motion).
 
-export const SITE = { caseStudy: '/', designSystem: '/design-system/', prototype: '/prototype.html' };
+export const SITE = { caseStudy: '/', designSystem: '/design-system/', prototype: '/prototype/' };
 
 function useActiveSection(ids, headerRef) {
   const [active, setActive] = useState(ids[0]);

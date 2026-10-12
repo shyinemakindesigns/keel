@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keel prototype</title>
+<meta name="description" content="Interactive prototype of Keel, a fictional budgeting app built around steadiness. Guided tour included. Sample data only.">
+<meta property="og:title" content="Keel prototype">
+<meta property="og:description" content="A calm money app concept you can try: a guided tour, then the working prototype with sample data.">
+<meta property="og:image" content="https://keel-casestudy.netlify.app/portfolio/keel-og-1200x630.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,400,100&display=swap" rel="stylesheet">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+<script>
+  // Theme and motion before first paint: ?theme= / ?motion= win, then saved choices, else the OS.
+  (function () {
+    var q = new URLSearchParams(location.search), t = q.get('theme'), m = q.get('motion');
+    try { t = t || localStorage.getItem('keel-theme'); m = m || localStorage.getItem('keel-motion'); } catch (e) {}
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    if (m === 'reduced') document.documentElement.setAttribute('data-motion', 'reduced');
+  })();
+</script>
+<!-- Shared, framework-free modules: the Lottie player custom element and the data-bound charts -->
+<script src="/assets/js/keel-lottie.js" data-base="/assets/"></script>
+<script src="/assets/js/keel-charts.js"></script>
+</head>
+<body>
+<noscript><p style="padding:24px;font-family:Georgia,serif">The Keel prototype needs JavaScript. The <a href="/">case study</a> works without it.</p></noscript>
+<div id="root"></div>
+<script type="module" src="/src/prototype/main.jsx"></script>
+</body>
+</html>

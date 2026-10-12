@@ -46,6 +46,25 @@ All three pages are written mobile-first: base styles are the phone layout, and 
 
 Also fixed while converting: a garbled block of hero animation CSS, where a selector could never match and the tagline’s fade-in was always switched off.
 
+## Prototype in React, with the guided tour (October 12, 2026)
+
+Headless Chrome, scripted. What was run:
+
+- **Every journey in the brief.** New visitor through the welcome, overview, all 8 steps (with the interaction in each), finish and Launch app; Explore on my own; returning visitor opening the app directly; Guide, then Restart tour; Back, Next, Skip tour, Exit (close button and Escape); resume after a reload mid-tour; screen guides from the overview and the Guide; the embedded copy in the case study. All pass.
+- **Regression.** The ported app gives the same results as the vanilla version (see `docs/react-migration.md`), and onboarding, recategorizing, adding to and creating goals, applying a plan and reset all work.
+- **Layout.** Every tour step and the welcome and overview at 320, 375, 390, 430, 768, 1024, 1280 and 1440px: the panel stays inside the app, and the highlighted element is either fully clear of the panel or, when it is taller than the space above a docked panel (the category list, the goal card and the daily-spending card on phones), its top is shown and the rest scrolls; the panel can also be collapsed to one bar. All 10 app screens at those 8 widths: no overflow, no clipped or sub-12px text, no control under 44px.
+- **Accessibility.** No contrast failures on the welcome, overview or tour in either theme; no unnamed controls; one h1 per screen; focus moves to each step heading, returns to the opener when a sheet closes, and the finish dialog traps focus. Focus ring in the panel: 2px, 5.84:1 light, 5.89:1 dark.
+
+| # | Where | Finding | Fix |
+| --- | --- | --- | --- |
+| T1 | Tour, phones | A short filtered list could not scroll the highlighted row clear of the docked panel | While the tour runs, screens get bottom space equal to the panel |
+| T2 | Tour, ring | A dim layer around the highlight lowered text contrast below 4.5:1 (3.57:1 at 28%; even 12% fails) | No dimming: a double outline and a "Step n" tag mark the element |
+| T3 | Tour, finish | After Launch app, focus did not reach the Steady heading (the page was still inert, and staying on the same screen skipped the focus) | Inert released synchronously; focus moves run even when the screen doesn't change |
+| T4 | Tour, 1024px | The popover covered part of the goal card | Wider popover, lift the element when there's no side room, and use partial room below with internal scroll |
+| T5 | Welcome | "Keel" appeared three times at once | The signature animation became a quiet keel illustration |
+
+Not verified: Safari and Firefox, real devices, and a screen reader pass by a person.
+
 ## Advisory kept
 
 - **Switch height 28px (2.5.5, AAA).** Bill switches measure 46×28. They pass 2.5.8 (24px minimum) and their touch area is 46×46 through an invisible hit area, which the probe can’t see because it measures the element box.
