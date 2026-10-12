@@ -46,7 +46,9 @@
     var theme = isDark() ? 'dark' : 'light', body = $('#contrast-rows'); if (!body) return;
     body.innerHTML = AUDIT.filter(function (r) { return r[0] === theme; }).map(function (r) {
       var res = r[7] === null ? '<span class="exempt">Exempt, decorative</span>' : '<span class="pass">Pass</span>';
-      return '<tr><td><span class="pair"><i style="background:' + r[4] + ';color:' + r[2] + '">Aa</i>' + r[1] + ' on ' + r[3] + '</span></td><td>' + r[5] + '</td><td>' + r[6].toFixed(2) + ':1</td><td>' + (r[7] ? r[7] + ':1' : 'n/a') + '</td><td>' + res + '</td></tr>';
+      return '<tr><td><span class="pair">' + (r[7] === 4.5
+        ? '<i aria-hidden="true" style="background:' + r[4] + ';color:' + r[2] + '">Aa</i>'
+        : '<i aria-hidden="true" class="nt" style="background:' + r[4] + '"><b style="background:' + r[2] + '"></b></i>') + r[1] + ' on ' + r[3] + '</span></td><td>' + r[5] + '</td><td>' + r[6].toFixed(2) + ':1</td><td>' + (r[7] ? r[7] + ':1' : 'n/a') + '</td><td>' + res + '</td></tr>';
     }).join('');
     $('#audit-theme').textContent = (theme === 'dark' ? 'Dark' : 'Light') + ' theme contrast audit';
   }

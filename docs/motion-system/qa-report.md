@@ -65,6 +65,19 @@ Headless Chrome, scripted. What was run:
 
 Not verified: Safari and Firefox, real devices, and a screen reader pass by a person.
 
+## Automated suite (October 12, 2026)
+
+`npm test` (`tests/run.mjs`) now repeats these checks on every page, so they don't depend on someone remembering to run them. Coverage: 14 page and app states, light and dark, at 320, 390, 768 and 1280px (112 audits, about 25,000 text elements measured); every internal URL; 185 controls pressed; 1,160 Tab stops across 6 pages at two widths; 37 journey assertions; 14 media files.
+
+| # | Where | Finding | Fix |
+| --- | --- | --- | --- |
+| S1 | Case study, research | The ostrich effect citation linked to a CMU PDF that now returns 404 | Links to the DOI, 10.1007/s11166-009-9060-6 (checked against Crossref) |
+| S2 | Case study, light theme | Secondary text on the surface panel measured 4.22:1 in four places: illustration captions, motion principle notes, system notes and the Phone/Desktop switch | They use `--ink-2-on-surface` (5.38:1), the token the system already defines for this |
+| S3 | Prototype tour, step 2 | "Less room" and "More room" were the same 4.22:1 pairing | Same token |
+| S4 | Case study, contrast table | Non-text pairs (hairlines, control borders, chart series) showed an "Aa" sample, which reads as text in a color that is never used for text (1.39 to 4.48:1) | Non-text rows show a stroke sample; the sample is hidden from screen readers, since the row label names the pair |
+
+Checked and left as is: when tabbing at machine speed, focus can reach the lazily loaded prototype frame before the app inside has mounted. At human pace (one Tab every 250ms) focus went straight to the first control, with its ring, in 4 of 4 runs.
+
 ## Advisory kept
 
 - **Switch height 28px (2.5.5, AAA).** Bill switches measure 46×28. They pass 2.5.8 (24px minimum) and their touch area is 46×46 through an invisible hit area, which the probe can’t see because it measures the element box.
