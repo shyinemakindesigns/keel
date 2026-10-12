@@ -5,7 +5,7 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 **URLs used below.** They assume the Netlify site is named `keel-casestudy`. If you pick a different name, replace the domain here and in the `og:` tags at the top of `index.html`.
 
 - Case study: https://keel-casestudy.netlify.app
-- Prototype (demo): https://keel-casestudy.netlify.app/prototype.html
+- Prototype (demo): https://keel-casestudy.netlify.app/prototype/
 
 ## Files
 
@@ -31,7 +31,7 @@ Every number on the slides is either a cited published figure (APA 2015; Karlsso
 
 **Links:**
 - Case study: https://keel-casestudy.netlify.app
-- Try the prototype: https://keel-casestudy.netlify.app/prototype.html
+- Try the prototype: https://keel-casestudy.netlify.app/prototype/
 
 ## LinkedIn post
 
@@ -59,7 +59,7 @@ Should a money app ever show you red?
 
 ```
 Case study: https://keel-casestudy.netlify.app
-Try the prototype: https://keel-casestudy.netlify.app/prototype.html
+Try the prototype: https://keel-casestudy.netlify.app/prototype/
 ```
 
 **Document title** (LinkedIn asks for one when you upload the PDF): Keel: designing a money app for the bad weeks
@@ -104,7 +104,7 @@ What would make you open a money app on a bad week?
 
 ```
 Case study: https://keel-casestudy.netlify.app
-Try the prototype: https://keel-casestudy.netlify.app/prototype.html
+Try the prototype: https://keel-casestudy.netlify.app/prototype/
 ```
 
 **Posting checklist**

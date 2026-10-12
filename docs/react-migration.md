@@ -7,8 +7,8 @@ layout, responsive and accessibility probes used before the move.
 | Phase | Page | Status |
 | --- | --- | --- |
 | 1 | Design system (`/design-system/`), shared tokens, header and site navigation | Done |
-| 2 | Prototype (`/prototype.html`, moving to `/prototype/`) | Next |
-| 3 | Case study (`/`) and animation library (`/system.html`) | After the prototype |
+| 2 | Prototype (`/prototype/`; `/prototype.html` now redirects), plus the first-visit welcome, overview and guided tour | Done |
+| 3 | Case study (`/`) and animation library (`/system.html`) | Next |
 
 ## How it fits together during the move
 
@@ -40,3 +40,22 @@ npm run dev       # http://localhost:5173/design-system/ (legacy pages are serve
 npm run build     # dist/, the whole site
 npm run preview   # serve dist on http://localhost:4318
 ```
+
+## Phase 2 notes: the prototype
+
+- `src/prototype/` replaces `assets/js/app.js` (retired; it remains in git history). The data model in `src/prototype/model.js` is the same rules line for line, and the app keeps its existing styles (`assets/tokens.css`, `components.css`, `app.css`) and its framework-free modules: the `<keel-lottie>` player and `keel-charts.js` for the data-bound charts.
+- Verified to give the same results as before the port: pausing the gym moves the reading to Oct 26; a $700 purchase check reads "covered through Oct 14", with car insurance the first bill reached; recategorizing Hana Sushi moves $16.80; adding $50 to the goal gives Oct 24; a plan of $100 more per paycheck gives $3,030 against $1,730, with the goal done Nov 27 instead of Mar 19, 2027.
+- The case study embed and its messages (`go`, `theme`, `motion`, `reset`, `whatif`, and `screen` back) work unchanged at `/prototype/?embed=1`.
+
+### Visitor experience (`src/prototype/tour/`)
+
+| Piece | What it does |
+| --- | --- |
+| `Intro.jsx` | First visit: "Meet Keel.", with "Take a guided tour" or "Explore on my own" |
+| `Overview.jsx` | The four tabs, each with its question, purpose, main feature, a capture of the real screen, and "Explore" (opens that screen with its screen guide) |
+| `steps.jsx` | The eight steps. Each names a real element, its screen, and what the visitor can do there; panel actions mirror page actions |
+| `Tour.jsx` | Nonmodal guidance: a double outline with a step tag (no dimming, which would lower text contrast), a panel docked above the tab bar on phones or a popover beside the element on wide screens, and a modal finish |
+| `GuideSheet.jsx` | The Guide: restart tour, guide for this screen, overview, what the keel means, sample-data assumptions, replay setup, reset |
+| `visitor.js` | `keel-visitor` in localStorage: new, touring (with step), completed, exploring |
+
+New in the app: a "Spend a little less each day?" demonstration on Plan. It reruns the same reading with a lower daily figure; balance, bills and payday are unchanged, nothing is saved, and it is labelled as a demonstration.

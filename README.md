@@ -14,7 +14,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | --- | --- |
 | `design-system/`, `src/` | The design system page in React (Vite): Mineral & Ember tokens, calculated contrast, type, spacing, motion, and live accessible components. Shared React code in `src/shared`. See `docs/react-migration.md` |
 | `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
-| `prototype.html` | The app, onboarding through Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout |
+| `prototype/`, `src/prototype/` | The app in React: a first-visit welcome, overview and guided tour, then onboarding, Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout. `prototype.html` redirects here |
 | `system.html` | The animation library: every Lottie and Rive file, playable, with fallbacks and engineering notes |
 | `DESIGN.md` | Short brand brief |
 | `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
@@ -52,7 +52,7 @@ The pages load the Lottie JSON with `fetch`, so serve the folder rather than ope
 python3 -m http.server 4317
 ```
 
-Then open <http://localhost:4317/> for the case study and <http://localhost:4317/prototype.html> for the prototype.
+Then open <http://localhost:4317/> for the case study. The React pages (design system, prototype) need `npm run dev` or a build.
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 

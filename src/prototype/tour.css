@@ -1,0 +1,220 @@
+/* =====================================================================
+   Keel prototype: the visitor experience. Welcome, overview, guide,
+   tour, and the daily-spending demonstration. Built only from the
+   existing tokens (assets/tokens.css) and the app's own classes;
+   mobile-first, with the wide layout from 900px like the rest of the app.
+   ===================================================================== */
+#root { display: contents; }
+
+/* ---------- shared headers: a Guide button in the same place on every screen ---------- */
+.topbar-end { display: flex; align-items: center; gap: 2px; }
+.head-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.head-actions { display: flex; align-items: center; gap: 4px; flex: none; }
+.guide-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 0 10px; margin-right: -8px;
+  border: 0; border-radius: var(--r-md); background: none; color: var(--ink); font: 600 14px var(--sans); cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-standard);
+}
+.guide-btn:hover { background: var(--tertiary-hover); }
+.head-actions .guide-btn { margin-right: 0; }
+.btn-text svg { margin-right: 6px; flex: none; }
+.rail-foot .btn-text svg { width: 16px; height: 16px; }
+
+/* ---------- welcome: "Meet Keel." ---------- */
+.screen.intro { padding: 28px 22px calc(28px + env(safe-area-inset-bottom)); }
+.intro-art { width: calc(100% + 44px); margin: 22px -22px 6px; }
+.intro-art svg { display: block; width: 100%; height: auto; }
+.intro-art .wl { stroke-dasharray: 340; stroke-dashoffset: 340; }
+.intro-art .hull-g { opacity: 0; transform: translateY(-14px); transform-box: fill-box; }
+.intro-art .fin { transform: scaleY(0); transform-origin: 50% 0; transform-box: fill-box; }
+.intro-art .ticks { opacity: 0; }
+.intro-art.run .wl { animation: draw var(--dur-illustration) var(--ease-settle) forwards; }
+.intro-art.run .hull-g { animation: drop var(--dur-settle) var(--ease-settle) 500ms forwards; }
+.intro-art.run .fin { animation: sink var(--dur-settle) var(--ease-settle) 1000ms forwards; }
+.intro-art.run .ticks { animation: drop var(--dur-card) var(--ease-standard) 1700ms forwards; }
+:root[data-motion="reduced"] .intro-art.run * { animation-duration: 1ms !important; animation-delay: 0ms !important; }
+@media (prefers-reduced-motion: reduce) { .intro-art.run * { animation-duration: 1ms !important; animation-delay: 0ms !important; } }
+.intro h1 { font-size: 44px; line-height: 1.02; margin-top: 8px; font-variation-settings: "SOFT" 50, "opsz" 144; }
+.intro-statement { font-family: var(--serif); font-size: 21px; line-height: 1.3; margin-top: 12px; font-variation-settings: "SOFT" 70, "opsz" 48; text-wrap: balance; }
+.intro .lede { margin-top: 14px; font-size: 16px; }
+.intro-foot { gap: 10px; }
+.intro-meta { text-align: center; margin-top: 4px; }
+
+/* ---------- app overview ---------- */
+.screen.overview { padding: 16px 22px calc(28px + env(safe-area-inset-bottom)); }
+.ov-back { align-self: flex-start; margin-left: -8px; }
+.overview .step { margin: 10px 0 8px; }
+.overview h1 { font-size: 32px; }
+.ov-lede { margin-top: 10px; font-size: 16px; }
+.ov-list { list-style: none; margin: 22px 0 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.ov-item { display: grid; grid-template-columns: minmax(0, 1fr) 92px; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.ov-name { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+.ov-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; color: var(--ink); }
+.ov-num { font-family: var(--serif); color: var(--ink-3); font-weight: 400; font-variant-numeric: lining-nums; }
+.ov-q { font-size: 22px; margin-top: 6px; }
+.ov-d { font-size: 15px; color: var(--ink-2); margin-top: 6px; text-wrap: pretty; }
+.ov-f { font-size: 13.5px; color: var(--ink-2); margin-top: 8px; }
+.ov-f span { display: block; color: var(--ink); font-weight: 600; }
+.ov-go { margin: 6px 0 0 -8px; }
+.ov-go svg { margin: 0 0 0 6px; }
+.ov-shot { margin: 4px 0 0; }
+.ov-shot img { display: block; width: 100%; height: auto; aspect-ratio: 240 / 420; object-fit: cover; object-position: top; border-radius: 12px; border: 1px solid var(--hairline); background: var(--surface); }
+.ov-foot { gap: 10px; }
+
+/* ---------- Plan: daily spending demonstration ---------- */
+.daily { margin-top: 18px; }
+.daily-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.demo-tag { font-size: 12.5px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--control); border-radius: var(--r-sm); padding: 2px 8px; white-space: nowrap; }
+.daily-opts { margin: 12px 0 0; }
+.daily-opts .chips { gap: 8px; }
+.daily-cmp { margin: 14px 0 0; display: grid; gap: 12px; }
+.daily-cmp > div { display: grid; gap: 2px; }
+.daily-cmp dt { font-size: 13.5px; color: var(--ink-2); }
+.daily-cmp dd { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.daily-cmp dd b { font-family: var(--serif); font-size: 20px; font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 48; }
+.daily-cmp dd span { font-size: 14px; color: var(--ink-2); }
+.daily-bar { display: block; height: 8px; border-radius: 4px; background: var(--canvas); margin-top: 4px; overflow: hidden; }
+.daily-bar i { display: block; height: 100%; border-radius: 4px; background: var(--ink); transition: width var(--dur-chart) var(--ease-standard); }
+.daily-cmp .is-adj .daily-bar i { background: var(--accent); }
+.daily-diff { margin-top: 12px; font-size: 15px; }
+.daily-note { margin-top: 10px; line-height: 1.45; }
+
+/* ---------- guide sheet ---------- */
+.guide-h { display: flex; align-items: center; gap: 8px; }
+.guide-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.guide-item {
+  display: grid; grid-template-columns: 40px minmax(0, 1fr) 16px; gap: 12px; align-items: center; width: 100%; min-height: 64px;
+  padding: 10px 6px; border: 0; border-top: 1px solid var(--rule); background: none; color: var(--ink); text-align: left; cursor: pointer;
+  border-radius: 0; transition: background-color var(--dur-hover) var(--ease-standard);
+}
+.guide-list li:last-child .guide-item { border-bottom: 1px solid var(--rule); }
+.guide-item:hover { background: var(--tertiary-hover); }
+.gi-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-md); background: var(--surface); color: var(--ink); }
+.gi-text b { display: block; font-size: 15.5px; }
+.gi-text span { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 1px; }
+.guide-info > .btn-text { margin-left: -8px; }
+.guide-info h2 { margin: 8px 0 4px; }
+.guide-info p { margin-top: 12px; color: var(--ink-2); font-size: 15.5px; text-wrap: pretty; }
+.guide-info p b { color: var(--ink); }
+.guide-keel { display: block; width: calc(100% + 44px); margin: 12px -22px 0; height: auto; }
+.guide-dl { margin: 14px 0 0; display: grid; gap: 0; border-top: 1px solid var(--rule); font-size: 14.5px; }
+.guide-dl div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.guide-dl dt { color: var(--ink-2); }
+.guide-dl dd { margin: 0; }
+
+/* ---------- the tour ---------- */
+.tour-layer { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+.app.touring .screen.tabbed { padding-bottom: calc(104px + var(--tour-pad, 0px)); }
+/* the ring: a double outline and a text tag. No dimming: any dim layer would also
+   lower the contrast of the text beneath it, so the page stays at full contrast. */
+.tour-ring {
+  position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 14px; opacity: 0;
+  border: 2.5px solid var(--accent); box-shadow: 0 0 0 3px var(--canvas), 0 0 0 4px var(--rule);
+}
+.tour-ring-tag {
+  position: absolute; left: 10px; top: -13px; padding: 2px 8px; border-radius: var(--r-sm);
+  background: var(--accent); color: var(--on-accent); font: 700 12.5px/1.5 var(--sans); white-space: nowrap;
+}
+.tour-ring.tag-in .tour-ring-tag { top: 6px; }
+.tour-panel {
+  position: absolute; left: 0; top: 0; pointer-events: auto; max-height: 58%; overflow-y: auto;
+  background: var(--canvas); color: var(--ink); border: 1px solid var(--hairline); border-radius: var(--r-lg); box-shadow: var(--lift);
+  padding: 12px 16px 10px;
+}
+.tp-moving .tour-ring, .tp-moving .tour-panel {
+  transition: transform var(--dur-move) var(--ease-settle), width var(--dur-move) var(--ease-settle), height var(--dur-move) var(--ease-settle), opacity var(--dur-card) var(--ease-standard);
+}
+.tp-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 -8px 2px 0; }
+.tp-progress { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); font-weight: 500; }
+.tp-progress svg { width: 18px; height: 18px; color: var(--ink); }
+.tp-ticks { display: inline-flex; gap: 3px; }
+.tp-ticks i { width: 12px; height: 3px; border-radius: 2px; background: var(--rule); }
+.tp-ticks i.on { background: var(--accent); }
+.tp-x { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-md); background: none; color: var(--ink); cursor: pointer; flex: none; }
+.tp-x:hover { background: var(--tertiary-hover); }
+.tp-top-end { display: inline-flex; align-items: center; }
+.tp-min svg { transform: rotate(90deg); transition: transform var(--dur-card) var(--ease-settle); }
+.is-mini .tp-min svg { transform: rotate(-90deg); }
+.is-mini h2 { font-size: 18px; }
+.is-mini .tp-foot { margin-top: 6px; }
+/* phones: a tighter panel leaves more of the element in view */
+@media (max-width: 899px) {
+  .tour-panel { padding: 8px 14px 8px; }
+  .tour-panel h2 { font-size: 19px; }
+  .tp-body { font-size: 14.5px; margin-top: 4px; }
+  .tp-status, .tp-note { font-size: 14px; margin-top: 8px; }
+  .tp-quote { font-size: 16px; margin-top: 8px; }
+  .tp-foot { margin-top: 6px; }
+}
+.tour-panel h2 { font-size: 21px; line-height: 1.2; outline: none; }
+.tour-panel h2:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.tp-body { font-size: 15px; color: var(--ink-2); margin-top: 6px; text-wrap: pretty; }
+.tp-status, .tp-note { font-size: 14.5px; color: var(--ink-2); margin-top: 10px; text-wrap: pretty; }
+.tp-status b, .tp-note b { color: var(--ink); }
+.tp-quote { margin: 12px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--accent); font-family: var(--serif); font-size: 17px; line-height: 1.35; font-variation-settings: "SOFT" 60, "opsz" 36; }
+.tp-action { margin-top: 12px; min-height: 44px; }
+.tp-seg { margin: 12px 0 0; }
+.tp-seg legend { font-size: 13.5px; font-weight: 600; margin-bottom: 8px; }
+.tp-seg > div { display: inline-flex; flex-wrap: wrap; padding: 3px; border: 1px solid var(--control); border-radius: var(--r-md); background: var(--surface); max-width: 100%; }
+.tp-seg label { position: relative; }
+.tp-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.tp-seg span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 7px; font-weight: 600; font-size: 14px; color: var(--ink-2);
+  transition: background-color var(--dur-hover) var(--ease-standard), color var(--dur-hover) var(--ease-standard); }
+.tp-seg input:checked + span { background: var(--accent); color: var(--on-accent); }
+.tp-seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.tp-visits { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tp-visits li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px 6px 6px; border: 1px solid var(--rule); border-radius: var(--r-sm); font-size: 14px; color: var(--ink-2); }
+.tp-visits li.is-done { color: var(--ink); border-color: var(--control); font-weight: 600; }
+.tp-tick { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--control); }
+.tp-visits li.is-done .tp-tick { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.tp-foot { display: flex; align-items: center; gap: 4px; margin-top: 12px; flex-wrap: wrap; position: sticky; bottom: -10px; background: var(--canvas); padding-bottom: 2px; }
+.tp-foot .btn-text { font-size: 14.5px; padding: 10px 8px; }
+.tp-back { margin-left: -8px; }
+.tp-back:disabled { color: var(--disabled-ink); text-decoration: none; cursor: default; }
+.tp-next { margin-left: auto; min-height: 44px; padding: 0 16px; font-size: 15px; }
+.tp-next svg { margin-left: 2px; }
+
+/* the finish: a short modal moment */
+.tour-finish { z-index: 12; pointer-events: auto; }
+.tf-scrim { position: absolute; inset: 0; background: var(--scrim); }
+.tf-box {
+  position: absolute; left: 50%; top: 50%; width: min(420px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow-y: auto;
+  transform: translate(-50%, -50%); background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-lg); box-shadow: var(--lift);
+  padding: 18px 22px 18px; animation: tfIn var(--dur-move) var(--ease-enter);
+}
+@keyframes tfIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 12px)); } to { opacity: 1; transform: translate(-50%, -50%); } }
+.tf-mark { display: block; margin: 14px 0 4px; color: var(--ink); }
+.tf-mark svg { width: 40px; height: 40px; }
+.tf-box h2 { font-size: 28px; line-height: 1.1; }
+.tf-box p#tf-d { font-size: 16px; color: var(--ink-2); margin-top: 8px; text-wrap: pretty; }
+.tf-actions { display: grid; gap: 10px; margin-top: 20px; justify-items: center; }
+
+/* =====================================================================
+   Wide layout (>= 900px), matching the app's rail layout.
+   ===================================================================== */
+@media (min-width: 900px) {
+  .screen.intro { left: 0; padding: 0; }
+  .screen.intro.shown { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; }
+  .screen.intro > * { grid-column: 2; max-width: 480px; margin-left: 56px; margin-right: 56px; }
+  .screen.intro > .brandline { margin-top: 64px; }
+  .intro-art { grid-column: 1 !important; grid-row: 1 / -1; max-width: none !important; margin: 0 !important; width: auto; height: 100%; aspect-ratio: auto; display: grid; place-items: center; background: var(--surface); border-right: 1px solid var(--hairline); }
+  .intro-art svg { width: 82%; }
+  .intro-copy { align-self: center; }
+  .intro h1 { font-size: 64px; }
+  .intro-statement { font-size: 26px; }
+  .intro .lede { font-size: 17px; }
+  .intro-foot { padding-bottom: 56px; }
+
+  .screen.overview { left: 0; padding: 32px 56px 48px; align-items: center; }
+  .screen.overview > * { width: 100%; max-width: 1040px; }
+  .screen.overview > .ov-back { align-self: center; margin-left: 0; padding-left: 0; }
+  .overview h1 { font-size: 44px; }
+  .ov-lede { max-width: 60ch; }
+  .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
+  .ov-item { grid-template-columns: minmax(0, 1fr) 132px; padding: 24px 0; }
+  .ov-foot { max-width: 1040px; grid-template-columns: auto auto 1fr; align-items: center; }
+  .ov-foot .btn { width: auto; }
+  .ov-foot .meta { text-align: left !important; }
+
+  .tour-panel { max-height: 70%; padding: 14px 18px 12px; }
+}

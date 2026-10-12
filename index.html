@@ -368,7 +368,7 @@
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
         <span id="theme-label">Dark</span>
       </button>
-      <a class="open" href="prototype.html"><span class="open-pre">Open the </span>prototype</a>
+      <a class="open" href="/prototype/"><span class="open-pre">Open the </span>prototype</a>
     </div>
   </div>
 </header>
@@ -1216,6 +1216,7 @@
   <h2 id="proto-h">Experience Keel</h2>
   <div class="prose">
     <p class="lede">Explore how financial clarity comes to life through thoughtful interaction, motion, and visual design. This is the real app, not a mockup: every figure is computed, every change carries through, and your changes are kept on this device until you reset.</p>
+    <p>Opened on its own, the prototype greets first-time visitors with a short welcome, an overview of the four tabs and an optional eight-step guided tour that points at the real interface; returning visitors go straight to the app, and a Guide button on every screen restarts the tour. The copy embedded here skips the welcome so the walkthrough on the right can drive it.</p>
   </div>
   <div class="exp-bar">
     <div class="seg" role="group" aria-label="Preview size">
@@ -1224,14 +1225,14 @@
     </div>
     <div class="exp-links">
       <button class="btn btn-quiet" type="button" id="exp-reset">Reset sample data</button>
-      <a class="btn btn-primary" href="prototype.html" target="_blank" rel="noopener">Open the full experience</a>
+      <a class="btn btn-primary" href="/prototype/" target="_blank" rel="noopener">Open the full experience</a>
     </div>
   </div>
   <div class="exp figure" id="exp">
     <div class="frame-shell mobile" id="frame-shell">
       <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>Keel · sample data</span></div>
       <div class="viewport" id="viewport">
-        <iframe id="proto-frame" src="prototype.html?embed=1" title="Keel prototype, interactive" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy"></iframe>
+        <iframe id="proto-frame" src="/prototype/?embed=1" title="Keel prototype, interactive" sandbox="allow-scripts allow-same-origin allow-forms" loading="lazy"></iframe>
         <div class="frame-state" id="frame-state"><keel-lottie name="loading" loop label=""></keel-lottie><p class="small muted" id="frame-msg">Loading the prototype</p></div>
       </div>
     </div>
@@ -1420,7 +1421,7 @@
     <table class="t-min">
       <thead><tr><th scope="col">Deliverable</th><th scope="col">State</th><th scope="col">Where</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Motion-forward application</th><td class="state-word">Functional prototype</td><td>prototype.html, sample data only</td></tr>
+        <tr><th scope="row">Motion-forward application</th><td class="state-word">Functional prototype</td><td>prototype/ (React), sample data only, with a guided tour</td></tr>
         <tr><th scope="row">Interactive case study</th><td class="state-word">Complete</td><td>This page</td></tr>
         <tr><th scope="row">Lottie library, 12 animations</th><td class="state-word">Complete</td><td>assets/lottie, source/lottie/build.py</td></tr>
         <tr><th scope="row">Data-bound chart motion, 4 charts</th><td class="state-word">Complete</td><td>assets/js/keel-charts.js</td></tr>
