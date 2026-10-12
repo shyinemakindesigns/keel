@@ -15,7 +15,9 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 | `keel-og-1200x630.png` | 1200 × 630 | Link preview image (already wired into `index.html`) |
 | `linkedin-carousel/keel-carousel.pdf` | 9 pages | Upload to LinkedIn as a document: it becomes a swipeable carousel |
 | `linkedin-carousel/keel-carousel-01.png` to `-09.png` | 1080 × 1350 each | The same slides as PNGs, for other platforms or a multi-image post |
-| `source/` | | Editable HTML for every image. Re-export with `node portfolio/source/export.mjs` |
+| `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 43.8s | LinkedIn video: the prototype in a phone frame, captioned |
+| `video/keel-prototype-demo-cover.png` | 1080 × 1350 | Video cover |
+| `source/` | | Editable HTML for every image and the video pipeline. Re-export images with `node portfolio/source/export.mjs` |
 
 Every number on the slides is either a cited published figure (APA 2015; Karlsson, Loewenstein and Seppi 2009) or a measurement from `docs/motion-system/qa-report.md`. The app screens are live captures of the prototype.
 
@@ -76,6 +78,45 @@ Try the prototype: https://keel-casestudy.netlify.app/prototype.html
 3. Paste the post text and publish.
 4. Post the first comment with both links straight away.
 5. Reply to early comments in the first hour; that's when engagement counts most for reach.
+
+## LinkedIn video post: the prototype in motion
+
+Assets: `video/keel-prototype-demo-1080x1350.mp4` (4:5, 43.8s, H.264, 30fps, 7.7 MB, no audio) and `video/keel-prototype-demo-cover.png` (the opening frame, for a custom thumbnail). Every frame is the working prototype recorded in a browser and placed in a phone frame, with on-screen captions so it reads with the sound off. Six scenes: setup, the reading, the purchase check, spending in days, adding to a goal, and comparing a plan, then an end card.
+
+Post length: about 905 characters. Put the links in the first comment.
+
+```
+Most money apps are designed like smoke alarms.
+Loud, red, and only useful once something is already burning.
+
+Behavioral research has a name for how people respond: the ostrich effect. When the news looks bad, people check their finances less, not more. Keel is a concept that designs for that moment instead of against it.
+
+The home screen answers one question first: how long are you covered? Steady through Oct 25, drawn as a keel under a waterline that always means payday. Check a purchase and the keel moves before you spend. A $16.80 lunch reads as "about a third of a day," not an overage. Plans get compared side by side before anything changes.
+
+Every frame in this video is the working prototype, running on sample data. Case study and prototype links are in the comments.
+
+What would make you open a money app on a bad week?
+
+#ProductDesign #UXDesign #InteractionDesign #Fintech #MotionDesign
+```
+
+**First comment:**
+
+```
+Case study: https://keel-casestudy.netlify.app
+Try the prototype: https://keel-casestudy.netlify.app/prototype.html
+```
+
+**Posting checklist**
+
+1. Upload the MP4 natively (not a link), so it autoplays in the feed.
+2. Add alt text: "Screen recording of the Keel prototype in a phone frame: a first reading of steady through Oct 25, a $250 purchase check moving the keel, spending shown in days, adding $100 to a goal, and a plan comparison chart. Captions explain each step."
+3. Choose the cover image if LinkedIn offers a thumbnail option.
+4. Post the first comment with both links, and reply to early comments in the first hour.
+
+Post the carousel and the video a few days apart: the carousel tells the argument, the video shows the product.
+
+To re-record after the app changes: serve the built site on port 4319, then run `portfolio/source/video/record.mjs`, `compose.html` (with `mp4-muxer` installed next to it) and `encode.mjs`. They need Chrome; no ffmpeg.
 
 ## Talking points: how to explain Keel
 
