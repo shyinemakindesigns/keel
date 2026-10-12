@@ -54,6 +54,7 @@ async function pages() {
       for (const w of WIDTHS) {
         await b.viewport(w, w < 768 ? 800 : 900);
         for (const [label, url, setup, after, long] of STATES) {
+          if (process.env.VERBOSE) console.log(`  pages: ${label} · ${theme} · ${w}px`);
           await load(b, url, setup, theme);
           if (after) { await b.run(after); await sleep(700); }
           if (long) await b.run(SCROLL);
@@ -347,9 +348,12 @@ const want = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(
 let total = 0;
 for (const s of want) {
   const t0 = Date.now();
-  const r = await SUITES[s]();
-  fs.writeFileSync(path.join(OUT, s + '.json'), JSON.stringify(r, null, 1));
-  const f = [...new Set(FAILS[s](r))];
+  let r, f;
+  try {
+    r = await SUITES[s]();
+    fs.writeFileSync(path.join(OUT, s + '.json'), JSON.stringify(r, null, 1));
+    f = [...new Set(FAILS[s](r))];
+  } catch (e) { r = []; f = ['suite stopped: ' + e.message]; NOTES[s] = () => 'did not finish'; }
   total += f.length;
   console.log(`\n${f.length ? '✗' : '✓'} ${s} (${Math.round((Date.now() - t0) / 1000)}s): ${NOTES[s](r)}`);
   f.slice(0, 40).forEach((x) => console.log('   - ' + x));

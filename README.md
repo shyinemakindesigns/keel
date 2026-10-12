@@ -57,7 +57,7 @@ Then open <http://localhost:4317/> for the case study. The React pages (design s
 ```bash
 npm run build
 python3 -m http.server 4319 --directory dist
-npm test                         # or: node tests/run.mjs journeys keyboard
+npm test                         # or: node tests/run.mjs journeys keyboard   (VERBOSE=1 shows progress)
 ```
 
 Six suites: `pages` (every page and app state, light and dark, at 320, 390, 768 and 1280px: script errors, failed requests, sideways scrolling, text contrast, accessible names, target size, alt text, headings), `links` (every internal URL returns 200; external links reported), `clicks` (presses every control and watches for errors), `keyboard` (tabs through each page: focus visible, on screen, never stuck), `journeys` (the guided tour, explore, returning visitor and the app's numbers, design system interactions, the case study embed) and `media` (portfolio image sizes, carousel PDF pages, the video decodes). Results go to `tests/results/`; the command exits non-zero on any problem.

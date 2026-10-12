@@ -41,7 +41,13 @@ export async function launch() {
       log.failed.push('failed ' + m.params.errorText);
     }
   };
-  const send = (method, params = {}) => new Promise((r) => { const i = ++id; pending.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
+  // every call times out, so a page that stops answering fails the run instead of hanging it
+  const send = (method, params = {}, ms = 30000) => new Promise((resolve, reject) => {
+    const i = ++id;
+    const t = setTimeout(() => { pending.delete(i); reject(new Error(`${method} got no answer in ${ms / 1000}s`)); }, ms);
+    pending.set(i, (m) => { clearTimeout(t); resolve(m); });
+    ws.send(JSON.stringify({ id: i, method, params }));
+  });
   await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
   const api = {
     log, send,
