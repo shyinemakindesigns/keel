@@ -14,7 +14,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | --- | --- |
 | `design-system/`, `src/` | The design system page in React (Vite): Mineral & Ember tokens, calculated contrast, type, spacing, motion, and live accessible components. Shared React code in `src/shared`. See `docs/react-migration.md` |
 | `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
-| `prototype/`, `src/prototype/` | The app in React: a first-visit welcome, overview and guided tour, then onboarding, Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout. `prototype.html` redirects here |
+| `prototype/`, `src/prototype/` | The app in React: a first-visit welcome, overview and guided tour, then onboarding, Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout. The old `/prototype.html` address redirects here (a rule in `netlify.toml`) |
 | `system.html` | The animation library: every Lottie and Rive file, playable, with fallbacks and engineering notes |
 | `DESIGN.md` | Short brand brief |
 | `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
@@ -22,7 +22,7 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `assets/js/keel-lottie.js` | `<keel-lottie>`: the one Lottie player (lazy, cached, visibility-aware, themed, reduced-motion aware) |
 | `assets/js/keel-charts.js` | Data-bound SVG charts shared by the app and the case study |
 | `assets/js/motion-registry.js` | One description of every animation, read by the gallery, the system page and the specs |
-| `assets/js/app.js`, `case-study.js` | Page behavior |
+| `assets/js/case-study.js` | Case study behavior (the prototype’s behavior is in `src/prototype/`) |
 | `assets/lottie/` | 12 hand-authored Lottie animations, light and dark (30 KB gzip in total) |
 | `assets/rive/`, `source/rive/` | Keel’s four Rive state machines and the code that writes them (`rivewriter.py`, `build_rive.py`, `rive-check.html`); the recolored CC BY toggle, its original and the recolor script |
 | `assets/fallbacks/` | Static SVG of each animation’s settled frame, both themes |
@@ -32,7 +32,8 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `docs/motion-system/` | Motion system README, animation specifications and storyboards, Rive specification, QA report, phase audit |
 | `docs/stillform/` | Color-system audit |
 | `portfolio/` | Portfolio thumbnail, link-preview image, LinkedIn carousel (PNG and PDF), post copy and interview talking points; editable sources in `portfolio/source/` |
-| `netlify.toml` | Static deploy config: publishes the repository root |
+| `netlify.toml` | Deploy config: runs `npm run build`, publishes `dist`, and redirects the old prototype address |
+| `tests/` | The automated test suite (`npm test`) |
 
 ## Run it
 
@@ -91,7 +92,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 - The prototype’s logic: the reading, the purchase check and the goal preview all compute live
 - The contrast audit (68 pairings across light and dark, 0 failing) and the 60/30/10 measurements, with the scripts that produced them
 - The Lottie animation, written by hand against the Lottie schema and rendered frame by frame for review
-- The design changes listed in section 8 of the case study, which came from my own review of rendered screens
+- The design changes listed in section 12 of the case study, which came from my own review of rendered screens
 
 **Illustrative**
 
@@ -102,7 +103,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 **Not done yet, and not claimed**
 
 - No interviews. The research section is a literature and competitor review
-- No usability testing. Section 8 is a testing plan, clearly labeled
+- No usability testing. Section 12 is a testing plan, clearly labeled
 
 ## Design notes in brief
 
@@ -126,4 +127,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 - **v1:** case study, prototype, identity, animation and audits
 - **Mineral & Ember color system:** palette, semantic tokens, dark theme, recolored animation, re-run audits
 - **Motion-forward pass:** Lottie library, motion gallery and playground, expanded app (Spending, Goals, Plan, wide layout), embedded app with mobile and desktop modes, design system page, documentation, and an accessibility and performance audit (`docs/motion-system/qa-report.md`)
-- **Not done:** usability testing with people; authoring the four Keel Rive state machines; a human screen reader pass
+- **Rive:** Keel’s four state machines, written in code and running in the case study
+- **React, phases 1 and 2:** the design system and the prototype in React, with a first-visit welcome, overview and guided tour
+- **Automated tests:** `npm test` (pages, links, controls, keyboard, journeys, media)
+- **Not done:** React phase 3 (the case study and animation library); usability testing with people; a human screen reader pass; checks in Safari, Firefox and on real devices

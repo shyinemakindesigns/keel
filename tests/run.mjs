@@ -258,7 +258,7 @@ async function journeys() {
     await check('add $50 to goal', `document.querySelector('.confirm.on span').textContent`, 'Added $50. Steady through Oct 24.');
     await load(b, '/prototype/?screen=plan', visitor({ state: 'completed' }), 'light');
     await type('#pl-extra', '100'); await sleep(300);
-    // the horizon follows today's date, so check the shape: +$100 a paycheck adds a whole number of $100s
+    // exact totals depend on the sample state, so check the shape: +$100 a paycheck adds a whole number of $100s
     await check('plan +$100 adds $100 per paycheck', `document.getElementById('pl-read').textContent`, (g) => {
       const m = /\$([\d,]+) set aside instead of \$([\d,]+)/.exec(g || ''); if (!m) return false;
       const gap = +m[1].replace(/,/g, '') - +m[2].replace(/,/g, ''); return gap > 0 && gap % 100 === 0 && /done around/.test(g);

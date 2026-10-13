@@ -75,6 +75,8 @@ Not verified: Safari and Firefox, real devices, and a screen reader pass by a pe
 | S2 | Case study, light theme | Secondary text on the surface panel measured 4.22:1 in four places: illustration captions, motion principle notes, system notes and the Phone/Desktop switch | They use `--ink-2-on-surface` (5.38:1), the token the system already defines for this |
 | S3 | Prototype tour, step 2 | "Less room" and "More room" were the same 4.22:1 pairing | Same token |
 | S4 | Case study, contrast table | Non-text pairs (hairlines, control borders, chart series) showed an "Aa" sample, which reads as text in a color that is never used for text (1.39 to 4.48:1) | Non-text rows show a stroke sample; the sample is hidden from screen readers, since the row label names the pair |
+| S5 | Case study, research; LinkedIn carousel slide 2 | The 72% money-stress figure was given a time window (“in the prior month”) that the APA report attaches only to the 22% extreme-stress figure | Wording matches the report (checked against the PDF text); slide 2 re-exported |
+| S6 | Live site (Netlify) | `prototype.html` next to `prototype/index.html` made Netlify's pretty URLs loop, so the prototype and its embed never loaded | The old address is a redirect rule in `netlify.toml` |
 
 Checked and left as is: when tabbing at machine speed, focus can reach the lazily loaded prototype frame before the app inside has mounted. At human pace (one Tab every 250ms) focus went straight to the first control, with its ring, in 4 of 4 runs.
 
@@ -84,9 +86,11 @@ Checked and left as is: when tabbing at machine speed, focus can reach the lazil
 
 ## Measured results
 
+The text contrast, target, name and overflow rows are from `npm test` (October 12, 2026: light and dark at 320, 390, 768 and 1280px); the focus ring and reduced motion rows are from the probe passes above. The case study figure reported before the automated suite (400 per theme, 0 failures) missed four places at 4.22:1; see S2 above.
+
 | Check | App | Case study |
 | --- | --- | --- |
-| Text contrast measured | 713 across 16 states, 0 failures | 400 per theme, 0 failures |
+| Text contrast measured | 2,668 text elements across 11 states and 88 audits, 0 failures | 12,556 across 8 audits (1,592 per page, per theme), 0 failures |
 | Contrast pairings (tokens) | 68 across both themes, 0 failures (`source/contrast_audit.py`) | same tokens |
 | Focus ring | 2px solid, 5.01 to 5.89:1, passes 1.4.11 and the 2px guidance in 2.4.13 | 2px, 5.89:1 |
 | Targets under 24px | 0 | 0 non-inline after fixes (inline links are exempt under 2.5.8) |
