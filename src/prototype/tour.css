@@ -34,8 +34,8 @@
 .intro-art.run .ticks { animation: drop var(--dur-card) var(--ease-standard) 1700ms forwards; }
 :root[data-motion="reduced"] .intro-art.run * { animation-duration: 1ms !important; animation-delay: 0ms !important; }
 @media (prefers-reduced-motion: reduce) { .intro-art.run * { animation-duration: 1ms !important; animation-delay: 0ms !important; } }
-.intro h1 { font-size: 44px; line-height: 1.02; margin-top: 8px; font-variation-settings: "SOFT" 50, "opsz" 144; }
-.intro-statement { font-family: var(--serif); font-size: 21px; line-height: 1.3; margin-top: 12px; font-variation-settings: "SOFT" 70, "opsz" 48; text-wrap: balance; }
+.intro h1 { font-size: 44px; line-height: 1.02; margin-top: 8px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+.intro-statement { font-family: var(--serif); font-size: 21px; line-height: 1.3; margin-top: 12px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); text-wrap: balance; }
 .intro .lede { margin-top: 14px; font-size: 16px; }
 .intro-foot { gap: 10px; }
 .intro-meta { text-align: center; margin-top: 4px; }
@@ -71,7 +71,7 @@
 .daily-cmp > div { display: grid; gap: 2px; }
 .daily-cmp dt { font-size: 13.5px; color: var(--ink-2); }
 .daily-cmp dd { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.daily-cmp dd b { font-family: var(--serif); font-size: 20px; font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 48; }
+.daily-cmp dd b { font-family: var(--serif); font-size: 20px; font-weight: 500; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
 .daily-cmp dd span { font-size: 14px; color: var(--ink-2); }
 .daily-bar { display: block; height: 8px; border-radius: 4px; background: var(--canvas); margin-top: 4px; overflow: hidden; }
 .daily-bar i { display: block; height: 100%; border-radius: 4px; background: var(--ink); transition: width var(--dur-chart) var(--ease-standard); }
@@ -151,7 +151,7 @@
 .tp-body { font-size: 15px; color: var(--ink-2); margin-top: 6px; text-wrap: pretty; }
 .tp-status, .tp-note { font-size: 14.5px; color: var(--ink-2); margin-top: 10px; text-wrap: pretty; }
 .tp-status b, .tp-note b { color: var(--ink); }
-.tp-quote { margin: 12px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--accent); font-family: var(--serif); font-size: 17px; line-height: 1.35; font-variation-settings: "SOFT" 60, "opsz" 36; }
+.tp-quote { margin: 12px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--accent); font-family: var(--serif); font-size: 17px; line-height: 1.35; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
 .tp-action { margin-top: 12px; min-height: 44px; }
 .tp-seg { margin: 12px 0 0; }
 .tp-seg legend { font-size: 13.5px; font-weight: 600; margin-bottom: 8px; }

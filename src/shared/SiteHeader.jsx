@@ -5,7 +5,7 @@ import { usePrefs, setTheme, setReducedMotion, isReduced } from './prefs.js';
 // Site header shared by Keel's React pages.
 // Phones: row 1 is the wordmark and icon-only controls; row 2 is one sideways-scrolling
 // row holding the site links and this page's sections. Wide screens: a single row.
-// The active section is marked with aria-current="location" and a 2px ember underline
+// The active section is marked with aria-current="location" and a 2px accent underline
 // that moves between links (420ms, ease-settle; instant with reduced motion).
 
 export const SITE = { caseStudy: '/', designSystem: '/design-system/', prototype: '/prototype/' };

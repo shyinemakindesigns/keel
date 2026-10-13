@@ -53,7 +53,7 @@
       var bx = x(b.date);
       if (b.next) {
         var anchor = bx < 80 ? 'start' : bx > 260 ? 'end' : 'middle', tx = bx < 80 ? Math.max(0, bx - 6) : bx > 260 ? bx + 6 : bx;
-        out += '<g class="tl-mark" style="transition-delay:' + ((bills.length + 2) * 60) + 'ms"><circle class="f-hull" cx="' + bx + '" cy="' + Y + '" r="6.5"/>' +
+        out += '<g class="tl-mark" style="transition-delay:' + ((bills.length + 2) * 60) + 'ms"><circle class="f-hi" cx="' + bx + '" cy="' + Y + '" r="6.5"/>' +
           '<text class="f-ink" x="' + tx + '" y="' + (Y - 27) + '" text-anchor="' + anchor + '" font-weight="600">' + esc(b.name) + ', ' + fmtDate(b.date) + '</text></g>';
       } else {
         out += '<g class="tl-mark" style="transition-delay:' + ((i + 1) * 60) + 'ms"><circle class="f-ink" cx="' + bx + '" cy="' + Y + '" r="3.5"/></g>';
@@ -73,7 +73,7 @@
     out += '<text class="f-ink2s" x="' + (X0 + W) + '" y="' + (y(o.usual) - 5) + '" text-anchor="end">usual ' + money(o.usual) + '</text>';
     days.forEach(function (x, i) {
       var cx = X0 + col * i + col / 2, h = B - y(x.amt), isToday = o.today && same(x.date, o.today);
-      out += '<rect class="wk-bar ' + (isToday ? 'f-hull' : 'f-ink') + '" style="transition-delay:' + i * 60 + 'ms;opacity:' + (isToday ? 1 : 0.82) + '" x="' + (cx - 11) + '" y="' + (B - h) + '" width="22" height="' + Math.max(h, 0.5) + '" rx="3"/>';
+      out += '<rect class="wk-bar ' + (isToday ? 'f-hi' : 'f-ink') + '" style="transition-delay:' + i * 60 + 'ms;opacity:' + (isToday ? 1 : 0.82) + '" x="' + (cx - 11) + '" y="' + (B - h) + '" width="22" height="' + Math.max(h, 0.5) + '" rx="3"/>';
       out += '<text class="f-ink" x="' + cx + '" y="' + (B - h - 6) + '" text-anchor="middle" style="font-variant-numeric:tabular-nums">' + (x.amt ? '$' + Math.round(x.amt) : '') + '</text>';
       out += '<text class="' + (isToday ? 'f-ink' : 'f-ink2s') + '" x="' + cx + '" y="' + (B + 16) + '" text-anchor="middle"' + (isToday ? ' font-weight="600"' : '') + '>' + DOW[x.date.getDay()] + '</text>';
       out += '<text class="f-ink2s" x="' + cx + '" y="' + (B + 30) + '" text-anchor="middle">' + x.date.getDate() + '</text>';
@@ -119,9 +119,9 @@
     }
     out += '<path class="s-ink" d="M' + X0 + ' ' + YB + 'H' + X1 + '" stroke-width="1.5"/>';
     out += '<path d="' + stepPath(vals[0]) + '" fill="none" class="s-ink2s" stroke-width="2" stroke-dasharray="5 4"/>';
-    out += '<path d="' + stepPath(vals[1]) + '" fill="none" class="s-hull" stroke-width="3" stroke-linejoin="round"/>';
+    out += '<path d="' + stepPath(vals[1]) + '" fill="none" class="s-hi" stroke-width="3" stroke-linejoin="round"/>';
     var last = vals[1].length - 1;
-    out += '<circle class="f-hull" cx="' + X1 + '" cy="' + y(vals[1][last]) + '" r="4.5"/>';
+    out += '<circle class="f-hi" cx="' + X1 + '" cy="' + y(vals[1][last]) + '" r="4.5"/>';
     out += '<text class="f-ink" x="' + (X1 + 8) + '" y="' + (y(vals[1][last]) + 4) + '" font-weight="600" style="font-variant-numeric:tabular-nums">' + money(Math.round(vals[1][last] / 10) * 10) + '</text>';
     if (Math.abs(y(vals[1][last]) - y(vals[0][last])) > 14) {
       out += '<text class="f-ink2s" x="' + (X1 + 8) + '" y="' + (y(vals[0][last]) + 4) + '" style="font-variant-numeric:tabular-nums">' + money(Math.round(vals[0][last] / 10) * 10) + '</text>';

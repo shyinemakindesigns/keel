@@ -1,6 +1,6 @@
 // Generates docs/motion-system/animation-specifications.md from assets/js/motion-registry.js,
 // so the written specs can never drift from what the gallery shows.
-//   node source/lottie/gen_specs.js
+//   node source/lottie/gen_specs.cjs
 const fs = require('fs');
 const path = require('path');
 const root = path.join(__dirname, '..', '..');
@@ -10,7 +10,7 @@ const M = window.KEEL_MOTION;
 const kb = f => { try { return (fs.statSync(path.join(root, f)).size / 1024).toFixed(1) + ' KB'; } catch (e) { return 'n/a'; } };
 let md = `# Animation specifications
 
-Generated from \`assets/js/motion-registry.js\` by \`node source/lottie/gen_specs.js\`. Do not edit by hand.
+Generated from \`assets/js/motion-registry.js\` by \`node source/lottie/gen_specs.cjs\`. Do not edit by hand.
 
 Every animation is labeled by what it actually is:
 

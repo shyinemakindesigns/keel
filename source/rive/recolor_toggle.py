@@ -1,5 +1,5 @@
 """
-Recolors a CC BY community Rive file into Keel's Mineral & Ember palette.
+Recolors a CC BY community Rive file into Keel's Harbor & Signal palette.
 
 Original: "Toggle switch" by ashishb, Rive Community, published 23 June 2022,
 https://rive.app/community/files/2795-5761-toggle-switch
@@ -44,16 +44,16 @@ SLOTS = {
 
 THEMES = {
     'keel-toggle.riv': {
-        'knob': 0xFFFFFFFF, 'knob_line': 0xFF656B66,
-        'off_fill': 0xFFE6E2D9, 'off_line': 0xFF7A7F79,   # control boundary, 3.69:1 on canvas
-        'on_fill': 0xFFB94F36, 'on_line': 0xFF8F3C29,     # white knob on ember: 4.96:1
-        'bg': 0x00F6F3ED,
+        'knob': 0xFFFFFFFF, 'knob_line': 0xFF4A5573,
+        'off_fill': 0xFFE9EDF5, 'off_line': 0xFF6B7798,   # control boundary (navy at 62%), 4.1:1 on fog
+        'on_fill': 0xFF112358, 'on_line': 0xFF0A1638,     # white knob on navy: 14.9:1
+        'bg': 0x00F4F5FA,
     },
     'keel-toggle-dark.riv': {
-        'knob': 0xFFF4F0E7, 'knob_line': 0xFF202725,
-        'off_fill': 0xFF2A322F, 'off_line': 0xFF8A8C86,
-        'on_fill': 0xFFE07F60, 'on_line': 0xFFB9634A,
-        'bg': 0x00202725,
+        'knob': 0xFFF4F5FA, 'knob_line': 0xFF0B1530,      # the abyss edge keeps the knob visible on lime
+        'off_fill': 0xFF112358, 'off_line': 0xFF828CA9,
+        'on_fill': 0xFFF1FF62, 'on_line': 0xFFC9D63A,
+        'bg': 0x000B1530,
     },
 }
 

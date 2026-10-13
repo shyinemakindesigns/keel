@@ -61,7 +61,7 @@ export default function Spending({ app }) {
         <div id="tx-list" data-tour="tx-list">
           {list.length === 0 ? (
             <div className="empty-state">
-              <keel-lottie name="empty" trigger="inview" poster="end" label="A small ember resting on an empty platform."></keel-lottie>
+              <keel-lottie name="empty" trigger="inview" poster="end" label="A small lime sphere resting on an empty platform."></keel-lottie>
               <h3>Nothing in {activeCat} yet</h3>
               <p>When there is, it’ll land here. Nothing’s wrong; this stretch just didn’t need it.</p>
             </div>

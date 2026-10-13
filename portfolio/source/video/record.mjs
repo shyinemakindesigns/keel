@@ -6,7 +6,7 @@ import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'
 const OUT = path.resolve('rec');
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
-const URL = 'http://127.0.0.1:4319/prototype.html';
+const URL = 'http://127.0.0.1:4319/prototype/?screen=welcome';
 const port = 9600 + Math.floor(Math.random() * 90);
 const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'rec-'));
 const proc = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${prof}`, '--hide-scrollbars', '--force-device-scale-factor=2', 'about:blank'], { stdio: 'ignore' });
@@ -43,6 +43,11 @@ async function tap(sel, hold = 90) {
   await sleep(hold);
   await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: c.x, y: c.y, button: 'left', clickCount: 1 });
 }
+// tap the first visible button whose label includes the text (the React app has no data-go hooks)
+async function tapText(text, scope = 'body') {
+  await ev(`(()=>{document.querySelectorAll('[data-rec]').forEach(e=>e.removeAttribute('data-rec')); const b=[...document.querySelectorAll(${JSON.stringify(scope)} + ' button')].find(x=>x.textContent.includes(${JSON.stringify(text)}) && x.getClientRects().length); if(b) b.setAttribute('data-rec','1'); return !!b})()`);
+  return tap('[data-rec]');
+}
 async function type(text, gap = 140) {
   for (const ch of text) { await send('Input.insertText', { text: ch }); await sleep(gap); }
 }
@@ -56,7 +61,7 @@ try {
   await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }, { name: 'prefers-color-scheme', value: 'light' }] });
   await send('Page.navigate', { url: URL }); await sleep(1200);
-  await ev(`localStorage.clear(); localStorage.setItem('keel-theme','light'); localStorage.setItem('keel-motion','full')`);
+  await ev(`localStorage.clear(); localStorage.setItem('keel-theme','light'); localStorage.setItem('keel-motion','full'); localStorage.setItem('keel-visitor','{"state":"completed"}')`);
   await send('Page.navigate', { url: URL }); await sleep(2500);
   await ev('document.fonts.ready.then(()=>1)');
   await send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: 780, maxHeight: 1688, everyNthFrame: 1 });
@@ -66,10 +71,10 @@ try {
   mark('hook'); await sleep(2600);
   // ---- scene: onboarding
   mark('onboard');
-  await tap('[data-screen="welcome"] [data-go="accounts"]'); await sleep(1500);
-  await tap('[data-screen="accounts"] [data-go="bills"]'); await sleep(1500);
-  await tap('[data-screen="bills"] [data-go="payday"]'); await sleep(1500);
-  await tap('[data-screen="payday"] [data-go="taking"]'); await sleep(3600);
+  await tapText('Begin'); await sleep(1500);
+  await tapText('Use sample accounts'); await sleep(1500);
+  await tapText('Continue'); await sleep(1500);
+  await tapText('Take my first reading'); await sleep(3600);
   // ---- scene: the reading
   mark('reading'); await sleep(3200);
   // ---- scene: purchase check
@@ -81,7 +86,7 @@ try {
   await tap('#tabbar [data-tab="spending"]'); await sleep(2000);
   await ev(`document.querySelector('[data-tx="t3"]').scrollIntoView({behavior:'smooth', block:'center'})`); await sleep(1100);
   await tap('[data-tx="t3"]'); await sleep(3000);
-  await tap('#sheet [data-close]'); await sleep(700);
+  await tapText('Cancel', '#sheet'); await sleep(700);
   // ---- scene: goals
   mark('goals');
   await tap('#tabbar [data-tab="goals"]'); await sleep(1500);
@@ -91,14 +96,16 @@ try {
   // ---- scene: plan
   mark('plan');
   await tap('#tabbar [data-tab="plan"]'); await sleep(1500);
-  const sl = await center('#pl-extra');
+  // bring the slider card to the top so the chart below it is in view
+  await ev(`(()=>{const i=document.getElementById('pl-extra'); let c=i.parentElement; while(c && getComputedStyle(c).backgroundColor==='rgba(0, 0, 0, 0)') c=c.parentElement; const s=document.querySelector('.screen.in'); s.scrollBy({top:c.getBoundingClientRect().top-s.getBoundingClientRect().top-16, behavior:'smooth'}); return 1})()`);
+  await sleep(1100);
   const r = await ev(`(()=>{const e=document.getElementById('pl-extra').getBoundingClientRect(); return {l:e.left+10, w:e.width-20, y:e.top+e.height/2}})()`);
   for (let v = 25; v <= 100; v += 25) {
     taps.push({ t: +now().toFixed(3), x: r.l + (v / 300) * r.w, y: r.y, drag: true });
-    await ev(`(()=>{const e=document.getElementById('pl-extra'); e.value=${v}; e.dispatchEvent(new Event('input',{bubbles:true})); e.dispatchEvent(new Event('change',{bubbles:true}))})()`);
+    // React only sees a change made through the native value setter
+    await ev(`(()=>{const e=document.getElementById('pl-extra'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,'${v}'); e.dispatchEvent(new Event('input',{bubbles:true})); e.dispatchEvent(new Event('change',{bubbles:true}))})()`);
     await sleep(260);
   }
-  void sl;
   await sleep(3400);
   mark('end');
   await sleep(400);

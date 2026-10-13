@@ -1,6 +1,7 @@
 """
 WCAG 2.1 / 2.2 AA contrast audit for every text, control and border pairing
-Keel uses, in both themes of the Mineral & Ember palette.
+Keel uses, in both themes of the Harbor & Signal palette, including the glass
+buttons (their translucent fill is composited over each surface before measuring).
 
 Run:  python3 source/contrast_audit.py
 Writes source/contrast_audit.json (the case study's audit table is built from it)
@@ -18,24 +19,30 @@ import os
 
 THEMES = {
     "light": {
-        "canvas": "#F6F3ED", "surface": "#E6E2D9", "surface-2": "#DCD7CC",
-        "ink": "#252A28", "ink-2": "#656B66", "ink-2-on-surface": "#555B56",
-        "accent": "#B94F36", "accent-hover": "#A4452F", "accent-pressed": "#8F3C29",
-        "on-accent": "#FFFFFF", "accent-ink": "#9E412B",
-        "positive": "#2E6A4E", "negative": "#9B2C3A", "warning": "#7D5300", "info": "#3B5A72",
-        "disabled-bg": "#DCD7CC", "disabled-ink": "#555B56",
-        "line-rgb": "#252A28", "control-a": 0.58, "hairline-a": 0.12, "rule-a": 0.18,
-        "data": ["#252A28", "#4A504C", "#7A7F79", "#A6A9A2", "#C9C8BF"],
+        "canvas": "#F4F5FA", "surface": "#FFFFFF", "surface-2": "#E9EDF5", "water": "#D4EAFF",
+        "ink": "#112358", "ink-2": "#4A5573", "ink-2-on-surface": "#4A5573",
+        "accent": "#112358", "accent-hover": "#1E3576", "accent-pressed": "#0A1638",
+        "on-accent": "#F1FF62", "accent-ink": "#004499", "focus": "#004499",
+        "hull": "#F1FF62", "hull-edge": "#112358", "highlight": "#0192C6",
+        "positive": "#0B7350", "negative": "#B42342", "warning": "#8A5600", "info": "#0A6A99",
+        "disabled-bg": "#E9EDF5", "disabled-ink": "#4A5573",
+        "line-rgb": "#112358", "control-a": 0.62, "hairline-a": 0.10, "rule-a": 0.14,
+        "data": ["#112358", "#3D4E7A", "#6C7899", "#A3ACC4", "#CDD3E2"],
+        "glass-primary": ("#112358", 0.86, "#F1FF62"), "glass-secondary": ("#FFFFFF", 0.62, "#112358"),
+        "glass-edge": ("#112358", 0.58),
     },
     "dark": {
-        "canvas": "#202725", "surface": "#2A322F", "surface-2": "#353E3A",
-        "ink": "#F4F0E7", "ink-2": "#B3B6AE", "ink-2-on-surface": "#B3B6AE",
-        "accent": "#E07F60", "accent-hover": "#E68D70", "accent-pressed": "#D9714F",
-        "on-accent": "#202725", "accent-ink": "#E38A6C",
-        "positive": "#7FC4A0", "negative": "#F09AA3", "warning": "#E2B45C", "info": "#9DBCD6",
-        "disabled-bg": "#353E3A", "disabled-ink": "#B3B6AE",
-        "line-rgb": "#F4F0E7", "control-a": 0.50, "hairline-a": 0.12, "rule-a": 0.16,
-        "data": ["#F4F0E7", "#C9C8BF", "#9A9E97", "#6E746E", "#4D5550"],
+        "canvas": "#0B1530", "surface": "#112358", "surface-2": "#1A2E66", "water": "#1A2E66",
+        "ink": "#F4F5FA", "ink-2": "#AEB9D6", "ink-2-on-surface": "#AEB9D6",
+        "accent": "#F1FF62", "accent-hover": "#F5FF8C", "accent-pressed": "#E3F24A",
+        "on-accent": "#112358", "accent-ink": "#F1FF62", "focus": "#F1FF62",
+        "hull": "#F1FF62", "hull-edge": "#F1FF62", "highlight": "#3DB8EA",
+        "positive": "#5ED3A0", "negative": "#FF8FA3", "warning": "#FFC857", "info": "#7CC8F2",
+        "disabled-bg": "#1A2E66", "disabled-ink": "#AEB9D6",
+        "line-rgb": "#F4F5FA", "control-a": 0.50, "hairline-a": 0.10, "rule-a": 0.14,
+        "data": ["#F4F5FA", "#B9C3DD", "#8391B8", "#56658F", "#34457A"],
+        "glass-primary": ("#F1FF62", 0.92, "#112358"), "glass-secondary": ("#F4F5FA", 0.10, "#F4F5FA"),
+        "glass-edge": ("#F4F5FA", 0.50),
     },
 }
 
@@ -76,10 +83,12 @@ for name, T in THEMES.items():
     # text
     check(name, "text", "Ink", T["ink"], "canvas", C, 4.5, "Headings, body, balances")
     check(name, "text", "Ink", T["ink"], "surface", S, 4.5, "Text on panels and rows")
-    check(name, "text", "Ink", T["ink"], "surface-2", S2, 4.5, "Chart labels in the water band")
+    check(name, "text", "Ink", T["ink"], "surface-2", S2, 4.5, "Text in wells")
+    check(name, "text", "Ink", T["ink"], "water", T["water"], 4.5, "Chart labels in the water band")
     check(name, "text", "Secondary", T["ink-2"], "canvas", C, 4.5, "Supporting copy, metadata")
     check(name, "text", "Secondary on surface", T["ink-2-on-surface"], "surface", S, 4.5, "Metadata in rows and panels")
-    check(name, "text", "Secondary on surface", T["ink-2-on-surface"], "surface-2", S2, 4.5, "Depth ticks in the water band")
+    check(name, "text", "Secondary on surface", T["ink-2-on-surface"], "surface-2", S2, 4.5, "Metadata in wells")
+    check(name, "text", "Secondary", T["ink-2"], "water", T["water"], 4.5, "Depth ticks in the water band")
     check(name, "text", "Accent text", T["accent-ink"], "canvas", C, 4.5, "Links, text-button underline color")
     check(name, "text", "Accent text", T["accent-ink"], "surface", S, 4.5, "Links on panels")
     check(name, "text", "Label", T["on-accent"], "accent", T["accent"], 4.5, "Primary button, selected chip")
@@ -93,13 +102,21 @@ for name, T in THEMES.items():
     check(name, "control", "Control border", over(T["line-rgb"], T["control-a"], C), "canvas", C, 3.0, "Inputs, chips, switches")
     check(name, "control", "Control border", over(T["line-rgb"], T["control-a"], S), "surface", S, 3.0, "Inputs on panels")
     check(name, "control", "Accent fill", T["accent"], "canvas", C, 3.0, "Primary button and active tab marker")
-    check(name, "control", "Focus ring", T["accent-ink"], "canvas", C, 3.0, "Keyboard focus")
-    check(name, "control", "Focus ring", T["accent-ink"], "surface", S, 3.0, "Keyboard focus on panels")
+    check(name, "control", "Focus ring", T["focus"], "canvas", C, 3.0, "Keyboard focus")
+    check(name, "control", "Focus ring", T["focus"], "surface", S, 3.0, "Keyboard focus on panels")
     check(name, "control", "Switch thumb on", T["on-accent"], "accent", T["accent"], 3.0, "Switch, on state")
-    check(name, "control", "Keel (chart mark)", T["ink"], "surface-2", S2, 3.0, "The reading: keel depth")
-    check(name, "control", "Hull (chart mark)", T["accent"], "canvas", C, 3.0, "The reading: hull on the waterline")
+    check(name, "control", "Keel (chart mark)", T["ink"], "water", T["water"], 3.0, "The reading: keel depth")
+    check(name, "control", "Hull edge (chart mark)", T["hull-edge"], "canvas", C, 3.0, "The reading: lime hull, outlined on light")
+    check(name, "control", "Data highlight", T["highlight"], "canvas", C, 3.0, "Selected series: the plan line, the chosen category")
+    check(name, "control", "Data highlight", T["highlight"], "surface", S, 3.0, "Selected series on cards")
     check(name, "control", "Data 1", T["data"][0], "canvas", C, 3.0, "Largest category share")
     check(name, "control", "Data 3", T["data"][2], "canvas", C, 3.0, "Mid category share")
+    # glass buttons: the translucent fill composited over each surface, then the label measured on that
+    gp, gs, ge = T["glass-primary"], T["glass-secondary"], T["glass-edge"]
+    for bg_name, bg in (("canvas", C), ("surface", S), ("surface-2", S2)):
+        check(name, "text", "Glass primary label", gp[2], "glass on " + bg_name, over(gp[0], gp[1], bg), 4.5, "Primary button, translucent")
+        check(name, "text", "Glass secondary label", gs[2], "glass on " + bg_name, over(gs[0], gs[1], bg), 4.5, "Secondary button, translucent")
+        check(name, "control", "Glass secondary edge", over(ge[0], ge[1], bg), bg_name, bg, 3.0, "Secondary button boundary")
     # decorative
     check(name, "decorative", "Hairline", over(T["line-rgb"], T["hairline-a"], S), "canvas", C, 3.0, "Card edges (fill already separates)", exempt=True)
     check(name, "decorative", "Row rule", over(T["line-rgb"], T["rule-a"], S), "surface", S, 3.0, "Row dividers inside lists", exempt=True)

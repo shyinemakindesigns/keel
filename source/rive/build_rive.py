@@ -4,7 +4,7 @@
 
 Writes assets/rive/{equilibrium,goal,onboarding,scenario}.riv. Each file has
 two artboards, "light" and "dark", with identical geometry, animations and
-state machines; only colors differ (Mineral & Ember, from assets/tokens.css
+state machines; only colors differ (Cloud & Signal, from assets/tokens.css
 and the illustration palette in source/lottie/kit.py).
 
 The contract is docs/motion-system/rive-spec.md. Where authoring changed the
@@ -38,15 +38,27 @@ ENTER = (0.22, 1.0, 0.36, 1.0)
 SWING = (0.45, 0.0, 0.55, 1.0)
 
 THEMES = {
-    'light': dict(line='#252A28', line2='#555B56', hull='#B94F36', water='#DCD7CC', ballast='#252A28',
-                  ember=('#C9664D', '#B94F36', '#8F3C29'), porcelain=('#FFFFFF', '#F1EDE5', '#DDD8CD'),
-                  mineral=('#EEEAE2', '#DCD7CC', '#C6C0B3'), basalt=('#4A5450', '#343C39', '#202725'),
-                  slate=('#8C928D', '#656B66', '#4C524E'), rule=('#252A28', 0.18)),
-    'dark': dict(line='#F4F0E7', line2='#B3B6AE', hull='#E07F60', water='#353E3A', ballast='#9A9E97',
-                 ember=('#EA9A80', '#E07F60', '#B9634A'), porcelain=('#F4F0E7', '#D9D4C8', '#B8B3A8'),
-                 mineral=('#56605B', '#454F4B', '#36403C'), basalt=('#2C3532', '#1A201E', '#121715'),
-                 slate=('#C3C6BF', '#9EA39B', '#7D827B'), rule=('#F4F0E7', 0.16)),
+    # Harbor & Signal. 'edge' outlines lime and white solids on light, where they are
+    # about 1.1:1 against the canvas; dark needs none. 'highlight' is the data series.
+    'light': dict(line='#112358', line2='#4A5573', hull='#F1FF62', water='#D4EAFF', ballast='#112358',
+                  signal=('#F6FF9A', '#F1FF62', '#C9D63A'), paper=('#FFFFFF', '#F4F5FA', '#DDE2EC'),
+                  cloud=('#F4F7FC', '#E1E7F2', '#C9D2E3'), navy=('#2A3F7A', '#112358', '#0A1638'),
+                  slate=('#8A93AD', '#4A5573', '#343D58'), rule=('#112358', 0.14),
+                  edge='#112358', highlight='#0192C6'),
+    'dark': dict(line='#F4F5FA', line2='#AEB9D6', hull='#F1FF62', water='#1A2E66', ballast='#AEB9D6',
+                 signal=('#F6FF9A', '#F1FF62', '#C9D63A'), paper=('#F4F5FA', '#D7DDEA', '#B4BED4'),
+                 cloud=('#2B4280', '#1F3470', '#16285A'), navy=('#1A2E66', '#0E1C46', '#081230'),
+                 slate=('#C7D0E6', '#AEB9D6', '#8391B8'), rule=('#F4F5FA', 0.14),
+                 edge=None, highlight='#3DB8EA'),
 }
+EDGE = [None]   # set per theme by each builder: box() and edged() read it
+
+
+def edged(ab, shape, color, width=1.25):
+    """Fill, plus the light-theme edge."""
+    ab.fill(shape, c(color))
+    if EDGE[0]:
+        ab.stroke(shape, c(EDGE[0]), width, join=1)
 
 
 def c(hexv, a=1.0):
@@ -72,13 +84,13 @@ def box(ab, parent, x, y, w, h, depth, colors, name):
     n = ab.node(parent, name=name)
     s = ab.shape(n, name=name + ' front')
     ab.poly(s, [(x, y), (x + w, y), (x + w, y + h), (x, y + h)])
-    ab.fill(s, c(front))
+    edged(ab, s, front)
     s = ab.shape(n, name=name + ' top')
     ab.poly(s, [(x, y), (x + dx, y + dy), (x + w + dx, y + dy), (x + w, y)])
-    ab.fill(s, c(top))
+    edged(ab, s, top)
     s = ab.shape(n, name=name + ' side')
     ab.poly(s, [(x + w, y), (x + w + dx, y + dy), (x + w + dx, y + h + dy), (x + w, y + h)])
-    ab.fill(s, c(side))
+    edged(ab, s, side)
     return n
 
 
@@ -94,6 +106,7 @@ def equilibrium(theme):
     """Equilibrium Indicator. 680 x 312, the Steady screen's keel at 2x.
     The waterline is payday; the keel's depth is days of room past it."""
     P = THEMES[theme]
+    EDGE[0] = P['edge']
     ab = Artboard(theme, 680, 312)
     S = 2
     TOP, ZERO, PER = 38 * S, 40 * S, 7 * S
@@ -109,7 +122,7 @@ def equilibrium(theme):
     pts = [(70, 16), (170, 16)] + cubic_pts((170, 16), (167.6, 28), (159.5, 40), (147, 40)) + \
         [(93, 40)] + cubic_pts((93, 40), (80.5, 40), (72.4, 28), (70, 16))[:-1]
     ab.poly(hull, [(x * S, y * S) for x, y in pts])
-    ab.fill(hull, c(P['hull']))
+    edged(ab, hull, P['hull'], 2)
     bulb = ab.shape(settle, x=KX, y=ky(0.4) + 2, name='Bulb')
     ab.ellipse(bulb, 26 * S, 11 * S)
     ab.fill(bulb, c(P['line']))
@@ -199,17 +212,18 @@ def equilibrium(theme):
 
 # =================================================================== 2
 def goal(theme):
-    """Interactive Savings Goal. 600 x 160. An ink ballast fills a mineral
-    well; the ember block rides its leading edge. Complete: the block lowers
+    """Interactive Savings Goal. 600 x 160. An ink ballast fills a blue-grey
+    well; the lime block rides its leading edge. Complete: the block lowers
     into its seat and a capstone line closes the structure."""
     P = THEMES[theme]
+    EDGE[0] = P['edge']
     ab = Artboard(theme, 600, 160)
     X0, W, Y, H = 40, 500, 86, 34
 
     track = ab.node(0, x=X0, y=Y, name='Rider track')            # x = X0 + W * progress
     seat = ab.node(track, name='Rider seat')                 # completion offset
     lift = ab.node(seat, name='Rider bob')                   # contributed one-shot
-    box(ab, lift, -14, -28, 28, 28, (8, -5), P['ember'], 'Rider')
+    box(ab, lift, -14, -28, 28, 28, (8, -5), P['signal'], 'Rider')
 
     cap = ab.shape(0, name='Capstone')
     ab.poly(cap, [(X0, Y - 1), (X0 + W, Y - 1)], closed=False)
@@ -218,8 +232,8 @@ def goal(theme):
 
     fill_s = ab.shape(0, x=X0, y=Y + H / 2, name='Ballast')
     fill_r = ab.rect(fill_s, 0, H, origin=(0, 0.5))
-    ab.fill(fill_s, c(P['basalt'][1]))
-    box(ab, 0, X0, Y, W, H, (12, -8), P['mineral'], 'Well')
+    ab.fill(fill_s, c(P['navy'][1]))
+    box(ab, 0, X0, Y, W, H, (12, -8), P['cloud'], 'Well')
 
     p0 = ab.animation('progress-0', frames=1).key(track, 'x', [(0, X0)]).key(fill_r, 'pwidth', [(0, 0)])
     p1 = ab.animation('progress-1', frames=1).key(track, 'x', [(0, X0 + W)]).key(fill_r, 'pwidth', [(0, W)])
@@ -265,29 +279,30 @@ def onboarding(theme):
     a 1s blend with the settle curve, so going back undoes exactly what going
     forward added."""
     P = THEMES[theme]
+    EDGE[0] = P['edge']
     ab = Artboard(theme, 640, 300)
     root = ab.node(0, y=-40, name='Root')
     PX, PY = 300, 266
 
     beam = ab.node(root, x=PX, y=PY, name='Beam pivot')
-    ember = ab.node(beam, y=-100, opacity=0, name='Ember')
-    e = ab.shape(ember, x=304 - PX, y=223 - PY, name='Ember sphere')
+    lime = ab.node(beam, y=-100, opacity=0, name='Signal')
+    e = ab.shape(lime, x=304 - PX, y=223 - PY, name='Signal sphere')
     ab.ellipse(e, 44, 44)
-    ab.fill(e, c(P['ember'][1]))
+    edged(ab, e, P['signal'][1])
     bills = []
     for n in range(3):
         b = ab.node(beam, y=-60, opacity=0, name='Bill %d' % n)
-        box(ab, b, 420 - n * 4 - PX, 228 - n * 22 - PY, 70 - n * 8, 20, (12, -8), P['porcelain'], 'Bill %d' % n)
+        box(ab, b, 420 - n * 4 - PX, 228 - n * 22 - PY, 70 - n * 8, 20, (12, -8), P['paper'], 'Bill %d' % n)
         bills.append(b)
     mass = ab.node(beam, y=-70, opacity=0, name='Mass')
-    box(ab, mass, 140 - PX, 184 - PY, 62, 64, (14, -9), P['basalt'], 'Mass')
+    box(ab, mass, 140 - PX, 184 - PY, 62, 64, (14, -9), P['navy'], 'Mass')
     box(ab, beam, 90 - PX, 248 - PY, 420, 16, (14, -9), P['slate'], 'Beam')
 
     piv = ab.shape(root, name='Pivot')
     import math
     ab.poly(piv, [(300 + 32 * math.cos(math.pi * (1 - i / 16)), 296 - 32 * math.sin(math.pi * (1 - i / 16))) for i in range(17)])
-    ab.fill(piv, c(P['basalt'][1]))
-    box(ab, root, 204, 296, 192, 40, (20, -12), P['mineral'], 'Plinth')
+    ab.fill(piv, c(P['navy'][1]))
+    box(ab, root, 204, 296, 192, 40, (20, -12), P['cloud'], 'Plinth')
 
     post = ab.node(root, x=600, y=336, opacity=0, name='Payday post')
     ps = ab.shape(post, name='Post')
@@ -295,7 +310,7 @@ def onboarding(theme):
     ab.stroke(ps, c(P['line']), 2)
     pen = ab.shape(post, name='Pennant')
     ab.poly(pen, [(0, -36), (18, -30), (0, -24)])
-    ab.fill(pen, c(P['ember'][1]))
+    edged(ab, pen, P['signal'][1])
     shore = ab.shape(root, name='Shore')
     ab.poly(shore, [(480, 336), (600, 336)], closed=False)
     ss, _ = ab.stroke(shore, c(P['line']), 1.5)
@@ -314,7 +329,7 @@ def onboarding(theme):
             a.key(b, 'y', [(0, 0 if bills_in else -60)]).key(b, 'opacity', [(0, 1 if bills_in else 0)])
         a.key(shore_trim, 'trimEnd', [(0, 1 if payday_in else 0)])
         a.key(post, 'opacity', [(0, 1 if payday_in else 0)]).key(post, 'scaleY', [(0, 1 if payday_in else 0.01)])
-        a.key(ember, 'y', [(0, 0 if ember_in else -100)]).key(ember, 'opacity', [(0, 1 if ember_in else 0)])
+        a.key(lime, 'y', [(0, 0 if ember_in else -100)]).key(lime, 'opacity', [(0, 1 if ember_in else 0)])
         return a
 
     poses = [pose('accounts', -7, True, False, False, False),
@@ -347,6 +362,7 @@ def scenario(theme):
     extra = 0 and extra = 300 draws every value exactly. The axis is fixed at
     $0 to $6,000 so values stay comparable while the slider moves."""
     P = THEMES[theme]
+    EDGE[0] = P['edge']
     ab = Artboard(theme, 680, 420)
     S = 2
     X0, X1, YT, YB = 44 * S, 300 * S, 18 * S, 168 * S
@@ -375,11 +391,11 @@ def scenario(theme):
     pop = ab.node(dot_n, name='End pop')
     dot = ab.shape(pop, name='End dot')
     ab.ellipse(dot, 18, 18)
-    ab.fill(dot, c(P['hull']))
+    ab.fill(dot, c(P['highlight']))
 
     wl = ab.shape(0, name='With the change')
     _, wv = ab.poly(wl, step_pts(series(0)), closed=False)
-    ab.stroke(wl, c(P['hull']), 6, cap=1, join=1)
+    ab.stroke(wl, c(P['highlight']), 6, cap=1, join=1)
     cl = ab.shape(0, name='Current plan')
     ab.poly(cl, step_pts(series(0)), closed=False)
     ab.stroke(cl, c(P['line2']), 3, join=1)

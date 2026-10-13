@@ -125,7 +125,7 @@ export function NewGoalSheet({ S, onCreate, onClose }) {
   if (made) {
     return (
       <>
-        <keel-lottie ref={madeArt} className="made-art" name="goal-created" poster="end" label="Blocks assemble into a small structure with an ember cap."></keel-lottie>
+        <keel-lottie ref={madeArt} className="made-art" name="goal-created" poster="end" label="Blocks assemble into a small structure with a lime cap."></keel-lottie>
         <h2 id="sheet-h" style={{ textAlign: 'center' }}>{made.name} is set</h2>
         <p className="lede" style={{ textAlign: 'center' }}>The first {money(made.per)} goes in on {fmtDate(payday(S))}.</p>
         <div className="foot"><button ref={seeBtn} className="btn btn-quiet btn-block" type="button" onClick={onClose}>See it in Goals</button></div>

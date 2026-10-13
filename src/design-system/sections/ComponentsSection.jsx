@@ -216,7 +216,7 @@ export default function ComponentsSection() {
         <h3 className="h-part">Signature</h3>
         <Doc id="c-reading" letter="J" name="Steady-through reading" wide
           purpose="The answer first. A projected coverage date, not a balance: how long the money in the example covers usual spending and bills, ignoring future income."
-          tokens={['Fraunces 400, opsz 144', '--ink', '--ink-2']}
+          tokens={['Switzer 400, tabular', '--ink', '--ink-2']}
           a11y="The date is plain text in one paragraph, read as a sentence. No color carries meaning.">
           <div className="reading">
             <p className="r-k">You’re steady through</p>
@@ -237,7 +237,7 @@ export default function ComponentsSection() {
         <Doc id="c-primary" letter="A" name="Primary button"
           purpose="One per view, for the action that moves things forward."
           tokens={['--accent', '--accent-hover', '--accent-pressed', '--on-accent', '--radius-md']}
-          a11y="44px tall. White on ember is 4.96:1; in dark, Basalt on lifted ember. The disabled state uses the disabled attribute, not just a color."
+          a11y="44px tall, pill-shaped glass. The label is measured on the glass composited over the page: lime on navy glass 8.97:1 or more in light, navy on lime glass 11.61:1 or more in dark. Less transparency or more contrast in system settings gives a solid button. The disabled state uses the disabled attribute, not just a color."
           states={btnStates('btn-primary', 'Save plan')}>
           <div className="row-gap"><button type="button" className="btn btn-primary">Save plan</button><button type="button" className="btn btn-primary" disabled>Save plan</button></div>
         </Doc>
@@ -251,7 +251,7 @@ export default function ComponentsSection() {
         <Doc id="c-text" letter="C" name="Text button"
           purpose="Quiet, secondary moves: see more, cancel, clear."
           tokens={['--accent-ink', '--ink']}
-          a11y="The label is ink with an ember-text underline, so it never relies on small ember text. 44px tall even though it looks light."
+          a11y="The label is ink with a harbor-blue underline, so it never relies on colored text alone. 44px tall even though it looks light."
           states={[
             ['Default', <span className="btn-text">See all transactions</span>],
             ['Hover', <span className="btn-text is-hover">See all transactions</span>],
@@ -324,7 +324,7 @@ export default function ComponentsSection() {
         <Doc id="c-tabs" letter="H" name="Bottom tab navigation"
           purpose="The app’s four questions. Steady: am I okay? Spending: where did it go? Goals: what am I setting aside? Plan: what if I changed something?"
           tokens={['--canvas', '--accent', '--ink', '--ink-2']}
-          a11y="Each tab is a 44px-plus button with an icon and a visible label. The selected tab gets aria-current, an ember bar and a bolder label."
+          a11y="Each tab is a 44px-plus button with an icon and a visible label. The selected tab gets aria-current, an accent bar and a bolder label."
           states={null}>
           <TabBar />
         </Doc>
@@ -337,7 +337,7 @@ export default function ComponentsSection() {
           <p className="small muted">Also opens from either list row.</p>
         </Doc>
         <Doc id="c-cat" letter="L" name="Category bar"
-          purpose="Where spending went, as weight. Neutral bars, ember only for the category you’re looking at, and a tick for last stretch."
+          purpose="Where spending went, as weight. Navy bars, ocean blue only for the category you’re looking at, and a tick for last stretch."
           tokens={['--chart-1', '--chart-highlight', '--surface-2', '--ink']}
           a11y="Every bar has its name and amount as text, and the note under it says how it compares, so the tick is never the only carrier of meaning."
           states={null}>

@@ -3,49 +3,49 @@
 <head>
 <meta charset="utf-8">
 <title>Keel carousel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400..700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
 <!--
   LinkedIn carousel, 9 slides at 1080 x 1350 (4:5).
   Export: node portfolio/source/export.mjs  (PNG per slide + one PDF for LinkedIn's document post)
-  Palette: Mineral & Ember (assets/tokens.css). Every number on these slides is either
+  Palette: Harbor & Signal (assets/tokens.css). Emphasis is Harbor Blue on light slides and Signal Lime on dark ones. Every number on these slides is either
   a cited published figure or a measurement from this project's QA report.
 -->
 <style>
   :root {
-    --porcelain: #F6F3ED; --stone: #E6E2D9; --well: #DCD7CC; --ink: #252A28; --ink-2: #555B56;
-    --ember: #B94F36; --ember-text: #9E412B; --basalt: #202725; --basalt-2: #2A322F; --chalk: #F4F0E7;
-    --chalk-2: #B3B6AE; --ember-lift: #E07F60;
-    --serif: "Fraunces", Georgia, serif; --sans: "Archivo", system-ui, sans-serif;
+    --fog: #F4F5FA; --cloud: #E9EDF5; --mist: #D4EAFF; --ink: #112358; --ink-2: #4A5573;
+    --accent: #004499; --accent-text: #004499; --abyss: #0B1530; --deep: #112358; --on-dark: #F4F5FA;
+    --frost: #AEB9D6; --signal: #F1FF62;
+    --serif: "Switzer", system-ui, sans-serif; --sans: "Switzer", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #888; }
   body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
-  .slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: var(--porcelain); padding: 84px 88px; display: flex; flex-direction: column; break-after: page; }
-  .slide.dark { background: var(--basalt); color: var(--chalk); }
-  .slide.stone { background: var(--stone); }
+  .slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: var(--fog); padding: 84px 88px; display: flex; flex-direction: column; break-after: page; }
+  .slide.dark { background: var(--abyss); color: var(--on-dark); }
+  .slide.cloud { background: var(--cloud); }
 
   .sh { display: flex; justify-content: space-between; align-items: center; font-size: 25px; color: var(--ink-2); }
-  .dark .sh { color: var(--chalk-2); }
-  .wm { display: inline-flex; align-items: center; gap: 12px; font: 600 34px/1 var(--serif); color: var(--ink); font-variation-settings: "opsz" 48, "SOFT" 30; }
-  .dark .wm { color: var(--chalk); }
+  .dark .sh { color: var(--frost); }
+  .wm { display: inline-flex; align-items: center; gap: 12px; font: 600 34px/1 var(--serif); color: var(--ink); font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+  .dark .wm { color: var(--on-dark); }
   .wm svg { width: 40px; height: 22px; }
   .pg { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
 
   .body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  h1, h2 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -0.015em; font-variation-settings: "opsz" 144, "SOFT" 40; }
+  h1, h2 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -0.015em; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   h1 { font-size: 104px; line-height: 1.0; }
   h2 { font-size: 82px; line-height: 1.04; }
-  h1 em, h2 em { font-style: italic; color: var(--ember); }
-  .dark h1 em, .dark h2 em { color: var(--ember-lift); }
+  h1 em, h2 em { font-style: italic; color: var(--accent); }
+  .dark h1 em, .dark h2 em { color: var(--signal); }
   p { margin: 0; }
   .lead { font-size: 37px; line-height: 1.38; color: var(--ink-2); max-width: 860px; }
-  .dark .lead { color: var(--chalk-2); }
+  .dark .lead { color: var(--frost); }
   .lead b { color: var(--ink); font-weight: 600; }
-  .dark .lead b { color: var(--chalk); }
-  .src { font-size: 22px; line-height: 1.4; color: var(--ink-2); border-top: 2px solid rgba(37,42,40,.16); padding-top: 22px; }
-  .dark .src { color: var(--chalk-2); border-top-color: rgba(244,240,231,.16); }
+  .dark .lead b { color: var(--on-dark); }
+  .src { font-size: 22px; line-height: 1.4; color: var(--ink-2); border-top: 2px solid rgba(17,35,88,.16); padding-top: 22px; }
+  .dark .src { color: var(--frost); border-top-color: rgba(244,245,250,.16); }
   .src i { font-style: italic; }
 
   /* 1 cover */
@@ -54,35 +54,35 @@
   .cover .art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
   /* 2 stat */
-  .big { font: 300 400px/0.8 var(--serif); color: var(--ember); letter-spacing: -0.04em; font-variation-settings: "opsz" 144, "SOFT" 20; margin: 0 0 44px -14px; font-variant-numeric: lining-nums; }
+  .big { font: 300 400px/0.8 var(--serif); color: var(--accent); letter-spacing: -0.04em; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); margin: 0 0 44px -14px; font-variant-numeric: lining-nums; }
   .big small { font-size: 0.45em; letter-spacing: 0; vertical-align: 0.95em; margin-left: 6px; }
 
   /* 3 ostrich */
-  .pull { font: italic 400 60px/1.12 var(--serif); font-variation-settings: "opsz" 144, "SOFT" 60; margin: 0 0 48px; max-width: 880px; }
-  .rule-k { width: 120px; height: 6px; background: var(--ember); margin: 0 0 48px; border-radius: 3px; }
+  .pull { font: italic 400 60px/1.12 var(--serif); font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); margin: 0 0 48px; max-width: 880px; }
+  .rule-k { width: 120px; height: 6px; background: var(--accent); margin: 0 0 48px; border-radius: 3px; }
 
   /* 4 reframe */
   .q { display: grid; grid-template-columns: 72px 1fr; gap: 0 20px; align-items: baseline; }
   .q .k { font-size: 26px; color: var(--ink-2); }
-  .q .old { font: 400 64px/1.15 var(--serif); color: var(--ink-2); text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: rgba(37,42,40,.45); }
-  .q .new { font: 500 76px/1.1 var(--serif); color: var(--ink); font-variation-settings: "opsz" 144, "SOFT" 40; }
+  .q .old { font: 400 64px/1.15 var(--serif); color: var(--ink-2); text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: rgba(17,35,88,.45); }
+  .q .new { font: 500 76px/1.1 var(--serif); color: var(--ink); font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   .q + .q { margin-top: 36px; }
   .reading { margin-top: 70px; padding-top: 44px; border-top: 2px solid var(--ink); }
   .reading .k2 { font-size: 34px; color: var(--ink-2); }
-  .reading .date { font: 400 180px/1 var(--serif); letter-spacing: -0.03em; margin: 8px 0 16px; font-variation-settings: "opsz" 144, "SOFT" 30; }
+  .reading .date { font: 400 180px/1 var(--serif); letter-spacing: -0.03em; margin: 8px 0 16px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   .reading .sub { font-size: 34px; line-height: 1.35; color: var(--ink-2); }
   .reading .sub b { color: var(--ink); }
 
   /* phone crops */
   .split { display: grid; grid-template-columns: 1fr 430px; gap: 56px; align-items: center; flex: 1; }
-  .phone { width: 430px; border-radius: 44px; overflow: hidden; border: 2px solid rgba(37,42,40,.22); background: var(--porcelain); box-shadow: 0 30px 60px -30px rgba(37,42,40,.35); }
-  .dark .phone { border-color: rgba(244,240,231,.18); box-shadow: none; }
+  .phone { width: 430px; border-radius: 44px; overflow: hidden; border: 2px solid rgba(17,35,88,.22); background: var(--fog); box-shadow: 0 30px 60px -30px rgba(17,35,88,.35); }
+  .dark .phone { border-color: rgba(244,245,250,.18); box-shadow: none; }
   .phone img { display: block; width: 100%; }
   .crop-top { height: 726px; } .crop-top img { margin-top: 0; }
   .crop-sheet { height: 560px; } .crop-sheet img { margin-top: -372px; }
   .notes { list-style: none; margin: 40px 0 0; padding: 0; }
-  .notes li { font-size: 31px; line-height: 1.35; padding: 20px 0; border-top: 2px solid rgba(37,42,40,.14); color: var(--ink-2); }
-  .notes li:last-child { border-bottom: 2px solid rgba(37,42,40,.14); }
+  .notes li { font-size: 31px; line-height: 1.35; padding: 20px 0; border-top: 2px solid rgba(17,35,88,.14); color: var(--ink-2); }
+  .notes li:last-child { border-bottom: 2px solid rgba(17,35,88,.14); }
   .notes b { color: var(--ink); font-weight: 600; display: block; }
   .s5 h2, .s6 h2 { font-size: 70px; }
 
@@ -92,29 +92,29 @@
   .frames svg { width: 100%; height: auto; display: block; }
   .frames figcaption { font-size: 24px; color: var(--ink-2); margin-top: 14px; text-align: center; font-variant-numeric: tabular-nums; }
   .nots { display: flex; flex-wrap: wrap; gap: 14px 40px; font-size: 31px; margin-top: 8px; }
-  .nots span { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ember); text-decoration-thickness: 3px; }
+  .nots span { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
 
   /* 8 checked */
   .ledger { margin-top: 56px; }
-  .ledger div { display: grid; grid-template-columns: 330px 1fr; gap: 32px; align-items: baseline; padding: 30px 0; border-top: 2px solid rgba(37,42,40,.16); }
-  .ledger div:last-child { border-bottom: 2px solid rgba(37,42,40,.16); }
+  .ledger div { display: grid; grid-template-columns: 330px 1fr; gap: 32px; align-items: baseline; padding: 30px 0; border-top: 2px solid rgba(17,35,88,.16); }
+  .ledger div:last-child { border-bottom: 2px solid rgba(17,35,88,.16); }
   .ledger dt { font: 400 76px/1 var(--serif); letter-spacing: -0.02em; font-variant-numeric: lining-nums tabular-nums; }
   .ledger dd { margin: 0; font-size: 30px; line-height: 1.35; color: var(--ink-2); }
   .honest { margin-top: 44px; font-size: 31px; line-height: 1.4; }
-  .honest b { color: var(--ember-text); }
+  .honest b { color: var(--accent-text); }
 
   /* 9 cta */
   .cta h2 { font-size: 96px; }
   .links { margin-top: 64px; font-size: 36px; line-height: 1.4; }
-  .links b { color: var(--chalk); font-weight: 600; }
-  .ask { margin-top: 64px; font: italic 400 52px/1.2 var(--serif); color: var(--chalk); font-variation-settings: "opsz" 144, "SOFT" 60; }
-  .by { font-size: 26px; color: var(--chalk-2); }
+  .links b { color: var(--on-dark); font-weight: 600; }
+  .ask { margin-top: 64px; font: italic 400 52px/1.2 var(--serif); color: var(--on-dark); font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+  .by { font-size: 26px; color: var(--frost); }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="mk" viewBox="0 0 40 22"><path d="M3 2h34c-.9 4.6-4 8.6-8.7 8.6h-16.6C7 10.6 3.9 6.6 3 2z" fill="#B94F36"/><path d="M19 10.6h2l-.4 7h-1.2z" fill="currentColor"/><ellipse cx="20" cy="18" rx="4.6" ry="2" fill="currentColor"/></symbol>
+    <symbol id="mk" viewBox="0 0 40 22"><path d="M3 2h34c-.9 4.6-4 8.6-8.7 8.6h-16.6C7 10.6 3.9 6.6 3 2z" fill="#F1FF62" stroke="#112358" stroke-width="1.4" stroke-linejoin="round" paint-order="stroke"/><path d="M19 10.6h2l-.4 7h-1.2z" fill="currentColor"/><ellipse cx="20" cy="18" rx="4.6" ry="2" fill="currentColor"/></symbol>
   </defs>
 </svg>
 
@@ -127,13 +127,13 @@
   </div>
   <div class="art" aria-hidden="true">
     <svg viewBox="0 0 1080 470" preserveAspectRatio="xMidYMin slice">
-      <rect x="0" y="120" width="1080" height="350" fill="#353E3A"/>
-      <path d="M0 120h1080" stroke="#F4F0E7" stroke-width="3"/>
-      <path d="M380 62h320c-7.7 38.4-33.6 76.8-73.6 76.8H453.6c-40 0-65.9-38.4-73.6-76.8z" fill="#E07F60"/>
-      <path d="M524 138h32l-6.4 194h-19.2z" fill="#F4F0E7"/>
-      <ellipse cx="540" cy="335" rx="41.6" ry="17.6" fill="#F4F0E7"/>
-      <g fill="none" stroke="#B3B6AE" stroke-width="3"><path d="M820 128v204"/><path d="M806 128h14M806 172h14M806 230h14M806 332h14"/></g>
-      <g font-family="Archivo, sans-serif" font-size="26" fill="#B3B6AE"><text x="840" y="160" fill="#F4F0E7" font-weight="600">Payday</text><text x="840" y="190">+3 days</text><text x="840" y="239">+1 week</text><text x="840" y="341">+2 weeks</text></g>
+      <rect x="0" y="120" width="1080" height="350" fill="#1A2E66"/>
+      <path d="M0 120h1080" stroke="#F4F5FA" stroke-width="3"/>
+      <path d="M380 62h320c-7.7 38.4-33.6 76.8-73.6 76.8H453.6c-40 0-65.9-38.4-73.6-76.8z" fill="#F1FF62"/>
+      <path d="M524 138h32l-6.4 194h-19.2z" fill="#F4F5FA"/>
+      <ellipse cx="540" cy="335" rx="41.6" ry="17.6" fill="#F4F5FA"/>
+      <g fill="none" stroke="#AEB9D6" stroke-width="3"><path d="M820 128v204"/><path d="M806 128h14M806 172h14M806 230h14M806 332h14"/></g>
+      <g font-family="Switzer, sans-serif" font-size="26" fill="#AEB9D6"><text x="840" y="160" fill="#F4F5FA" font-weight="600">Payday</text><text x="840" y="190">+3 days</text><text x="840" y="239">+1 week</text><text x="840" y="341">+2 weeks</text></g>
     </svg>
   </div>
 </section>
@@ -150,7 +150,7 @@
 </section>
 
 <!-- 3 ostrich effect -->
-<section class="slide stone" id="s3">
+<section class="slide cloud" id="s3">
   <header class="sh"><span class="wm"><svg><use href="#mk"/></svg>Keel</span><span class="pg">3 / 9</span></header>
   <div class="body">
     <div class="rule-k"></div>
@@ -193,7 +193,7 @@
 </section>
 
 <!-- 6 weight not walls -->
-<section class="slide stone s6" id="s6">
+<section class="slide cloud s6" id="s6">
   <header class="sh"><span class="wm"><svg><use href="#mk"/></svg>Keel</span><span class="pg">6 / 9</span></header>
   <div class="split">
     <div>
@@ -221,12 +221,12 @@
 </section>
 
 <!-- 8 checked -->
-<section class="slide stone" id="s8">
+<section class="slide cloud" id="s8">
   <header class="sh"><span class="wm"><svg><use href="#mk"/></svg>Keel</span><span class="pg">8 / 9</span></header>
   <div class="body">
     <h2>Calm still has to be <em>checked.</em></h2>
     <dl class="ledger">
-      <div><dt>0</dt><dd>contrast failures across 713 text measurements in 16 app states, light and dark</dd></div>
+      <div><dt>0</dt><dd>contrast failures across 25,646 text measurements in 112 page and app states, light and dark</dd></div>
       <div><dt>61fps</dt><dd>through the hero animation with the CPU slowed 4×</dd></div>
       <div><dt>320px</dt><dd>narrowest screen tested with no sideways scrolling; keyboard focus stays inside every dialog</dd></div>
     </dl>
@@ -256,10 +256,10 @@
     }
     function keel(days, ghost) {
       var y = 40 + days * 7;
-      return '<svg viewBox="52 8 136 152"><rect y="34" width="240" height="126" fill="#DCD7CC"/><path d="M0 34h240" stroke="#252A28" stroke-width="1.5"/>' +
-        (Math.abs(days - 9) > 0.5 ? '<ellipse cx="120" cy="104" rx="13" ry="5.5" fill="none" stroke="#555B56" stroke-width="1.25" stroke-dasharray="3 3"/>' : '') +
-        '<path d="M115 38h10l-2 ' + (y - 38) + 'h-6z" fill="#252A28"/><ellipse cx="120" cy="' + (y + 1) + '" rx="13" ry="5.5" fill="#252A28"/>' +
-        '<path d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" fill="#B94F36"/></svg>';
+      return '<svg viewBox="52 8 136 152"><rect y="34" width="240" height="126" fill="#D4EAFF"/><path d="M0 34h240" stroke="#112358" stroke-width="1.5"/>' +
+        (Math.abs(days - 9) > 0.5 ? '<ellipse cx="120" cy="104" rx="13" ry="5.5" fill="none" stroke="#4A5573" stroke-width="1.25" stroke-dasharray="3 3"/>' : '') +
+        '<path d="M115 38h10l-2 ' + (y - 38) + 'h-6z" fill="#112358"/><ellipse cx="120" cy="' + (y + 1) + '" rx="13" ry="5.5" fill="#112358"/>' +
+        '<path d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" fill="#F1FF62" stroke="#112358" stroke-width="2" stroke-linejoin="round" paint-order="stroke"/></svg>';
     }
     document.getElementById('frames').innerHTML = want.map(function (w) {
       return '<figure>' + keel(samples[w]) + '<figcaption>' + Math.round(w * 1000) + 'ms</figcaption></figure>';

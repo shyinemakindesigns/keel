@@ -1,13 +1,15 @@
 """
 60/30/10 check, measured from real screenshots rather than token names.
 
-Every pixel is assigned to the nearest palette role:
-  canvas  : Porcelain Clay (dark: Basalt)
-  surface : Mineral Stone family, incl. water and wells (dark: raised and deep basalt)
-  accent  : Oxidized Ember and its hover and text variants
-  ink     : type, icons, keel, chart marks
+Every pixel is assigned to the nearest palette role (Harbor & Signal):
+  canvas  : Fog White (dark: Abyss)
+  surface : Paper, Cloud and the Mist water band (dark: Deep Navy and Night)
+  accent  : Signal Lime, Ocean Blue and Harbor Blue
+  ink     : type, icons, keel, chart marks, and navy fills
 Ink is reported separately because it is content, not a color field; the
-60/30/10 split is computed over the three field roles.
+60/30/10 split is computed over the three field roles. Limitation: in light
+mode the primary button is a navy fill, the same color as type, so it counts
+as ink here, not accent; its lime label counts as accent.
 
 usage: python weight_check.py [--dark] shot1.png shot2.png ...   (needs Pillow)
 """
@@ -16,16 +18,16 @@ from PIL import Image
 
 THEMES = {
     "light": {
-        "canvas": ["#F6F3ED"],
-        "surface": ["#E6E2D9", "#DCD7CC", "#DFDBD2"],
-        "accent": ["#B94F36", "#A4452F", "#9E412B"],
-        "ink": ["#252A28", "#656B66", "#555B56", "#4A504C", "#7A7F79", "#A6A9A2", "#FFFFFF"],
+        "canvas": ["#F4F5FA"],
+        "surface": ["#FFFFFF", "#E9EDF5", "#D4EAFF", "#E3E7F0"],
+        "accent": ["#F1FF62", "#0192C6", "#004499"],
+        "ink": ["#112358", "#4A5573", "#3D4E7A", "#6C7899", "#A3ACC4"],
     },
     "dark": {
-        "canvas": ["#202725"],
-        "surface": ["#2A322F", "#353E3A", "#2F3734"],
-        "accent": ["#E07F60", "#E38A6C", "#E68D70"],
-        "ink": ["#F4F0E7", "#B3B6AE", "#C9C8BF", "#9A9E97", "#6E746E"],
+        "canvas": ["#0B1530"],
+        "surface": ["#112358", "#1A2E66", "#1F3470"],
+        "accent": ["#F1FF62", "#3DB8EA"],
+        "ink": ["#F4F5FA", "#AEB9D6", "#B9C3DD", "#8391B8", "#56658F"],
     },
 }
 THEME = "dark" if "--dark" in sys.argv else "light"

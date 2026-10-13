@@ -80,6 +80,25 @@ Not verified: Safari and Firefox, real devices, and a screen reader pass by a pe
 
 Checked and left as is: when tabbing at machine speed, focus can reach the lazily loaded prototype frame before the app inside has mounted. At human pace (one Tab every 250ms) focus went straight to the first control, with its ring, in 4 of 4 runs.
 
+## Harbor & Signal redesign (October 13, 2026)
+
+Keel moved from the warm Mineral & Ember identity to a cool fintech one: a grey-white canvas, white cards, deep navy type, one lime signal (source palette MP174 by Alex Cristache), Switzer in three levels (display, data with tabular figures, body), pill-shaped glass buttons, and a motion layer with a generated spring curve and a staggered screen entrance. Every Lottie, Rive file, static fallback, product screenshot, portfolio image and the LinkedIn video was regenerated. The research section and the reference list are unchanged, byte for byte.
+
+Accessibility, measured: `source/contrast_audit.py` checks 94 pairings in both themes, 0 failing. Lime is 1.1:1 on the light surfaces, so on light it is only a fill behind navy (13.7:1) and every lime shape carries a navy edge. Glass buttons are measured with their translucent fill composited over each surface: labels 8.97:1 or more, the secondary button edge 3.66:1 or more; less transparency or more contrast in system settings gives solid buttons. `npm test` after the change: 112 page audits (25,646 text elements, 0 contrast failures), every link, 185 controls, 1,161 Tab stops, 37 journeys, 14 media files, all passing. Reduced motion still turns every new animation into a state change (checked: the cascade's duration resolves to 0ms).
+
+| # | Where | Finding | Fix |
+| --- | --- | --- | --- |
+| H1 | Charts | Highlights used the hull classes; with a lime hull the plan line, today's bar and the next-bill dot would have nearly vanished on light | Charts use the data highlight (Ocean Blue) through new `f-hi` and `s-hi` classes |
+| H2 | Prototype build | Vite bundled the stylesheets with the glass layer first, so older button rules won | Glass selectors are prefixed with `html`, independent of load order |
+| H3 | Animations | Lime and white solids disappeared on the light canvas | A 1.25px navy edge on light-theme solids (Lottie, Rive and the app's hull) |
+| H4 | Check animation | A lime ring on light was invisible | A lime disc with a navy edge and a navy check, the same in both themes |
+| H5 | `source/lottie/gen_specs.js` | Broken since the React setup made the package an ES module | Renamed to `gen_specs.cjs`; references updated |
+| H6 | Fallback export | No saved script; a first attempt wrote a duplicate `xmlns`, invalid XML | `source/lottie/export-fallbacks.mjs`; all 24 SVGs validate |
+| H7 | Video recorder | Pointed at the removed `/prototype.html`, used selectors the React app no longer has, and set the slider in a way React ignores (the Plan scene stayed at $0) | New address, label-based taps, the native value setter, and the slider scrolled into view |
+| H8 | `assets/tokens.css` | `--illo-ballast` declared twice in the dark media block | One declaration |
+
+Not re-measured: the 60/30/10 split. `source/weight_check.py` has the new palette, but it needs Pillow, which isn't installed; the case study labels its numbers as measured in the earlier palette.
+
 ## Advisory kept
 
 - **Switch height 28px (2.5.5, AAA).** Bill switches measure 46×28. They pass 2.5.8 (24px minimum) and their touch area is 46×46 through an invisible hit area, which the probe can’t see because it measures the element box.

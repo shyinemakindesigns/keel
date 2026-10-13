@@ -11,7 +11,7 @@
 
 The app still ships the web implementations (same input names): the Rive runtime is 51 KB plus a 431 KB WebAssembly module gzipped, more than four times the app’s whole first load.
 
-**One more `.riv` runs in the project:** a CC BY 4.0 community file, [“Toggle switch” by ashishb](https://rive.app/community/files/2795-5761-toggle-switch), recolored to Mineral & Ember by `source/rive/recolor_toggle.py` (colors only; geometry, animations and the `Switch` state machine untouched). See “Integration in practice” at the end.
+**One more `.riv` runs in the project:** a CC BY 4.0 community file, [“Toggle switch” by ashishb](https://rive.app/community/files/2795-5761-toggle-switch), recolored to Harbor & Signal by `source/rive/recolor_toggle.py` (colors only; geometry, animations and the `Switch` state machine untouched). See “Integration in practice” at the end.
 
 ## How the files are built
 
@@ -33,7 +33,7 @@ Why these four: they respond to state continuously instead of playing once. That
 ## Shared rules
 
 - **Artboard size:** author at 2× the largest display size; the runtime scales down.
-- **Colors:** two artboards per component, `light` and `dark`, using the Mineral & Ember illustration tones from `source/lottie/kit.py` (`PALETTES`). No other colors.
+- **Colors:** two artboards per component, `light` and `dark`, using the Harbor & Signal illustration tones from `source/lottie/kit.py` (`PALETTES`), with a navy edge on light solids and Ocean Blue for the scenario’s change line. No other colors.
 - **Easing:** cubic-bezier(0.2, 0.7, 0.2, 1) for arrivals, (0.4, 0, 0.2, 1) for changes in place. The keel alone may use a damped spring (stiffness 70, damping 15, mass 1).
 - **Reduced motion:** every state machine has a boolean input `reducedMotion`. When true, every transition has duration 0.
 - **Accessibility:** the canvas is `aria-hidden="true"`; the host element carries `role="img"` and an `aria-label` the app updates from the same state it feeds the inputs. Rive renders no text that isn’t also in the DOM.
@@ -74,7 +74,7 @@ Today: the Goal Progress Lottie, progress-mapped (`goal.json`, frames 0 to 200 l
 | `contributed` | trigger | Money was just added: ease the ballast to `progress` |
 | `reducedMotion` | boolean | |
 
-States: Filling (ballast width = `progress`, ember block at the leading edge), Contributed (0.9s settle to the new width), Complete (block lowers into its seat, capstone line draws; plays once).
+States: Filling (ballast width = `progress`, lime block at the leading edge), Contributed (0.9s settle to the new width), Complete (block lowers into its seat, capstone line draws; plays once).
 
 ## 3. Onboarding Equilibrium
 
@@ -86,7 +86,7 @@ Today: the Onboarding Transition Lottie with four segments (`onboarding.json`).
 | `direction` | number, 1 or -1 | forward or back, so back undoes exactly what forward added |
 | `reducedMotion` | boolean | |
 
-States: Accounts (mass lands, beam tips), Bills (three bills stack, beam swings), Payday (shore extends to the payday post, beam levels), Ready (ember settles on the pivot). Each transition about 1s; backward transitions are the reverse.
+States: Accounts (mass lands, beam tips), Bills (three bills stack, beam swings), Payday (shore extends to the payday post, beam levels), Ready (the lime sphere settles on the pivot). Each transition about 1s; backward transitions are the reverse.
 
 ## 4. Scenario Visualization
 

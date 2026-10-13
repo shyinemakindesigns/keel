@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Keel animation library</title>
-<meta name="description" content="Keel’s design and motion system: Mineral & Ember tokens, type, the Keel Motion Language, the hand-authored Lottie library with static fallbacks, Rive specifications, and engineering guidelines.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..700&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&display=swap" rel="stylesheet">
+<meta name="description" content="Keel’s design and motion system: Harbor & Signal tokens, Switzer type, the Keel Motion Language, the hand-authored Lottie library with static fallbacks, Rive specifications, and engineering guidelines.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/tokens.css">
 <link rel="stylesheet" href="assets/css/components.css">
@@ -27,8 +27,8 @@
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
   img { max-width: 100%; height: auto; display: block; }
   h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; margin: 0; }
-  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.05; font-variation-settings: "SOFT" 40, "opsz" 144; }
-  h2 { font-size: 34px; line-height: 1.1; margin: 0 0 14px; font-variation-settings: "SOFT" 40, "opsz" 96; }
+  h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.05; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+  h2 { font-size: 34px; line-height: 1.1; margin: 0 0 14px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   h3 { font-size: 22px; margin: 32px 0 10px; }
   p { margin: 0 0 1em; max-width: 68ch; }
   code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; }
@@ -78,6 +78,8 @@
   @media (min-width: 561px) { .scale > div { grid-template-columns: 160px 1fr; gap: 16px; } .top .in, .wrap { padding: 0 24px; } .navrow { margin: 0 -24px; padding: 0 18px 6px; } }
   @media (min-width: 821px) { html { scroll-padding-top: 76px; } .top .in { flex-wrap: nowrap; padding-top: 0; } .navrow { order: 0; flex: 0 1 auto; overflow: visible; margin: 0; padding: 0; } .navrow nav { flex-wrap: wrap; } .site-nav { order: 2; border-right: 0; margin: 0 0 0 6px; padding: 0 0 0 8px; border-left: 1px solid var(--rule); } }
 </style>
+<link rel="stylesheet" href="assets/css/glass.css">
+<link rel="stylesheet" href="assets/css/motion.css">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -104,17 +106,17 @@
 
   <section id="color" aria-labelledby="color-h">
     <h2 id="color-h">Color</h2>
-    <p>Semantic tokens, shown with the values the current theme resolves to. 60% canvas, 30% surface, 10% accent; status colors never use ember.</p>
+    <p>Semantic tokens, shown with the values the current theme resolves to. 60% canvas, 30% surface, 10% accent; status colors never use the lime.</p>
     <ul class="sw" id="swatches"></ul>
   </section>
 
   <section id="type" aria-labelledby="type-h">
     <h2 id="type-h">Type, space and shape</h2>
     <dl class="scale">
-      <div><dt>Reading date · Fraunces 500, 52px</dt><dd><span style="font-family:var(--serif);font-size:52px;line-height:1;font-variation-settings:'SOFT' 30,'opsz' 144">Oct 25</span></dd></div>
-      <div><dt>Page title · Fraunces 500, 30 to 34px</dt><dd><span style="font-family:var(--serif);font-size:32px">This stretch</span></dd></div>
-      <div><dt>Body · Archivo 400, 16 to 17px</dt><dd>Keel looks at your bills, your paydays and your usual spending.</dd></div>
-      <div><dt>Amounts · Archivo 500 to 600, tabular</dt><dd style="font-variant-numeric:tabular-nums;font-weight:600">$1,240.00 · $142.00 · $17.00</dd></div>
+      <div><dt>Reading date · Switzer 400, 52px</dt><dd><span style="font-family:var(--serif);font-size:52px;line-height:1">Oct 25</span></dd></div>
+      <div><dt>Page title · Switzer 400, 30 to 34px</dt><dd><span style="font-family:var(--serif);font-size:32px">This stretch</span></dd></div>
+      <div><dt>Body · Switzer 400, 14 to 17px</dt><dd>Keel looks at your bills, your paydays and your usual spending.</dd></div>
+      <div><dt>Amounts · Switzer 500, tabular</dt><dd style="font-variant-numeric:tabular-nums;font-weight:500">$1,240.00 · $142.00 · $17.00</dd></div>
       <div><dt>Radii</dt><dd><code>--r-sm 6px</code> chips · <code>--r-md 10px</code> buttons and inputs · <code>--r-lg 16px</code> panels and sheets</dd></div>
       <div><dt>Elevation</dt><dd>A 1px hairline first; <code>--lift</code> shadow only for things that float (sheets, the device frame)</dd></div>
       <div><dt>Targets</dt><dd>44px minimum for every control; switches use an invisible hit area around a 28px visual</dd></div>
@@ -146,7 +148,7 @@
       <li><b>Loading:</b> lottie-web loads on first need; each JSON is fetched once and only within 300px of the viewport; playback pauses off-screen and in hidden tabs.</li>
       <li><b>Budget:</b> every Lottie under 20 KB raw; all 24 files total 30 KB gzipped.</li>
       <li><b>Accessibility:</b> named animations are <code>role="img"</code> with a label; decorative ones are hidden; every animation has a static end state; charts have text equivalents.</li>
-      <li><b>Build:</b> <code>python3 source/lottie/build.py</code> regenerates the library; <code>node source/lottie/gen_specs.js</code> regenerates the specs.</li>
+      <li><b>Build:</b> <code>python3 source/lottie/build.py</code> regenerates the library; <code>node source/lottie/gen_specs.cjs</code> regenerates the specs.</li>
       <li><b>Reports:</b> <a href="docs/motion-system/qa-report.md">QA, accessibility and performance</a> · <a href="docs/motion-system/animation-specifications.md">Animation specifications and storyboards</a></li>
     </ul>
   </section>

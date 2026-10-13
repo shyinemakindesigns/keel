@@ -5,7 +5,7 @@ export function KeelMark({ size = 28 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" focusable="false" className="keel-mark">
       <path d="M4 15h24" stroke="var(--ink)" strokeWidth="1.6" strokeLinecap="round" />
-      <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="var(--accent)" />
+      <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="var(--m-hull)" stroke="var(--m-hull-edge)" strokeWidth="1.5" paintOrder="stroke" strokeLinejoin="round" />
       <path d="M15 17.5h2l-.4 7h-1.2z" fill="var(--ink)" />
       <ellipse cx="16" cy="25.2" rx="3" ry="1.3" fill="var(--ink)" />
     </svg>

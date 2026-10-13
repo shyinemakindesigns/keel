@@ -14,9 +14,9 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Keel wordmark beside the app's Steady screen: steady through Oct 25, with the keel under the payday waterline.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,400..700;1,100,400&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/tokens.css">
 <script>
@@ -35,7 +35,6 @@
   body {
     margin: 0; background: var(--canvas); color: var(--ink);
     font: 400 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased;
-    font-variation-settings: "wdth" 100;
   }
   a { color: var(--accent-ink); text-underline-offset: 3px; text-decoration-thickness: 1px; }
   a:hover { text-decoration-thickness: 2px; }
@@ -46,9 +45,9 @@
 
   /* ---------- type ---------- */
   .serif, h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; text-wrap: balance; }
-  h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.02; margin: 0; font-variation-settings: "SOFT" 40, "opsz" 144; }
-  h2 { font-size: clamp(32px, 4vw, 46px); line-height: 1.06; margin: 0 0 22px; font-variation-settings: "SOFT" 40, "opsz" 120; }
-  h3 { font-size: 24px; line-height: 1.2; margin: 44px 0 12px; font-variation-settings: "SOFT" 30, "opsz" 48; }
+  h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.02; margin: 0; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+  h2 { font-size: clamp(32px, 4vw, 46px); line-height: 1.06; margin: 0 0 22px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
+  h3 { font-size: 24px; line-height: 1.2; margin: 44px 0 12px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   h4 { font-size: 17px; font-weight: 600; margin: 28px 0 8px; }
   .lede { font-size: 21px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
   .prose { max-width: 66ch; }
@@ -62,7 +61,7 @@
   /* ---------- top bar ---------- */
   .top { position: sticky; top: 0; z-index: 20; background: var(--canvas); border-bottom: 1px solid var(--rule); }
   .top .in { max-width: 1240px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .wordmark { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 24px; font-variation-settings: "SOFT" 60, "opsz" 72; color: var(--ink); text-decoration: none; }
+  .wordmark { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 24px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); color: var(--ink); text-decoration: none; }
   .wordmark svg { width: 28px; height: 28px; }
   .top .by { display: none; font-size: 15px; color: var(--ink-2); }
   .top .open { font-size: 15px; font-weight: 600; }
@@ -106,7 +105,7 @@
   .candor p:last-child { margin: 0; }
   .candor strong { color: var(--ink); }
 
-  .idea { margin: 64px 0 0; padding: 0; max-width: 30ch; font-family: var(--serif); font-size: clamp(28px, 3.4vw, 38px); line-height: 1.2; font-weight: 400; font-variation-settings: "SOFT" 80, "opsz" 96; letter-spacing: -0.01em; text-wrap: balance; }
+  .idea { margin: 64px 0 0; padding: 0; max-width: 30ch; font-family: var(--serif); font-size: clamp(28px, 3.4vw, 38px); line-height: 1.2; font-weight: 400; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); letter-spacing: -0.01em; text-wrap: balance; }
   .idea + p { margin-top: 18px; }
 
   /* ---------- horizon divider: the motif as a section break ---------- */
@@ -114,7 +113,7 @@
   .horizon::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: var(--ink); }
   .horizon::after { content: ""; position: absolute; left: 0; top: 1px; width: 8px; height: 18px; background: var(--ink); clip-path: polygon(0 0, 100% 0, 78% 100%, 22% 100%); }
   .horizon i { position: absolute; left: -6px; top: 17px; width: 20px; height: 8px; border-radius: 50%; background: var(--ink); }
-  .sec-num { display: block; font-family: var(--serif); font-size: 20px; color: var(--ink-3); font-variant-numeric: lining-nums; margin-bottom: 6px; font-variation-settings: "SOFT" 100, "opsz" 24; }
+  .sec-num { display: block; font-family: var(--serif); font-size: 20px; color: var(--ink-3); font-variant-numeric: lining-nums; margin-bottom: 6px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
 
   /* ---------- structural surfaces ---------- */
   .panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); }
@@ -139,7 +138,7 @@
   .evidence p.so { color: var(--ink); margin: 8px 0 0; }
   .evidence cite { font-style: normal; font-size: 14.5px; color: var(--ink-3); display: block; margin-top: 8px; }
 
-  .statement { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 32px); line-height: 1.28; font-weight: 400; font-variation-settings: "SOFT" 60, "opsz" 72; margin: 28px 0; padding: 26px 0; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--rule); max-width: 34ch; text-wrap: pretty; }
+  .statement { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 32px); line-height: 1.28; font-weight: 400; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); margin: 28px 0; padding: 26px 0; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--rule); max-width: 34ch; text-wrap: pretty; }
 
   /* principles */
   .principles { list-style: none; margin: 28px 0; padding: 0; counter-reset: p; }
@@ -296,9 +295,9 @@
   /* prototype */
   .proto { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: start; }
   .device { width: 100%; padding: 6px; border-radius: 34px; background: var(--device); border: 1px solid var(--hairline); box-shadow: var(--lift); }
-  :root { --device: var(--color-background-dark); }
-  :root[data-theme="dark"] { --device: #3A4440; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --device: #3A4440; } }
+  :root { --device: var(--color-abyss); }
+  :root[data-theme="dark"] { --device: #1A2E66; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --device: #1A2E66; } }
   .device .screen-wrap { width: 100%; height: 844px; border-radius: 28px; overflow: hidden; background: var(--canvas); position: relative; }
   .device iframe { width: 390px; height: 844px; border: 0; display: block; transform-origin: 0 0; }
   .proto-side { position: static; top: 96px; }
@@ -320,7 +319,7 @@
   .changes { list-style: none; padding: 0; margin: 24px 0; }
   .changes > li { border-top: 1px solid var(--rule); padding: 24px 0; display: grid; grid-template-columns: 1fr; gap: 12px 36px; }
   .changes > li:last-child { border-bottom: 1px solid var(--rule); }
-  .changes h4 { grid-column: 1 / -1; margin: 0; font-size: 19px; font-family: var(--serif); font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 36; }
+  .changes h4 { grid-column: 1 / -1; margin: 0; font-size: 19px; font-family: var(--serif); font-weight: 500; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
   .changes .was, .changes .now { font-size: 16px; color: var(--ink-2); }
   .changes .was b, .changes .now b { color: var(--ink); display: block; font-size: 14.5px; margin-bottom: 4px; }
   @media (min-width: 641px) { .changes > li { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
@@ -338,6 +337,8 @@
 </style>
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/case-study-motion.css">
+<link rel="stylesheet" href="assets/css/glass.css">
+<link rel="stylesheet" href="assets/css/motion.css">
 </head>
 <body>
 
@@ -614,7 +615,7 @@
           <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="f-ink2s" d="M0 0L10 5L0 10z"/></marker>
           <marker id="arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="f-accent-ink" d="M0 0L10 5L0 10z"/></marker>
         </defs>
-        <g class="f-ink" font-size="13" font-family="Archivo, sans-serif">
+        <g class="f-ink" font-size="13" font-family="Switzer, sans-serif">
           <text x="24" y="34" font-size="14" font-weight="600">Onboarding</text><text class="f-ink2s" x="118" y="34" font-size="13">collects only what the reading needs, with one illustration that changes per step</text>
           <g class="node" style="transition-delay:0ms"><rect class="f-canvas s-node" x="24" y="50" width="160" height="52" rx="8"/><text x="36" y="73" font-weight="600">Welcome</text><text class="f-ink2s" x="36" y="91" font-size="12">the keel, illustrated</text></g>
           <g class="node" style="transition-delay:70ms"><rect class="f-canvas s-node" x="202" y="50" width="160" height="52" rx="8"/><text x="214" y="73" font-weight="600">Accounts</text><text class="f-ink2s" x="214" y="91" font-size="12">what you have</text></g>
@@ -623,21 +624,21 @@
           <g class="node" style="transition-delay:280ms"><rect class="f-canvas s-node" x="736" y="50" width="200" height="52" rx="8"/><text x="748" y="73" font-weight="600">First reading</text><text class="f-ink2s" x="748" y="91" font-size="12">loading, in the motif</text></g>
           <path class="draw s-ink2s" d="M184 76h14M362 76h14M540 76h14M718 76h14M836 102v44" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
           <path class="draw s-ink" d="M24 166h912" stroke-width="1.5"/><text x="24" y="156" font-size="14" font-weight="600">The app</text><text class="f-ink2s" x="94" y="156" font-size="13">four tabs</text>
-          <g class="node" style="transition-delay:400ms"><rect class="f-hull s-accent-ink" fill-opacity=".10" stroke-opacity=".6" x="24" y="184" width="216" height="354" rx="12"/><text x="40" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Steady</text><text class="f-ink2s" x="40" y="232" font-size="12">home, opens here</text></g>
+          <g class="node" style="transition-delay:400ms"><rect class="f-accent-ink s-accent-ink" fill-opacity=".08" stroke-opacity=".6" x="24" y="184" width="216" height="354" rx="12"/><text x="40" y="214" font-size="18" font-weight="600" font-family="Switzer, sans-serif">Steady</text><text class="f-ink2s" x="40" y="232" font-size="12">home, opens here</text></g>
           <g class="node" style="transition-delay:520ms"><rect class="f-canvas s-node" x="36" y="244" width="192" height="58" rx="8"/><text x="48" y="267" font-weight="600">The reading</text><text class="f-ink2s" x="48" y="285" font-size="12">steady through, keel depth</text></g>
           <g class="node" style="transition-delay:570ms"><rect class="f-canvas s-node" x="36" y="314" width="192" height="58" rx="8"/><text x="48" y="337" font-weight="600">Purchase check</text><text class="f-ink2s" x="48" y="355" font-size="12">preview a spend first</text></g>
           <g class="node" style="transition-delay:620ms"><rect class="f-canvas s-node" x="36" y="384" width="192" height="58" rx="8"/><text x="48" y="407" font-weight="600">Spending pace</text><text class="f-ink2s" x="48" y="425" font-size="12">the Equilibrium Line</text></g>
           <g class="node" style="transition-delay:670ms"><rect class="f-canvas s-node" x="36" y="454" width="192" height="58" rx="8"/><text x="48" y="477" font-weight="600">Coming up</text><text class="f-ink2s" x="48" y="495" font-size="12">timeline and bill list</text></g>
-          <g class="node" style="transition-delay:490ms"><rect class="f-surface s-col"  x="256" y="184" width="216" height="354" rx="12"/><text x="272" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Spending</text><text class="f-ink2s" x="272" y="232" font-size="12">since last payday</text></g>
+          <g class="node" style="transition-delay:490ms"><rect class="f-surface s-col"  x="256" y="184" width="216" height="354" rx="12"/><text x="272" y="214" font-size="18" font-weight="600" font-family="Switzer, sans-serif">Spending</text><text class="f-ink2s" x="272" y="232" font-size="12">since last payday</text></g>
           <g class="node" style="transition-delay:610ms"><rect class="f-canvas s-node" x="268" y="244" width="192" height="58" rx="8"/><text x="280" y="267" font-weight="600">By category</text><text class="f-ink2s" x="280" y="285" font-size="12">bars vs last stretch</text></g>
           <g class="node" style="transition-delay:660ms"><rect class="f-canvas s-node" x="268" y="314" width="192" height="58" rx="8"/><text x="280" y="337" font-weight="600">Day by day</text><text class="f-ink2s" x="280" y="355" font-size="12">the week as a sequence</text></g>
           <g class="node" style="transition-delay:710ms"><rect class="f-canvas s-node" x="268" y="384" width="192" height="58" rx="8"/><text x="280" y="407" font-weight="600">Transactions</text><text class="f-ink2s" x="280" y="425" font-size="12">filter by category</text></g>
           <g class="node" style="transition-delay:760ms"><rect class="f-canvas s-node" x="268" y="454" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="280" y="477" font-weight="600">Transaction sheet</text><text class="f-ink2s" x="280" y="495" font-size="12">edit the category</text></g>
-          <g class="node" style="transition-delay:580ms"><rect class="f-surface s-col"  x="488" y="184" width="216" height="284" rx="12"/><text x="504" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Goals</text><text class="f-ink2s" x="504" y="232" font-size="12">set aside on purpose</text></g>
+          <g class="node" style="transition-delay:580ms"><rect class="f-surface s-col"  x="488" y="184" width="216" height="284" rx="12"/><text x="504" y="214" font-size="18" font-weight="600" font-family="Switzer, sans-serif">Goals</text><text class="f-ink2s" x="504" y="232" font-size="12">set aside on purpose</text></g>
           <g class="node" style="transition-delay:700ms"><rect class="f-canvas s-node" x="500" y="244" width="192" height="58" rx="8"/><text x="512" y="267" font-weight="600">Goal cards</text><text class="f-ink2s" x="512" y="285" font-size="12">progress, estimate</text></g>
           <g class="node" style="transition-delay:750ms"><rect class="f-canvas s-node" x="500" y="314" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="512" y="337" font-weight="600">Add money sheet</text><text class="f-ink2s" x="512" y="355" font-size="12">shows the new reading</text></g>
           <g class="node" style="transition-delay:800ms"><rect class="f-canvas s-node" x="500" y="384" width="192" height="58" rx="8" stroke-dasharray="4 3"/><text x="512" y="407" font-weight="600">New goal sheet</text><text class="f-ink2s" x="512" y="425" font-size="12">target, per paycheck</text></g>
-          <g class="node" style="transition-delay:670ms"><rect class="f-surface s-col"  x="720" y="184" width="216" height="284" rx="12"/><text x="736" y="214" font-size="18" font-weight="600" font-family="Fraunces, Georgia, serif">Plan</text><text class="f-ink2s" x="736" y="232" font-size="12">try before you commit</text></g>
+          <g class="node" style="transition-delay:670ms"><rect class="f-surface s-col"  x="720" y="184" width="216" height="284" rx="12"/><text x="736" y="214" font-size="18" font-weight="600" font-family="Switzer, sans-serif">Plan</text><text class="f-ink2s" x="736" y="232" font-size="12">try before you commit</text></g>
           <g class="node" style="transition-delay:790ms"><rect class="f-canvas s-node" x="732" y="244" width="192" height="58" rx="8"/><text x="744" y="267" font-weight="600">Scenario</text><text class="f-ink2s" x="744" y="285" font-size="12">two step lines, six months</text></g>
           <g class="node" style="transition-delay:840ms"><rect class="f-canvas s-node" x="732" y="314" width="192" height="58" rx="8"/><text x="744" y="337" font-weight="600">Readouts</text><text class="f-ink2s" x="744" y="355" font-size="12">dates, totals, per-day cost</text></g>
           <g class="node" style="transition-delay:890ms"><rect class="f-canvas s-node" x="732" y="384" width="192" height="58" rx="8"/><text x="744" y="407" font-weight="600">Apply</text><text class="f-ink2s" x="744" y="425" font-size="12">updates the goal plan</text></g>
@@ -759,7 +760,7 @@
       <input type="range" id="lohi-range" min="0" max="100" value="50">
     </div>
     <div class="prose small">
-      <p>The structure survived almost unchanged: the date first, the waterline under it, two facts, the purchase check, then the list. What changed was weight and material. The keel became the one physical object, the boxes became Mineral &amp; Ember surfaces, and the waterline became payday, labeled.</p>
+      <p>The structure survived almost unchanged: the date first, the waterline under it, two facts, the purchase check, then the list. What changed was weight and material. The keel became the one physical object, the boxes became real surfaces, and the waterline became payday, labeled.</p>
       <p class="muted">The wireframe is the real v1 sketch from this project; the screen is a live capture of the prototype.</p>
     </div>
   </div>
@@ -776,51 +777,52 @@
   <span class="sec-num">6</span>
   <h2 id="identity-h">Visual identity</h2>
   <div class="prose">
-    <p class="lede">The brief for the identity came straight from the concept: warm instead of clinical, grounded instead of urgent, one confident accent instead of a traffic-light system. Fintech defaults to blue and green because they signal trust and growth. Keel’s promise is closer to shelter, so the palette is Mineral &amp; Ember: porcelain, mineral stone and volcanic ink, with one oxidized ember accent, and a basalt and chalk counterpart for dark mode.</p>
+    <p class="lede">The brief for the identity came straight from the concept: grounded instead of urgent, one confident accent instead of a traffic-light system. Keel has had three identities. The first two were warm (the second, Mineral &amp; Ember, set porcelain and stone against one oxidized ember accent). Reviewing it next to the apps Keel would sit beside, I found it read as lifestyle, not finance. The third, Harbor &amp; Signal, keeps the restraint and moves to a cool fintech palette: grey-white surfaces, deep navy type and one lime signal, with a navy night for dark mode. The source palette is MP174 by Alex Cristache; I extended it with accessible greys, status colors and a dark theme.</p>
   </div>
 
   <figure class="figure closing reveal" style="margin-top:8px">
     <keel-lottie name="signature" trigger="inview" poster="end" label="Keel">
       <picture><source srcset="assets/fallbacks/signature-dark.svg" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/signature.svg" alt=""></picture>
     </keel-lottie>
-    <figcaption class="caption">Brand Signature: the waterline draws, the hull drops onto it, the keel extends, and the wordmark rises into place. The letters are Fraunces outlines, so the animation needs no font. <button class="btn-text" type="button" data-replay-prev style="font-size:14.5px">Replay</button></figcaption>
+    <figcaption class="caption">Brand Signature: the waterline draws, the hull drops onto it, the keel extends, and the wordmark rises into place. The letters are Switzer outlines, so the animation needs no font. <button class="btn-text" type="button" data-replay-prev style="font-size:14.5px">Replay</button></figcaption>
   </figure>
 
-  <h3>Palette: one accent, and restraint as the point</h3>
+  <h3>Palette: one signal, and restraint as the point</h3>
   <div class="figure">
-    <div class="swatches" role="img" aria-label="Palette proportions: Porcelain Clay 60 percent, Mineral Stone 30 percent, Oxidized Ember 10 percent.">
-      <div style="background:var(--color-background-primary);color:var(--color-text-primary);border-right:1px solid var(--hairline)"><b>Porcelain Clay 60</b><code>#F6F3ED</code></div>
-      <div style="background:var(--color-background-secondary);color:var(--color-text-primary);border-right:1px solid var(--hairline)"><b>Mineral Stone 30</b><code>#E6E2D9</code></div>
-      <div style="background:var(--color-brand-primary);color:#FFFFFF"><b>10</b><code>#B94F36</code></div>
+    <div class="swatches" role="img" aria-label="Palette proportions: Fog White 60 percent, Paper 30 percent, Deep Navy and Signal Lime 10 percent.">
+      <div style="background:var(--color-fog);color:var(--color-deep);border-right:1px solid var(--hairline)"><b>Fog White 60</b><code>#F4F5FA</code></div>
+      <div style="background:var(--color-paper);color:var(--color-deep);border-right:1px solid var(--hairline)"><b>Paper 30</b><code>#FFFFFF</code></div>
+      <div style="background:var(--color-deep);color:var(--color-signal)"><b>10</b><code>#112358 · #F1FF62</code></div>
     </div>
     <ul class="swatch-list">
-      <li><div class="chip" style="background:var(--color-background-primary)"></div><div><b>Porcelain Clay</b><code>#F6F3ED</code><span>The page in light mode. Warm, never stark white.</span></div></li>
-      <li><div class="chip" style="background:var(--color-background-secondary)"></div><div><b>Mineral Stone</b><code>#E6E2D9</code><span>Structural surface: panels, rows, tables, forms.</span></div></li>
-      <li><div class="chip" style="background:var(--color-mineral-deep)"></div><div><b>Deep mineral</b><code>#DCD7CC</code><span>Water in the reading, wells. Only ink and deep slate text on it.</span></div></li>
-      <li><div class="chip" style="background:var(--color-text-primary)"></div><div><b>Volcanic Ink</b><code>#252A28</code><span>Headings, body, balances, the keel itself.</span></div></li>
-      <li><div class="chip" style="background:var(--color-text-secondary)"></div><div><b>Weathered Slate</b><code>#656B66 · #555B56</code><span>Supporting copy. Steps to the deeper value inside stone surfaces, where the brand value is 4.22:1.</span></div></li>
-      <li><div class="chip" style="background:var(--color-brand-primary)"></div><div><b>Oxidized Ember</b><code>#B94F36</code><span>The only brand hue. Primary buttons, the hull, the active tab, chosen chips. White labels.</span></div></li>
-      <li><div class="chip" style="background:var(--color-ember-text)"></div><div><b>Ember text</b><code>#9E412B</code><span>The same hue, deepened for links and focus rings. The brand value is 4.48:1 as text.</span></div></li>
-      <li><div class="chip" style="background:var(--color-background-dark)"></div><div><b>Basalt</b><code>#202725 · #2A322F · #353E3A</code><span>Dark mode: three layered charcoals, not an inversion.</span></div></li>
-      <li><div class="chip" style="background:var(--color-text-dark)"></div><div><b>Chalk</b><code>#F4F0E7 · #B3B6AE</code><span>Dark mode type, primary and supporting.</span></div></li>
-      <li><div class="chip" style="background:var(--color-ember-lifted)"></div><div><b>Lifted ember</b><code>#E07F60</code><span>Dark mode accent. The brand value is 3.07:1 on basalt, so it lifts, with basalt labels.</span></div></li>
+      <li><div class="chip" style="background:var(--color-fog)"></div><div><b>Fog White</b><code>#F4F5FA</code><span>The page in light mode. A cool grey-white, so white cards read as raised.</span></div></li>
+      <li><div class="chip" style="background:var(--color-paper)"></div><div><b>Paper</b><code>#FFFFFF</code><span>Cards, panels, rows and forms.</span></div></li>
+      <li><div class="chip" style="background:var(--color-cloud)"></div><div><b>Cloud</b><code>#E9EDF5</code><span>Wells, quiet fills and disabled states.</span></div></li>
+      <li><div class="chip" style="background:var(--color-mist)"></div><div><b>Mist Blue</b><code>#D4EAFF</code><span>The water in the reading. Navy and slate text both pass on it.</span></div></li>
+      <li><div class="chip" style="background:var(--color-deep)"></div><div><b>Deep Navy</b><code>#112358</code><span>Headings, body, balances, the keel, and primary buttons.</span></div></li>
+      <li><div class="chip" style="background:var(--color-slate)"></div><div><b>Slate</b><code>#4A5573</code><span>Supporting copy. 6.0:1 or more on every light surface, so it never needs a second value.</span></div></li>
+      <li><div class="chip" style="background:var(--color-signal)"></div><div><b>Signal Lime</b><code>#F1FF62</code><span>The one accent: button labels on navy, the hull, the selected chip. A fill, never text on a light surface (1.1:1 there).</span></div></li>
+      <li><div class="chip" style="background:var(--color-harbor)"></div><div><b>Harbor Blue</b><code>#004499</code><span>Links and focus rings on light: 8.4:1 on Fog White.</span></div></li>
+      <li><div class="chip" style="background:var(--color-ocean)"></div><div><b>Ocean Blue</b><code>#0192C6 · dark #3DB8EA</code><span>The highlighted data series: the plan line, the chosen category. Marks only, never text.</span></div></li>
+      <li><div class="chip" style="background:var(--color-abyss)"></div><div><b>Abyss and Night</b><code>#0B1530 · #112358 · #1A2E66</code><span>Dark mode: three layered navies, not an inversion. Lime becomes the action color.</span></div></li>
+      <li><div class="chip" style="background:var(--color-frost)"></div><div><b>Frost</b><code>#AEB9D6</code><span>Supporting type in dark mode.</span></div></li>
     </ul>
     <h4>Status colors, kept apart from the brand</h4>
-    <p class="small muted" style="max-width:66ch">Ember never means “bad”. Financial status gets its own accessible set, and every status travels with a word or an icon, never color alone.</p>
+    <p class="small muted" style="max-width:66ch">Lime never means “good” and navy never means “bad”. Financial status gets its own accessible set, and every status travels with a word or an icon, never color alone.</p>
     <ul class="swatch-list">
-      <li><div class="chip" style="background:var(--positive)"></div><div><b>Positive</b><code>#2E6A4E · dark #7FC4A0</code><span>Money in, goal reached.</span></div></li>
-      <li><div class="chip" style="background:var(--negative)"></div><div><b>Negative</b><code>#9B2C3A · dark #F09AA3</code><span>Oxblood, deliberately a different hue from ember.</span></div></li>
-      <li><div class="chip" style="background:var(--warning)"></div><div><b>Warning</b><code>#7D5300 · dark #E2B45C</code><span>A bill not yet covered.</span></div></li>
-      <li><div class="chip" style="background:var(--info)"></div><div><b>Info</b><code>#3B5A72 · dark #9DBCD6</code><span>Neutral explanations.</span></div></li>
+      <li><div class="chip" style="background:var(--positive)"></div><div><b>Positive</b><code>#0B7350 · dark #5ED3A0</code><span>Money in, goal reached.</span></div></li>
+      <li><div class="chip" style="background:var(--negative)"></div><div><b>Negative</b><code>#B42342 · dark #FF8FA3</code><span>A clear red, used sparingly and always with words.</span></div></li>
+      <li><div class="chip" style="background:var(--warning)"></div><div><b>Warning</b><code>#8A5600 · dark #FFC857</code><span>A bill not yet covered.</span></div></li>
+      <li><div class="chip" style="background:var(--info)"></div><div><b>Info</b><code>#0A6A99 · dark #7CC8F2</code><span>Neutral explanations.</span></div></li>
     </ul>
-    <p class="caption">Category shares in the Activity tab use a five-step ink ramp (Volcanic Ink to pale mineral, reversed in dark mode), not extra hues. Ember marks only the selected category. The only colorful thing on any screen is something you can act on, or the hull.</p>
+    <p class="caption">Category shares use a five-step navy ramp (Deep Navy to pale cloud, reversed in dark mode), not extra hues. Ocean Blue marks only the selected category. The only bright thing on any screen is something you can act on, or the hull.</p>
   </div>
 
   <h3>Contrast: audited, not eyeballed</h3>
   <div class="prose">
-    <p>Every pairing is checked by a script (<code>source/contrast_audit.py</code>) against WCAG 2.1: 4.5:1 for text under 1.4.3, and 3:1 for control boundaries and focus indicators under 1.4.11. Decorative hairlines are listed too and marked exempt, with the reason, rather than quietly left out.</p>
-    <p>The audit shaped the Mineral &amp; Ember tokens. Three brand values fail somewhere as given: Oxidized Ember as text on porcelain is 4.48:1, Chalk as a label on ember is 4.36:1, and Weathered Slate on Mineral Stone is 4.22:1. Rather than nudge the brand colors, I kept them for what they pass at and added derived tokens for the rest: white button labels (4.96:1), a deeper ember for text and focus (5.84:1), and a deeper slate that secondary text switches to inside stone surfaces (5.38:1). In dark mode the ember lifts to <code>#E07F60</code> with basalt labels (5.35:1).</p>
-    <p>The table below is generated from the script’s output for both themes: 68 pairings, none failing. The theme button at the top of the page switches the table and the whole case study.</p>
+    <p>Every pairing is checked by a script (<code>source/contrast_audit.py</code>) against WCAG 2.2: 4.5:1 for text under 1.4.3, and 3:1 for control boundaries, focus indicators and chart marks under 1.4.11. Decorative hairlines are listed too and marked exempt, with the reason, rather than quietly left out.</p>
+    <p>The audit shaped the Harbor &amp; Signal tokens. Signal Lime is 1.1:1 against the light surfaces, so on light it is only ever a fill behind navy (13.7:1), and wherever it has to be seen as a shape (the hull, the lime blocks in the illustrations) it carries a navy edge that does the contrast work. The buttons are translucent glass, so the script composites each button’s fill over every surface it can sit on before measuring the label: 8.97:1 at the lowest for the primary button and 13.81:1 for the secondary, whose edge measures 3.66:1 or more. People who ask their system for less transparency or more contrast get solid buttons.</p>
+    <p>The table below is generated from the script’s output for both themes: 94 pairings, none failing. The theme button at the top of the page switches the table and the whole case study.</p>
   </div>
   <div class="table-wrap figure wide">
     <table class="t-min num">
@@ -833,7 +835,7 @@
   <h3>60 / 30 / 10, measured from screenshots</h3>
   <div class="prose">
     <p>Naming tokens “canvas, surface, accent” doesn’t make a screen 60/30/10. So I wrote a second script (<code>source/weight_check.py</code>) that takes rendered screenshots and assigns every pixel to its nearest palette role. Text and chart marks are counted separately as content; the split is over the color fields.</p>
-    <p>The first measurement of the home screen came back <strong>30% canvas, 68% surface, 2% accent</strong>: the reading lived in a stone card that filled most of the phone, so the structural color had become the background. I took the reading out of the card and set it directly on the canvas, let the water band carry the stone, and turned the tab bar into canvas with a hairline. The re-measure: <strong>64 / 34 / 2</strong>. Both images below are rendered in the Mineral &amp; Ember palette, and the numbers hold within a point in dark mode.</p>
+    <p>The first measurement of the home screen came back <strong>30% canvas, 68% surface, 2% accent</strong>: the reading lived in a card that filled most of the phone, so the structural color had become the background. I took the reading out of the card and set it directly on the canvas, let the water band carry the surface, and turned the tab bar into canvas with a hairline. The re-measure: <strong>64 / 34 / 2</strong>. These measurements and both images below are from the second identity, Mineral &amp; Ember; the layout fix carried over to Harbor &amp; Signal unchanged.</p>
   </div>
   <div class="ba figure">
     <figure><img src="assets/img/home-v1-before-weight-fix.webp" alt="Home screen before: the reading sits inside a large mineral stone card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
@@ -841,7 +843,7 @@
   </div>
   <div class="table-wrap figure wide">
     <table class="num">
-      <thead><tr><th scope="col">Screen, light theme</th><th scope="col">Canvas</th><th scope="col">Surface</th><th scope="col">Accent</th><th scope="col">My read</th></tr></thead>
+      <thead><tr><th scope="col">Screen, light theme (Mineral &amp; Ember)</th><th scope="col">Canvas</th><th scope="col">Surface</th><th scope="col">Accent</th><th scope="col">My read</th></tr></thead>
       <tbody>
         <tr><th scope="row">Home (after)</th><td>63.7%</td><td>34.0%</td><td>2.3%</td><td>On target for 60/30. Accent low because there’s one action.</td></tr>
         <tr><th scope="row">Welcome</th><td>79.3%</td><td>14.2%</td><td>6.5%</td><td>Canvas-heavy by design: one illustration, one button.</td></tr>
@@ -853,17 +855,17 @@
     </table>
   </div>
   <div class="prose">
-    <p>Two honest notes on the numbers. I treat 10% as a ceiling for the accent, not a quota: it only appears where there’s something to do, and I didn’t add ember to a screen just to hit a number. And list-heavy screens (Bills, Activity) run closer to 50/50 because every list sits on a stone surface with real row dividers instead of floating on the page. I chose structure over the ratio there, and I’d revisit it with real content lengths.</p>
+    <p>Two honest notes on the numbers. I treat 10% as a ceiling for the accent, not a quota: it only appears where there’s something to do, and I didn’t add accent to a screen just to hit a number. And list-heavy screens (Bills, Activity) run closer to 50/50 because every list sits on a surface with real row dividers instead of floating on the page. I chose structure over the ratio there, and I’d revisit it with real content lengths.</p>
   </div>
 
-  <h3>Type: an editorial serif and a working grotesque</h3>
-  <div class="prose"><p>Fraunces carries the voice: headlines, the wordmark and, most importantly, the reading’s date, set large so the answer is the first thing you see. Its soft axis is turned up to take the edge off the serifs. Archivo does the work: UI, body, numbers, with tabular figures anywhere amounts line up. Headlines use balanced wrapping so no line ends on a single dangling word, and body copy holds to about 66 characters a line.</p></div>
+  <h3>Type: one family, three levels</h3>
+  <div class="prose"><p>Switzer, a neutral grotesque, does everything, in three levels. Display is Regular with tight leading and no added tracking, so the headlines and the reading’s date stay calm at large sizes. Data is Medium with tabular figures, so amounts and dates line up in columns. Body is Regular from 14 to 17px for UI and prose. Headlines use balanced wrapping so no line ends on a single dangling word, and body copy holds to about 66 characters a line.</p></div>
   <dl class="specimen figure">
-    <div class="s"><dt>Reading date<br>Fraunces 500, 52px, opsz 144, soft 30</dt><dd><span class="serif" style="font-size:clamp(44px,6vw,64px);line-height:1;font-variation-settings:'SOFT' 30,'opsz' 144;font-variant-numeric:lining-nums">Oct 25</span></dd></div>
-    <div class="s"><dt>Headline<br>Fraunces 500, 34px, soft 40</dt><dd><span class="serif" style="font-size:34px;line-height:1.1;font-variation-settings:'SOFT' 40,'opsz' 96">These look like regular bills.</span></dd></div>
-    <div class="s"><dt>Body<br>Archivo 400, 16 to 17px, 1.5</dt><dd>Keel looks at your bills, your paydays and your usual spending, then tells you one thing first: how long you’re covered.</dd></div>
-    <div class="s"><dt>UI and amounts<br>Archivo 500 to 600, tabular</dt><dd class="num" style="font-weight:500">Car insurance &nbsp;·&nbsp; $142.00 &nbsp;·&nbsp; Set aside</dd></div>
-    <div class="s"><dt>Wordmark<br>Fraunces 600, soft 60</dt><dd><span class="wordmark" style="font-size:40px"><svg aria-hidden="true" style="width:44px;height:44px"><use href="#mark"/></svg>Keel</span></dd></div>
+    <div class="s"><dt>Display, the reading date<br>Switzer 400, 52px, line height 1</dt><dd><span class="serif" style="font-size:clamp(44px,6vw,64px);line-height:1;font-weight:400">Oct 25</span></dd></div>
+    <div class="s"><dt>Headline<br>Switzer 400, 34px</dt><dd><span class="serif" style="font-size:34px;line-height:1.1;font-weight:400">These look like regular bills.</span></dd></div>
+    <div class="s"><dt>Data<br>Switzer 500, tabular figures</dt><dd class="num" style="font-weight:500;font-size:28px;line-height:1.2">$1,284.60 &nbsp; $142.00</dd></div>
+    <div class="s"><dt>Body and UI<br>Switzer 400, 14 to 17px, 1.5</dt><dd>Keel looks at your bills, your paydays and your usual spending, then tells you one thing first: how long you’re covered.</dd></div>
+    <div class="s"><dt>Wordmark<br>Switzer 600</dt><dd><span class="wordmark" style="font-size:40px"><svg aria-hidden="true" style="width:44px;height:44px"><use href="#mark"/></svg>Keel</span></dd></div>
   </dl>
 
   <h3>One shape: the waterline and the keel</h3>
@@ -876,8 +878,8 @@
       <path class="f-hull" d="M150 68h160c-3.8 19-16.8 38-36.8 38h-86.4c-20 0-33-19-36.8-38z"/>
       <path class="f-ink" d="M222 104h16l-3 96h-10z"/>
       <ellipse class="f-ink" cx="230" cy="202" rx="22" ry="9"/>
-      <g class="f-ink" font-family="Archivo, sans-serif" font-size="13.5">
-        <path class="s-ink" d="M330 80h40"/><text x="376" y="84">hull: ember</text>
+      <g class="f-ink" font-family="Switzer, sans-serif" font-size="13.5">
+        <path class="s-ink" d="M330 80h40"/><text x="376" y="84">hull: signal lime</text>
         <path class="s-ink" d="M24 92v-30"/><text x="30" y="60">waterline = payday</text>
         <path class="s-ink" d="M250 150h50"/><text x="306" y="154">keel: ink, depth = room</text>
         <path class="s-ink" d="M256 204h44"/><text x="306" y="208">ballast: weight sits low</text>
@@ -918,7 +920,7 @@
   </div>
 
   <h3>Iconography</h3>
-  <div class="prose"><p>A small set drawn on a 24px grid with a 1.75px stroke and round joins, matching the weight of Archivo at UI sizes. Only three icons ship in the prototype, because there are only three places to go. The Steady icon is the motif itself.</p></div>
+  <div class="prose"><p>A small set drawn on a 24px grid with a 1.75px stroke and round joins, matching the weight of Switzer at UI sizes. Only three icons ship in the prototype, because there are only three places to go. The Steady icon is the motif itself.</p></div>
   <div class="icons figure">
     <figure><svg aria-hidden="true"><use href="#i-steady"/></svg><figcaption>Steady</figcaption></figure>
     <figure><svg aria-hidden="true"><use href="#i-activity"/></svg><figcaption>Activity</figcaption></figure>
@@ -928,9 +930,9 @@
 
   <h3>Surfaces: border first, then maybe a shadow</h3>
   <div class="surfaces figure">
-    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline)">Stone, 1px hairline</div><figcaption><b>Default raised surface</b>Fill and a 12% ink hairline. No shadow.</figcaption></figure>
+    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline)">Paper, 1px hairline</div><figcaption><b>Default raised surface</b>White fill and a 10% navy hairline. No shadow.</figcaption></figure>
     <figure><div class="demo" style="background:var(--canvas);border:1px solid var(--hairline);box-shadow:var(--lift)">Hairline plus lift</div><figcaption><b>Only for things that float</b>Sheets and the device frame. Soft, low-alpha, never a hard edge.</figcaption></figure>
-    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline);padding:0;display:block;overflow:hidden"><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Phone · $65</div><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Internet · $70</div><div style="padding:12px 14px;text-align:left">Gym · $40</div></div><figcaption><b>Lists are structure</b>Every row view sits on stone with an 18% rule. No text floating on canvas.</figcaption></figure>
+    <figure><div class="demo" style="background:var(--surface);border:1px solid var(--hairline);padding:0;display:block;overflow:hidden"><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Phone · $65</div><div style="padding:12px 14px;border-bottom:1px solid var(--rule);text-align:left">Internet · $70</div><div style="padding:12px 14px;text-align:left">Gym · $40</div></div><figcaption><b>Lists are structure</b>Every row view sits on a white surface with a 14% rule. No text floating on canvas.</figcaption></figure>
   </div>
   <div class="prose small muted"><p>Radii: 6px for chips, 10px for buttons and inputs, 16px for panels and sheets. No pill buttons: a pill reads as a tag or a toy, and Keel’s buttons should feel like a firm handle.</p></div>
 
@@ -942,28 +944,28 @@
   <span class="sec-num">7</span>
   <h2 id="illustration-h">Illustration system: the equilibrium object</h2>
   <div class="prose">
-    <p class="lede">Every illustration in Keel is built from the same small set of objects: a beam, a pivot, a plinth, blocks and one ember sphere, resting on a ground line. They are 3D-inspired rather than 3D: drawn in oblique projection with flat shading, so they stay sharp, tiny and animatable as vectors.</p>
+    <p class="lede">Every illustration in Keel is built from the same small set of objects: a beam, a pivot, a plinth, blocks and one lime sphere, resting on a ground line. They are 3D-inspired rather than 3D: drawn in oblique projection with flat shading, so they stay sharp, tiny and animatable as vectors.</p>
   </div>
 
   <div class="illo-grid figure reveal">
     <figure>
       <keel-lottie name="equilibrium" trigger="inview" poster="end" label="The equilibrium object at rest."></keel-lottie>
-      <figcaption><b>The equilibrium object</b>The signature: two different masses balanced on a basalt pivot, the ember at the point of balance.</figcaption>
+      <figcaption><b>The equilibrium object</b>The signature: two different masses balanced on a navy pivot, the lime sphere at the point of balance.</figcaption>
     </figure>
     <figure>
-      <keel-lottie name="onboarding" poster="240" label="The onboarding composition: a mass, stacked bills, a payday post, and the ember."></keel-lottie>
+      <keel-lottie name="onboarding" poster="240" label="The onboarding composition: a mass, stacked bills, a payday post, and the lime sphere."></keel-lottie>
       <figcaption><b>The same object, telling a story</b>Onboarding adds one element per step: money lands, bills stack, the shore reaches payday.</figcaption>
     </figure>
   </div>
 
   <h3>Materials</h3>
-  <div class="prose"><p>Five materials, each a step of a Mineral &amp; Ember color, each drawn with exactly three tones: a lit top, a front, and a shaded side. No gradients anywhere except contact shadows, and no gloss.</p></div>
+  <div class="prose"><p>Five materials, each a step of a Harbor &amp; Signal color, each drawn with exactly three tones: a lit top, a front, and a shaded side. On light, every solid gets a thin navy edge, because white and lime faces are about 1.1:1 against the canvas. No gradients anywhere except contact shadows, and no gloss.</p></div>
   <ul class="materials">
-    <li><div class="tri"><i style="background:#FFFFFF"></i><i style="background:#F1EDE5"></i><i style="background:#DDD8CD"></i></div><b>Porcelain</b><span>Light masses, platforms, bills.</span></li>
-    <li><div class="tri"><i style="background:#EEEAE2"></i><i style="background:#DCD7CC"></i><i style="background:#C6C0B3"></i></div><b>Mineral</b><span>Plinths, wells, quiet structure.</span></li>
+    <li><div class="tri"><i style="background:#FFFFFF"></i><i style="background:#F4F5FA"></i><i style="background:#DDE2EC"></i></div><b>Paper</b><span>Light masses, platforms, bills.</span></li>
+    <li><div class="tri"><i style="background:#F4F7FC"></i><i style="background:#E1E7F2"></i><i style="background:#C9D2E3"></i></div><b>Cloud</b><span>Plinths, wells, quiet structure.</span></li>
     <li><div class="tri"><i style="background:#8C928D"></i><i style="background:#656B66"></i><i style="background:#4C524E"></i></div><b>Slate</b><span>Beams and lintels: the architecture.</span></li>
-    <li><div class="tri"><i style="background:#4A5450"></i><i style="background:#343C39"></i><i style="background:#202725"></i></div><b>Basalt</b><span>Weight: the pivot, the heavy mass.</span></li>
-    <li><div class="tri"><i style="background:#C9664D"></i><i style="background:#B94F36"></i><i style="background:#8F3C29"></i></div><b>Ember</b><span>The focal point. One per composition.</span></li>
+    <li><div class="tri"><i style="background:#2A3F7A"></i><i style="background:#112358"></i><i style="background:#0A1638"></i></div><b>Navy</b><span>Weight: the pivot, the heavy mass.</span></li>
+    <li><div class="tri"><i style="background:#F6FF9A"></i><i style="background:#F1FF62"></i><i style="background:#C9D63A"></i></div><b>Signal</b><span>The focal point. One per composition.</span></li>
   </ul>
 
   <h3>Geometry and light</h3>
@@ -972,14 +974,14 @@
       <li><b>Oblique projection.</b> Depth is a fixed offset up and to the right (16:−10 for objects, 22:−14 for plinths), so every object agrees on where the viewer stands.</li>
       <li><b>One light.</b> Top faces are lit, right faces are shaded, always. Dark mode keeps the same light and lowers it, rather than inverting it.</li>
       <li><b>Contact shadows only.</b> Soft radial shadows under things that rest on other things. They are the only gradients in the system, and they make weight readable.</li>
-      <li><b>The ember is always last.</b> In every composition the ember is the final element to move, so the eye ends where the meaning is.</li>
+      <li><b>The lime is always last.</b> In every composition the lime element is the final one to move, so the eye ends where the meaning is.</li>
     </ul>
   </div>
 
   <h3>The illustration: a boat finding its keel</h3>
   <div class="prose">
     <p>There’s no After Effects export path in the environment I built this in, so the animation is written directly as Lottie JSON from a Python script (<code>source/gen_lottie.py</code>, and for everything since, <code>source/lottie/build.py</code>), the same approach I used for Clearstep. The boat is drawn as a cutaway so the keel shows below the water: the hidden thing made visible, which is the whole product in one picture.</p>
-    <p>Three colors only per theme: Volcanic Ink, Oxidized Ember and deep mineral in light; Chalk, lifted ember and deep basalt in dark. Lottie colors are baked into the file, so each theme has its own JSON with identical keyframes, and the page swaps them when the theme changes. The boat starts heeled 9° and rocks about a pivot near the center of buoyancy, so the hull and keel swing in opposition like a real righting moment. Each swing keeps about 62% of the last one’s amplitude and is slightly quicker, which is what damping looks like. It’s level by frame 180 and then holds still for two seconds before it stops. I rendered and reviewed every keyframe before using it; the strip below is the live file, not screenshots.</p>
+    <p>Three colors only per theme: Deep Navy, Signal Lime and Mist Blue in light (the lime hull outlined in navy); Fog White, Signal Lime and Night in dark. Lottie colors are baked into the file, so each theme has its own JSON with identical keyframes, and the page swaps them when the theme changes. The boat starts heeled 9° and rocks about a pivot near the center of buoyancy, so the hull and keel swing in opposition like a real righting moment. Each swing keeps about 62% of the last one’s amplitude and is slightly quicker, which is what damping looks like. It’s level by frame 180 and then holds still for two seconds before it stops. I rendered and reviewed every keyframe before using it; the strip below is the live file, not screenshots.</p>
   </div>
   <div class="strip figure" style="--n:4">
     <figure><keel-lottie name="keel-settle" poster="0" no-fallback style="aspect-ratio:3/2"></keel-lottie><figcaption><b>Frame 0</b>Heeled 9°</figcaption></figure>
@@ -1149,7 +1151,7 @@
         <div class="rv4-btns"><button class="btn btn-quiet" type="button" id="rv4-apply" disabled>Apply plan</button></div>
         <p class="rv4-read" id="rv4-sc-read" aria-live="polite">By Apr 2, 2027: <b>$1,030</b> set aside on the current plan.</p>
       </div>
-      <figcaption><b>Scenario Visualization</b> <code>scenario.riv</code> · <code>extraPerPaycheck</code>, <code>applied</code>. Thin slate line: current plan. Ember line: with the change. The axis stays fixed at $6k so the steps stay comparable.</figcaption>
+      <figcaption><b>Scenario Visualization</b> <code>scenario.riv</code> · <code>extraPerPaycheck</code>, <code>applied</code>. Thin slate line: current plan. Ocean blue line: with the change. The axis stays fixed at $6k so the steps stay comparable.</figcaption>
     </figure>
   </div>
   <p class="small muted" id="rv4-status">The Rive runtime loads when this section is close.</p>
@@ -1183,7 +1185,7 @@
     </div>
     <div class="prose small">
       <p>This switch is a genuine <code>.riv</code> file running in the Rive web runtime, driven by its own state machine (<code>Switch</code>, trigger <code>Pressed</code>). It isn’t mine: it’s <a href="https://rive.app/community/files/2795-5761-toggle-switch">“Toggle switch” by ashishb</a> from the Rive Community, licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
-      <p><b>What I changed:</b> colors only. A script (<code>source/rive/recolor_toggle.py</code>) rewrites the color values inside the binary: the glossy blue and grey become flat Mineral &amp; Ember, the dark background becomes transparent, and a dark-theme file is written alongside. Geometry, animations and the state machine are untouched.</p>
+      <p><b>What I changed:</b> colors only. A script (<code>source/rive/recolor_toggle.py</code>) rewrites the color values inside the binary: the glossy blue and grey become flat Harbor &amp; Signal colors, the dark background becomes transparent, and a dark-theme file is written alongside. Geometry, animations and the state machine are untouched.</p>
       <p><b>How it’s wired:</b> a native button with <code>role="switch"</code> owns the state and fires <code>Pressed</code>; the file’s own pointer listeners are switched off so the two can’t drift apart. The reading comes from the app’s model: pausing the $40 gym bill on Oct 21 moves “steady through” from Oct 25 to Oct 26. With motion reduced, the runtime jumps straight to the end of the On or Off animation instead of playing it.</p>
       <p><b>The cost, stated:</b> the Rive runtime is 51 KB plus a 431 KB WebAssembly module (gzipped), loaded only when this section comes near. For one switch that’s a poor trade, which is why the app still uses a CSS switch. It pays off when several components share it, like the four above, not for one switch.</p>
     </div>
@@ -1202,11 +1204,11 @@
     <figure><img src="assets/img/screens/m-light-home.webp" alt="Steady: steady through Oct 25, the keel nine days past payday, the purchase check." width="780" height="1688" loading="lazy"><figcaption><b>Steady</b>The answer first. The keel is the Equilibrium Indicator; below it, spending pace and the coming-up timeline.</figcaption></figure>
     <figure><img src="assets/img/screens/m-light-spending.webp" alt="Spending: category bars with ticks for last stretch." width="780" height="1688" loading="lazy"><figcaption><b>Spending</b>Weight, not walls: categories as shares with a tick for last stretch, never a limit.</figcaption></figure>
     <figure><img src="assets/img/screens/m-light-goals.webp" alt="Goals: the car repair fund at $380 of $1,000." width="780" height="1688" loading="lazy"><figcaption><b>Goals</b>Progress as ballast filling a well, with a date estimate in words.</figcaption></figure>
-    <figure><img src="assets/img/screens/m-light-plan.webp" alt="Plan: two step lines comparing the current plan with $100 more each paycheck." width="780" height="1688" loading="lazy"><figcaption><b>Plan</b>Try a change first. The ember line is the change; the dashed line is today’s plan.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-plan.webp" alt="Plan: two step lines comparing the current plan with $100 more each paycheck." width="780" height="1688" loading="lazy"><figcaption><b>Plan</b>Try a change first. The blue line is the change; the dashed line is today’s plan.</figcaption></figure>
   </div>
   <div class="screens wide reveal">
     <figure><img src="assets/img/screens/d-light-home.webp" alt="The Steady screen on a laptop: side rail, reading on the left, purchase check and timeline on the right." width="1600" height="1000" loading="lazy"><figcaption><b>The same app, wide</b>A side rail replaces the tab bar; the reading keeps the left column so it’s still read first.</figcaption></figure>
-    <figure><img src="assets/img/screens/d-dark-spending.webp" alt="The Spending screen in dark mode on a laptop." width="1600" height="1000" loading="lazy"><figcaption><b>Dark, by design</b>Basalt surfaces, chalk type, a lifted ember. The illustrations ship as separate dark files, not inverted.</figcaption></figure>
+    <figure><img src="assets/img/screens/d-dark-spending.webp" alt="The Spending screen in dark mode on a laptop." width="1600" height="1000" loading="lazy"><figcaption><b>Dark, by design</b>Layered navy surfaces, fog type, lime for action. The illustrations ship as separate dark files, not inverted.</figcaption></figure>
   </div>
 </section>
 
@@ -1248,7 +1250,7 @@
         <li><button data-whatif="700"><span>6</span><span><b>Check a $700 purchase</b><small>Short before payday, said plainly. No red.</small></span></button></li>
         <li><button data-jump="spending"><span>7</span><span><b>Spending</b><small>Tap a transaction and change its category.</small></span></button></li>
         <li><button data-jump="goals"><span>8</span><span><b>Goals</b><small>Add money, or create a goal.</small></span></button></li>
-        <li><button data-jump="plan"><span>9</span><span><b>Plan</b><small>Drag the slider; the ember line follows the numbers.</small></span></button></li>
+        <li><button data-jump="plan"><span>9</span><span><b>Plan</b><small>Drag the slider; the blue line follows the numbers.</small></span></button></li>
       </ol>
       <p class="small muted">All amounts are sample data. “Today” is fixed at Thursday, October 8, 2026, so the dates make sense whenever you open it. Nothing connects to a bank and nothing asks for credentials.</p>
     </div>
@@ -1273,7 +1275,7 @@
     <div>
       <h3 class="ds-h">Buttons</h3>
       <div class="stack"><button class="btn btn-primary" type="button">Primary</button><button class="btn btn-quiet" type="button">Secondary</button><button class="btn btn-tertiary" type="button" style="text-decoration:underline;text-underline-offset:3px">Tertiary</button><button class="btn btn-primary" type="button" disabled>Disabled</button></div>
-      <p class="note2">White on ember 4.96:1; disabled stays readable at 4.85:1.</p>
+      <p class="note2">Glass buttons: lime on navy glass 8.97:1 or more, navy on white glass 13.81:1 or more; disabled stays readable at 6.31:1.</p>
     </div>
     <div>
       <h3 class="ds-h">Input and validation</h3>
@@ -1296,7 +1298,7 @@
         <span class="status warn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2l7 12H1z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7v3" stroke="currentColor" stroke-width="1.8"/></svg>Bill not covered yet</span>
         <span class="status info"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7v4M8 4.6v.4" stroke="currentColor" stroke-width="1.8"/></svg>Sample data</span>
       </div>
-      <p class="note2">Ember is never a status. Each status has a word and an icon.</p>
+      <p class="note2">Lime is never a status. Each status has a word and an icon.</p>
     </div>
     <div>
       <h3 class="ds-h">Rows</h3>
@@ -1362,12 +1364,12 @@
     <li>
       <h4>The accent failed contrast as a button</h4>
       <div class="was"><b>Was</b>The first palette’s accent with a dark ink label measured 4.35:1, below the 4.5:1 minimum for normal text.</div>
-      <div class="now"><b>Now</b>In the first palette the fix was a nudged accent and deeper ink (4.85:1). In Mineral &amp; Ember the lesson became a rule: brand values stay as given, and accessible derivatives (white labels, a deeper ember for text) carry the roles the brand value can’t.</div>
+      <div class="now"><b>Now</b>In the first palette the fix was a nudged accent and deeper ink (4.85:1). In Mineral &amp; Ember the lesson became a rule: brand values stay as given, and accessible derivatives carry the roles the brand value can’t. Harbor &amp; Signal keeps the rule: lime stays a fill on light, and a navy edge carries its contrast wherever it has to be seen.</div>
     </li>
     <li>
       <h4>The home screen was 68% stone</h4>
       <div class="was"><b>Was</b>The reading lived in a large stone card, and the tab bar was stone too. Measured from a screenshot: 30 / 68 / 2.</div>
-      <div class="now"><b>Now</b>The reading sits directly on the canvas, the water band carries the stone, and the tab bar is canvas with a hairline. Measured: 64 / 34 / 2.</div>
+      <div class="now"><b>Now</b>The reading sits directly on the canvas, the water band carries the color, and the tab bar is canvas with a hairline. Measured: 64 / 34 / 2.</div>
     </li>
     <li>
       <h4>The purchase preview was illegible</h4>
@@ -1398,7 +1400,7 @@
   <span class="sec-num">13</span>
   <h2 id="reflection-h">Outcomes and reflection</h2>
   <div class="prose">
-    <p class="lede">What I wanted this project to show is that the brand and the product can be the same decision. The ember hull, the date set in Fraunces, the 900ms settle and the “weight, not walls” copy aren’t a skin on top of a budgeting app. They’re the product’s argument, made visible.</p>
+    <p class="lede">What I wanted this project to show is that the brand and the product can be the same decision. The lime hull on its navy edge, the date set large in Switzer, the 900ms settle and the “weight, not walls” copy aren’t a skin on top of a budgeting app. They’re the product’s argument, made visible.</p>
     <p>The test I used at the end was to hide the name and ask whether this could be any budgeting app’s case study. I don’t think it could. The headline metric is a forward-looking date that ignores income on purpose. The visualization encodes exactly one thing, room past payday, as the depth of a keel below a waterline that always means payday. Spending is shown as days of room rather than overages. The motion is slower than a fintech default for a stated reason. Take away “Keel” and those choices still only belong to this idea.</p>
   </div>
 

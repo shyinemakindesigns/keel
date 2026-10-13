@@ -42,7 +42,7 @@ export default function KeelViz({ depth, preview, startFrom, desc }) {
     <svg className="keelviz" id="keelviz" data-tour="keel" viewBox="0 0 340 156" role="img" aria-labelledby="kv-desc">
       <desc id="kv-desc">{desc}</desc>
       <rect className="f-water" x="0" y="34" width="340" height="122" />
-      <g className="f-ink2s" fontFamily="Archivo, sans-serif" fontSize="12.5">
+      <g className="f-ink2s" fontFamily="Switzer, sans-serif" fontSize="12.5">
         <path className="s-ink2s" d={'M226 ' + KV.zero + 'V' + yFor(14)} strokeWidth="1" />
         {TICKS.map(([d, t]) => (
           <g key={d}>
@@ -55,8 +55,8 @@ export default function KeelViz({ depth, preview, startFrom, desc }) {
       <g opacity={preview ? 1 : 0}>
         <path className="s-ink2s" fill="none" strokeWidth="1.25" strokeDasharray="3 3"
           d={finPath(depth) + ' M' + (KV.x - 13) + ' ' + (gy + 1) + 'a13 5.5 0 1 0 26 0a13 5.5 0 1 0 -26 0'} />
-        {preview && Math.abs(ny - gy) >= 14 && <text className="f-ink2s" x="84" y={gy + 5} textAnchor="end" fontFamily="Archivo, sans-serif" fontSize="12.5">Now</text>}
-        {preview && <text className="f-ink" x="84" y={ny + 5} textAnchor="end" fontFamily="Archivo, sans-serif" fontSize="12.5" fontWeight="600">{preview.label}</text>}
+        {preview && Math.abs(ny - gy) >= 14 && <text className="f-ink2s" x="84" y={gy + 5} textAnchor="end" fontFamily="Switzer, sans-serif" fontSize="12.5">Now</text>}
+        {preview && <text className="f-ink" x="84" y={ny + 5} textAnchor="end" fontFamily="Switzer, sans-serif" fontSize="12.5" fontWeight="600">{preview.label}</text>}
       </g>
       <g>
         <path className="f-ink" d={finPath(x)} />

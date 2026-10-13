@@ -1,80 +1,80 @@
 /* =====================================================================
-   Keel tokens: Mineral & Ember
+   Keel tokens: Harbor & Signal
    One source for every React page. Values match assets/tokens.css, which
    the pages not yet ported still use (docs/react-migration.md).
+   Source palette: MP174 by Alex Cristache, extended with accessible greys,
+   status colors and a dark theme. Ratios: source/contrast_audit.py.
    ===================================================================== */
 
 /* 1. Primitive tokens ------------------------------------------------- */
 :root {
-  --oxidized-ember: #B94F36;
-  --porcelain-clay: #F6F3ED;
-  --mineral-stone: #E6E2D9;
-  --volcanic-ink: #252A28;
-  --weathered-slate: #656B66;
+  --fog: #F4F5FA;      /* Fog White: light canvas */
+  --paper: #FFFFFF;    /* Paper: cards and panels */
+  --cloud: #E9EDF5;    /* Cloud: wells, disabled */
+  --mist: #D4EAFF;     /* Mist Blue: the water band, info tints */
+  --signal: #F1FF62;   /* Signal Lime: the one accent. A fill, never text on light */
+  --ocean: #0192C6;    /* Ocean Blue: the highlighted data series */
+  --harbor: #004499;   /* Harbor Blue: links and focus on light */
+  --deep: #112358;     /* Deep Navy: type, primary actions, the dark surface */
+  --slate: #4A5573;    /* Slate: secondary type */
+  --abyss: #0B1530;    /* Abyss: dark canvas */
+  --night: #1A2E66;    /* Night: dark wells and water band */
+  --frost: #AEB9D6;    /* Frost: secondary type on dark */
 
-  --basalt: #202725;
-  --chalk: #F4F0E7;
-
-  /* derived */
-  --mineral-deep: #DCD7CC;
-  --slate-deep: #555B56;
-  --ember-text: #9E412B;
-  --ember-hover: #A4452F;
-  --ember-pressed: #8F3C29;
-  --basalt-raised: #2A322F;
-  --basalt-deep: #353E3A;
-  --chalk-muted: #B3B6AE;
-  --ember-lifted: #E07F60;
-
-  /* derived for dark-theme interaction: lifted ember, one step lighter and darker.
-     Basalt label on each: 6.1:1 and 4.66:1 (calculated in the Color section). */
-  --ember-lifted-hover: #E68D70;
-  --ember-lifted-pressed: #D9714F;
+  /* derived for interaction */
+  --deep-hover: #1E3576;
+  --deep-pressed: #0A1638;
+  --signal-hover: #F5FF8C;
+  --signal-pressed: #E3F24A;
+  --ocean-lifted: #3DB8EA;
 
   /* status */
-  --status-positive: #2E6A4E;
-  --status-negative: #9B2C3A;
-  --status-warning: #7D5300;
-  --status-info: #3B5A72;
+  --status-positive: #0B7350;
+  --status-negative: #B42342;
+  --status-warning: #8A5600;
+  --status-info: #0A6A99;
 
-  /* status applied on dark surfaces: the light-theme hues fail there, so the
-     same four roles step up in lightness */
-  --status-positive-lifted: #7FC4A0;
-  --status-negative-lifted: #F09AA3;
-  --status-warning-lifted: #E2B45C;
-  --status-info-lifted: #9DBCD6;
+  /* status on dark surfaces: the same four roles, lifted */
+  --status-positive-lifted: #5ED3A0;
+  --status-negative-lifted: #FF8FA3;
+  --status-warning-lifted: #FFC857;
+  --status-info-lifted: #7CC8F2;
 
-  /* data visualization */
-  --data-1: #252A28;
-  --data-2: #4A504C;
-  --data-3: #7A7F79;
-  --data-4: #A6A9A2;
-  --data-5: #C9C8BF;
-  --data-highlight: #B94F36;
+  /* data visualization: a navy ramp, ocean for the selected series */
+  --data-1: #112358;
+  --data-2: #3D4E7A;
+  --data-3: #6C7899;
+  --data-4: #A3ACC4;
+  --data-5: #CDD3E2;
+  --data-highlight: #0192C6;
 }
 
 /* 2. Semantic tokens: light -------------------------------------------- */
 :root,
 [data-theme="light"] {
-  --canvas: var(--porcelain-clay);
-  --surface: var(--mineral-stone);
-  --surface-2: var(--mineral-deep);
+  --canvas: var(--fog);
+  --surface: var(--paper);
+  --surface-2: var(--cloud);
 
-  --ink: var(--volcanic-ink);
-  --ink-2: var(--weathered-slate);
-  --ink-2-on-surface: var(--slate-deep); /* Weathered Slate is 4.22:1 on stone; this is 5.38:1 */
+  --ink: var(--deep);
+  --ink-2: var(--slate);
+  --ink-2-on-surface: var(--slate); /* Slate passes on every light surface: 6.0:1 at the lowest (mist) */
 
-  --accent: var(--oxidized-ember);
-  --accent-hover: var(--ember-hover);
-  --accent-pressed: var(--ember-pressed);
-  --on-accent: #FFFFFF;
-  --accent-ink: var(--ember-text);
-  --focus: var(--ember-text);
+  --accent: var(--deep);              /* primary buttons: navy with a lime label */
+  --accent-hover: var(--deep-hover);
+  --accent-pressed: var(--deep-pressed);
+  --on-accent: var(--signal);         /* 13.7:1 */
+  --accent-ink: var(--harbor);        /* links, text buttons */
+  --focus: var(--harbor);
+  --sig: var(--signal);               /* highlight fills */
+  --on-sig: var(--deep);
 
-  --hairline: rgba(37, 42, 40, 0.12);
-  --rule: rgba(37, 42, 40, 0.18);
-  --control: rgba(37, 42, 40, 0.58);
-  --tint: rgba(37, 42, 40, 0.06);
+  --hairline: rgba(17, 35, 88, 0.10);
+  --rule: rgba(17, 35, 88, 0.14);
+  --control: rgba(17, 35, 88, 0.62);
+  --tint: rgba(17, 35, 88, 0.05);
+  --disabled-bg: var(--cloud);
+  --disabled-ink: var(--slate);
 
   --positive: var(--status-positive);
   --negative: var(--status-negative);
@@ -88,64 +88,92 @@
   --chart-5: var(--data-5);
   --chart-highlight: var(--data-highlight);
 
-  /* illustration materials: faces built only from palette values */
-  --m-ember-top: var(--ember-lifted);   --m-ember-front: var(--oxidized-ember); --m-ember-side: var(--ember-pressed);
-  --m-mineral-top: var(--porcelain-clay); --m-mineral-front: var(--mineral-stone); --m-mineral-side: var(--mineral-deep);
-  --m-basalt-top: var(--basalt-deep);   --m-basalt-front: var(--basalt-raised); --m-basalt-side: var(--basalt);
-  --m-porcelain-top: #FFFFFF;           --m-porcelain-front: var(--chalk);      --m-porcelain-side: var(--mineral-stone);
-  --m-line: var(--volcanic-ink);
-  --m-water: var(--mineral-deep);
-  --m-edge: rgba(37, 42, 40, 0.18);
+  /* illustration materials: three flat faces each, built only from palette values */
+  --m-signal-top: #F6FF9A;  --m-signal-front: var(--signal); --m-signal-side: #C9D63A;
+  --m-cloud-top: var(--paper); --m-cloud-front: #E1E7F2;     --m-cloud-side: #C9D2E3;
+  --m-navy-top: #2A3F7A;    --m-navy-front: var(--deep);     --m-navy-side: var(--deep-pressed);
+  --m-paper-top: var(--paper); --m-paper-front: var(--fog);  --m-paper-side: #DDE2EC;
+  --m-line: var(--deep);
+  --m-water: var(--mist);
+  --m-hull: var(--signal);
+  --m-hull-edge: var(--deep);
+  --m-edge: rgba(17, 35, 88, 0.16);
 
-  --lift: 0 1px 2px rgba(37, 42, 40, 0.05), 0 12px 32px -16px rgba(37, 42, 40, 0.22);
-  --scrim: rgba(32, 39, 37, 0.42);
+  --lift: 0 1px 2px rgba(17, 35, 88, 0.06), 0 12px 32px -14px rgba(17, 35, 88, 0.20);
+  --scrim: rgba(11, 21, 48, 0.40);
+  /* glass buttons (assets/css/glass.css) */
+  --glass-blur: blur(16px) saturate(150%);
+  --glass-primary-bg: rgba(17, 35, 88, 0.86);
+  --glass-primary-hover: rgba(17, 35, 88, 0.94);
+  --glass-primary-ink: #F1FF62;
+  --glass-primary-edge: rgba(255, 255, 255, 0.16);
+  --glass-secondary-bg: rgba(255, 255, 255, 0.62);
+  --glass-secondary-hover: rgba(255, 255, 255, 0.86);
+  --glass-secondary-edge: rgba(17, 35, 88, 0.58);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --glass-shadow: 0 10px 28px -14px rgba(17, 35, 88, 0.45);
   color-scheme: light;
 }
 
 /* 3. Semantic tokens: dark (designed, not inverted) -------------------- */
 [data-theme="dark"] {
-  --canvas: var(--basalt);
-  --surface: var(--basalt-raised);
-  --surface-2: var(--basalt-deep);
+  --canvas: var(--abyss);
+  --surface: var(--deep);
+  --surface-2: var(--night);
 
-  --ink: var(--chalk);
-  --ink-2: var(--chalk-muted);
-  --ink-2-on-surface: var(--chalk-muted);
+  --ink: var(--fog);
+  --ink-2: var(--frost);
+  --ink-2-on-surface: var(--frost);
 
-  --accent: var(--ember-lifted);
-  --accent-hover: var(--ember-lifted-hover);
-  --accent-pressed: var(--ember-lifted-pressed);
-  --on-accent: var(--basalt);
-  --accent-ink: var(--ember-lifted);
-  --focus: var(--ember-lifted);
+  --accent: var(--signal);            /* in dark, lime is the action color */
+  --accent-hover: var(--signal-hover);
+  --accent-pressed: var(--signal-pressed);
+  --on-accent: var(--deep);
+  --accent-ink: var(--signal);
+  --focus: var(--signal);
+  --sig: var(--signal);
+  --on-sig: var(--deep);
 
-  --hairline: rgba(244, 240, 231, 0.12);
-  --rule: rgba(244, 240, 231, 0.18);
-  --control: rgba(244, 240, 231, 0.58);
-  --tint: rgba(244, 240, 231, 0.07);
+  --hairline: rgba(244, 245, 250, 0.10);
+  --rule: rgba(244, 245, 250, 0.14);
+  --control: rgba(244, 245, 250, 0.50);
+  --tint: rgba(244, 245, 250, 0.07);
+  --disabled-bg: var(--night);
+  --disabled-ink: var(--frost);
 
   --positive: var(--status-positive-lifted);
   --negative: var(--status-negative-lifted);
   --warning: var(--status-warning-lifted);
   --info: var(--status-info-lifted);
 
-  --chart-1: var(--chalk);
-  --chart-2: var(--data-5);
-  --chart-3: #9A9E97;
-  --chart-4: #6E746E;
-  --chart-5: #4D5550;
-  --chart-highlight: var(--ember-lifted);
+  --chart-1: var(--fog);
+  --chart-2: #B9C3DD;
+  --chart-3: #8391B8;
+  --chart-4: #56658F;
+  --chart-5: #34457A;
+  --chart-highlight: var(--ocean-lifted);
 
-  --m-ember-top: var(--ember-lifted-hover); --m-ember-front: var(--ember-lifted); --m-ember-side: var(--oxidized-ember);
-  --m-mineral-top: var(--slate-deep);   --m-mineral-front: var(--basalt-deep);  --m-mineral-side: var(--basalt-raised);
-  --m-basalt-top: var(--chalk-muted);   --m-basalt-front: var(--weathered-slate); --m-basalt-side: var(--slate-deep);
-  --m-porcelain-top: var(--chalk);      --m-porcelain-front: var(--mineral-deep); --m-porcelain-side: var(--chalk-muted);
-  --m-line: var(--chalk);
-  --m-water: var(--basalt-deep);
-  --m-edge: rgba(244, 240, 231, 0.16);
+  --m-signal-top: #F6FF9A;  --m-signal-front: var(--signal); --m-signal-side: #C9D63A;
+  --m-cloud-top: #2B4280;   --m-cloud-front: #1F3470;        --m-cloud-side: #16285A;
+  --m-navy-top: var(--night); --m-navy-front: #0E1C46;       --m-navy-side: #081230;
+  --m-paper-top: var(--fog); --m-paper-front: #D7DDEA;       --m-paper-side: #B4BED4;
+  --m-line: var(--fog);
+  --m-water: var(--night);
+  --m-hull: var(--signal);
+  --m-hull-edge: var(--signal);
+  --m-edge: rgba(244, 245, 250, 0.16);
 
   --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 36px -16px rgba(0, 0, 0, 0.6);
-  --scrim: rgba(0, 0, 0, 0.55);
+  --scrim: rgba(3, 8, 22, 0.6);
+  --glass-primary-bg: rgba(241, 255, 98, 0.92);
+  --glass-primary-hover: rgba(245, 255, 140, 0.96);
+  --glass-primary-ink: #112358;
+  --glass-primary-edge: rgba(255, 255, 255, 0.30);
+  --glass-secondary-bg: rgba(244, 245, 250, 0.10);
+  --glass-secondary-hover: rgba(244, 245, 250, 0.16);
+  --glass-secondary-edge: rgba(244, 245, 250, 0.50);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.6);
   color-scheme: dark;
 }
 
@@ -155,12 +183,16 @@
   --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
   --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
 
-  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  /* Switzer in three levels: display (Regular), data (Medium, tabular), body (Regular) */
+  --serif: "Switzer", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; /* display role */
+  --sans: "Switzer", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.01em;
+  --data-weight: 500;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --ease-settle: cubic-bezier(.2, .7, .2, 1);

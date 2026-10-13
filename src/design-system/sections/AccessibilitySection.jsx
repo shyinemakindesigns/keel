@@ -48,7 +48,7 @@ export default function AccessibilitySection() {
     if (!el) return;
     setRatios({
       text: ratio(token(el, '--ink'), token(el, '--canvas')),
-      large: ratio(token(el, '--accent'), token(el, '--canvas')),
+      large: ratio(token(el, '--ink-2'), token(el, '--canvas')),
       ui: ratio(token(el, '--control'), token(el, '--canvas')),
       focus: ratio(token(el, '--focus'), token(el, '--canvas')),
     });
@@ -71,7 +71,7 @@ export default function AccessibilitySection() {
             <p>Three thresholds, measured live in the {theme} theme:</p>
             <ul className="thresholds">
               <li><span className="th-sample th-text">Body text</span><span><b>Normal text: 4.5:1</b> Ink on canvas: <span className="num">{f(ratios.text)}</span></span></li>
-              <li><span className="th-sample th-large">Oct 25</span><span><b>Large text: 3:1</b> Ember as large type: <span className="num">{f(ratios.large)}</span></span></li>
+              <li><span className="th-sample th-large">Oct 25</span><span><b>Large text: 3:1</b> Slate as large type: <span className="num">{f(ratios.large)}</span></span></li>
               <li><span className="th-sample th-ui" aria-hidden="true" /><span><b>UI boundaries and indicators: 3:1</b> Control edge: <span className="num">{f(ratios.ui)}</span>; focus ring: <span className="num">{f(ratios.focus)}</span></span></li>
             </ul>
             <p className="small muted">The full calculated table is in the <a href="#color">Color</a> section.</p>

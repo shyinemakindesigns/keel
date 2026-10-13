@@ -8,7 +8,6 @@ body {
   background: var(--surface);
   color: var(--ink);
   font: 400 16px/1.5 var(--sans);
-  font-variation-settings: "wdth" 100;
   -webkit-font-smoothing: antialiased;
   display: flex; align-items: center; justify-content: center;
 }
@@ -41,8 +40,8 @@ body.embedded .app { max-width: none; max-height: none; border: 0; }
 .screen.in { opacity: 1; transform: none; }
 
 /* ---------- type ---------- */
-.wordmark { font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 60, "opsz" 72; letter-spacing: -0.01em; }
-h1, h2, h3, .display { font-family: var(--serif); font-weight: 500; font-variation-settings: "SOFT" 40, "opsz" 96; letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+.wordmark { font-family: var(--serif); font-weight: 600; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); letter-spacing: -0.01em; }
+h1, h2, h3, .display { font-family: var(--serif); font-weight: 500; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
 h1 { font-size: 34px; line-height: 1.08; }
 h1.page { font-size: 30px; }
 h2 { font-size: 22px; line-height: 1.2; }
@@ -99,7 +98,7 @@ label.lbl { display: block; font-weight: 600; margin: 18px 0 8px; }
 .welcome .lede { margin-top: 14px; }
 .brandline { display: flex; align-items: center; gap: 10px; font-size: 26px; }
 .brandline svg { width: 30px; height: 30px; }
-.tagline { font-family: var(--serif); font-style: italic; color: var(--ink-2); margin-top: 6px; font-size: 17px; font-variation-settings: "SOFT" 100, "opsz" 36; }
+.tagline { font-family: var(--serif); color: var(--ink-2); margin-top: 6px; font-size: 17px; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); }
 
 /* ---------- onboarding art (one element shared by three steps) ---------- */
 .onb-art { position: absolute; left: 0; right: 0; top: 0; height: 168px; z-index: 2; pointer-events: none;
@@ -127,7 +126,7 @@ label.lbl { display: block; font-weight: 600; margin: 18px 0 8px; }
 .topbar .wordmark svg { width: 24px; height: 24px; }
 .reading { padding: 6px 0 0; }
 .reading .kicker { font-size: 15px; color: var(--ink-2); }
-.reading .date { font-family: var(--serif); font-size: 52px; line-height: 1; font-weight: 500; font-variation-settings: "SOFT" 30, "opsz" 144; letter-spacing: -0.02em; margin: 6px 0 10px; font-variant-numeric: lining-nums; }
+.reading .date { font-family: var(--serif); font-size: 52px; line-height: 1; font-weight: 500; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); letter-spacing: -0.02em; margin: 6px 0 10px; font-variant-numeric: lining-nums; }
 .reading .sub { color: var(--ink-2); font-size: 15.5px; text-wrap: pretty; }
 .reading .sub b { color: var(--ink); font-weight: 600; }
 .keelviz { display: block; width: calc(100% + 44px); margin: 14px -22px 0; height: auto; }
@@ -201,7 +200,7 @@ label.lbl { display: block; font-weight: 600; margin: 18px 0 8px; }
 .legend2 span { display: inline-flex; align-items: center; gap: 6px; }
 .legend2 i { width: 18px; height: 0; border-top: 2px solid var(--ink); display: inline-block; }
 .legend2 i.dash { border-top: 2px dashed var(--ink-2); }
-.legend2 i.ember { border-top-color: var(--accent); border-top-width: 3px; }
+.legend2 i.hi { border-top-color: var(--data-highlight); border-top-width: 3px; }
 .readouts { list-style: none; margin: 14px 0 0; padding: 0; }
 .readouts li { padding: 10px 0; border-top: 1px solid var(--rule); font-size: 15px; color: var(--ink-2); text-wrap: pretty; }
 .readouts li b { color: var(--ink); }

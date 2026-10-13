@@ -151,6 +151,16 @@ def group(items, name="g", transform=None):
 
 
 # ------------------------------------------------------------------ solids
+# Light theme only: solids get a thin navy edge, since white and lime faces are
+# about 1.1:1 against the Fog canvas. Set by rgb_palette() for each theme.
+EDGE = None
+
+
+def edged(shape, color):
+    """[shape, edge stroke (light only), fill]: earlier items paint on top in Lottie."""
+    return [shape] + ([stroke(EDGE, 1.25)] if EDGE else []) + [fill(color)]
+
+
 def box(x, y, w, h, depth, faces, r=0, name="box"):
     """An oblique-projected block: front face, top face, right side face.
     depth = (dx, dy) offset of the back edge (dy negative = up).
@@ -160,9 +170,9 @@ def box(x, y, w, h, depth, faces, r=0, name="box"):
     dx, dy = depth
     top, front, side = faces
     return [
-        group([path([[x, y], [x + w, y], [x + w + dx, y + dy], [x + dx, y + dy]]), fill(top)], name + " top"),
-        group([path([[x + w, y], [x + w + dx, y + dy], [x + w + dx, y + h + dy], [x + w, y + h]]), fill(side)], name + " side"),
-        group([rect((w, h), (x + w / 2, y + h / 2), r), fill(front)], name + " front"),
+        group(edged(path([[x, y], [x + w, y], [x + w + dx, y + dy], [x + dx, y + dy]]), top), name + " top"),
+        group(edged(path([[x + w, y], [x + w + dx, y + dy], [x + w + dx, y + h + dy], [x + w, y + h]]), side), name + " side"),
+        group(edged(rect((w, h), (x + w / 2, y + h / 2), r), front), name + " front"),
     ]
 
 
@@ -178,9 +188,9 @@ def cylinder(cx, base_y, w, h, faces, name="cyl"):
     )
     shade = path([[cx + w * 0.18, base_y - h], [cx + w / 2, base_y - h], [cx + w / 2, base_y], [cx + w * 0.18, base_y + ry * 0.92]])
     return [
-        group([ellipse((w, ry * 2), (cx, base_y - h)), fill(top)], name + " top"),
+        group(edged(ellipse((w, ry * 2), (cx, base_y - h)), top), name + " top"),
         group([shade, fill(side)], name + " shade"),
-        group([body, fill(front)], name + " body"),
+        group(edged(body, front), name + " body"),
     ]
 
 
@@ -244,41 +254,45 @@ def write(anim_by_theme, out_dir, base):
 # ------------------------------------------------------------------ palettes
 # Materials are three tones each (top light, front, side shade): the
 # "3D-inspired" look is oblique projection plus flat shading, no gradients
-# except soft contact shadows. Every tone is a step of a Mineral & Ember color.
+# except soft contact shadows. Every tone is a step of a Harbor & Signal color.
 PALETTES = {
     "light": {
-        "bg": "#F6F3ED",
-        "line": "#252A28",
-        "line2": "#656B66",
-        "ember": ("#C9664D", "#B94F36", "#8F3C29"),
-        "porcelain": ("#FFFFFF", "#F1EDE5", "#DDD8CD"),
-        "mineral": ("#EEEAE2", "#DCD7CC", "#C6C0B3"),
-        "basalt": ("#4A5450", "#343C39", "#202725"),
-        "slate": ("#8C928D", "#656B66", "#4C524E"),
-        "shadow": "#252A28",
-        "shadow_a": 0.16,
-        "water": "#E6E2D9",
-        "positive": "#2E6A4E",
+        "bg": "#F4F5FA",
+        "line": "#112358",
+        "line2": "#4A5573",
+        "signal": ("#F6FF9A", "#F1FF62", "#C9D63A"),
+        "paper": ("#FFFFFF", "#F4F5FA", "#DDE2EC"),
+        "cloud": ("#F4F7FC", "#E1E7F2", "#C9D2E3"),
+        "navy": ("#2A3F7A", "#112358", "#0A1638"),
+        "slate": ("#8A93AD", "#4A5573", "#343D58"),
+        "shadow": "#112358",
+        "shadow_a": 0.14,
+        "water": "#D4EAFF",
+        "positive": "#0B7350",
+        "on_signal": "#112358",
     },
     "dark": {
-        "bg": "#202725",
-        "line": "#F4F0E7",
-        "line2": "#B3B6AE",
-        "ember": ("#EA9A80", "#E07F60", "#B9634A"),
-        "porcelain": ("#F4F0E7", "#D9D4C8", "#B8B3A8"),
-        "mineral": ("#56605B", "#454F4B", "#36403C"),
-        "basalt": ("#2C3532", "#1A201E", "#121715"),
-        "slate": ("#C3C6BF", "#9EA39B", "#7D827B"),
+        "bg": "#0B1530",
+        "line": "#F4F5FA",
+        "line2": "#AEB9D6",
+        "signal": ("#F6FF9A", "#F1FF62", "#C9D63A"),
+        "paper": ("#F4F5FA", "#D7DDEA", "#B4BED4"),
+        "cloud": ("#2B4280", "#1F3470", "#16285A"),
+        "navy": ("#1A2E66", "#0E1C46", "#081230"),
+        "slate": ("#C7D0E6", "#AEB9D6", "#8391B8"),
         "shadow": "#000000",
-        "shadow_a": 0.42,
-        "water": "#2A322F",
-        "positive": "#7FC4A0",
+        "shadow_a": 0.45,
+        "water": "#1A2E66",
+        "positive": "#5ED3A0",
+        "on_signal": "#112358",
     },
 }
 
 
 def rgb_palette(theme):
-    """Same palette with colors converted to Lottie rgba lists."""
+    """Same palette with colors converted to Lottie rgba lists. Also sets EDGE."""
+    global EDGE
+    EDGE = hex_rgba(PALETTES[theme]["line"]) if theme == "light" else None
     P = {}
     for k, v in PALETTES[theme].items():
         if isinstance(v, tuple):

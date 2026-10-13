@@ -5,19 +5,19 @@ const PRINCIPLES = [
     n: '01', name: 'Show the keel before the waves',
     text: 'Lead with what is steady. The reading tells you where you stand before any single purchase asks for attention.',
     implication: 'Large, calm type. One dominant date. Little that competes with it.',
-    Illo: IlloBalance, alt: 'A beam holding a basalt block, porcelain blocks and one small ember block, perfectly level.',
+    Illo: IlloBalance, alt: 'A beam holding a navy block, white blocks and one small lime block, perfectly level.',
   },
   {
     n: '02', name: 'Weight, not walls',
     text: 'Spending is read in context, not framed as a violation. A purchase shifts weight; it does not break a limit.',
     implication: 'Measured bars, neutral comparisons, and cost in days rather than red overages.',
-    Illo: IlloWeight, alt: 'A small ember block resting against two larger mineral blocks.',
+    Illo: IlloWeight, alt: 'A small lime block resting against two larger blue-grey blocks.',
   },
   {
     n: '03', name: 'Settle, don’t startle',
     text: 'Movement helps you follow what changed, then comes to rest. Nothing moves to grab attention.',
     implication: 'Decelerating transitions and stable layouts. No shaking, flashing, confetti or badge counts.',
-    Illo: IlloContinuity, alt: 'Five equal blocks along one line, the last one ember.',
+    Illo: IlloContinuity, alt: 'Five equal blocks along one line, the last one lime.',
   },
 ];
 

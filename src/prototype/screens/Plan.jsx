@@ -92,7 +92,7 @@ export default function Plan({ app }) {
           <p className="meta" id="pl-help">On top of the {money(car ? car.per : 0)} already going to Car repair fund. Pay arrives every two weeks.</p>
         </div>
         <svg className="scenario" id="scenario" ref={sc} viewBox="0 0 340 210" role="img" aria-labelledby="sc-desc"><desc id="sc-desc"></desc></svg>
-        <div className="legend2" aria-hidden="true"><span><i className="dash"></i>Current plan</span><span><i className="ember"></i>With the change</span></div>
+        <div className="legend2" aria-hidden="true"><span><i className="dash"></i>Current plan</span><span><i className="hi"></i>With the change</span></div>
         <div className="sr">
           <table id="sc-table">
             <caption>Projected savings, current plan and with {money(extra)} more each paycheck</caption>

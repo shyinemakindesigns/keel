@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>Keel thumbnails</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400..700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..600,0..100&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
 <!--
   #thumb  1600 x 1200  portfolio grid thumbnail (Wix)
   #og     1200 x 630   link preview (og:image) for LinkedIn and others
@@ -14,17 +14,17 @@
   Screenshot waterline: y = 824 of 2532 (app-home.png, 1170 px wide).
 -->
 <style>
-  :root { --basalt: #202725; --water: #2A322F; --chalk: #F4F0E7; --chalk-2: #B3B6AE; --ember: #E07F60;
-          --serif: "Fraunces", Georgia, serif; --sans: "Archivo", system-ui, sans-serif; }
+  :root { --abyss: #0B1530; --water: #112358; --on-dark: #F4F5FA; --frost: #AEB9D6; --accent: #F1FF62;
+          --serif: "Switzer", system-ui, sans-serif; --sans: "Switzer", system-ui, sans-serif; }
   body { margin: 0; background: #777; font-family: var(--sans); -webkit-font-smoothing: antialiased; }
-  .art { position: relative; overflow: hidden; background: var(--basalt); color: var(--chalk); }
-  .water { position: absolute; left: 0; right: 0; bottom: 0; background: var(--water); border-top: 3px solid var(--chalk); }
-  .phone { position: absolute; overflow: hidden; background: #F6F3ED; border: 2px solid rgba(244,240,231,.22); }
+  .art { position: relative; overflow: hidden; background: var(--abyss); color: var(--on-dark); }
+  .water { position: absolute; left: 0; right: 0; bottom: 0; background: var(--water); border-top: 3px solid var(--on-dark); }
+  .phone { position: absolute; overflow: hidden; background: #F4F5FA; border: 2px solid rgba(244,245,250,.22); }
   .phone img { display: block; width: 100%; }
-  .wm { display: flex; align-items: center; font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; font-variation-settings: "opsz" 144, "SOFT" 30; margin: 0; }
-  .tag { font-family: var(--serif); font-variation-settings: "opsz" 144, "SOFT" 40; margin: 0; }
-  .tag em { color: var(--ember); }
-  .meta { color: var(--chalk-2); margin: 0; }
+  .wm { display: flex; align-items: center; font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); margin: 0; }
+  .tag { font-family: var(--serif); font-weight: var(--display-weight, 400); letter-spacing: var(--display-tracking, -0.01em); margin: 0; }
+  .tag em { color: var(--accent); }
+  .meta { color: var(--frost); margin: 0; }
 
   #thumb { width: 1600px; height: 1200px; }
   #thumb .water { top: 546px; }
@@ -46,7 +46,7 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="mk" viewBox="0 0 40 22"><path d="M3 2h34c-.9 4.6-4 8.6-8.7 8.6h-16.6C7 10.6 3.9 6.6 3 2z" fill="#E07F60"/><path d="M19 10.6h2l-.4 7h-1.2z" fill="#F4F0E7"/><ellipse cx="20" cy="18" rx="4.6" ry="2" fill="#F4F0E7"/></symbol>
+    <symbol id="mk" viewBox="0 0 40 22"><path d="M3 2h34c-.9 4.6-4 8.6-8.7 8.6h-16.6C7 10.6 3.9 6.6 3 2z" fill="#F1FF62" stroke="#112358" stroke-width="1.4" stroke-linejoin="round" paint-order="stroke"/><path d="M19 10.6h2l-.4 7h-1.2z" fill="#F4F5FA"/><ellipse cx="20" cy="18" rx="4.6" ry="2" fill="#F4F5FA"/></symbol>
   </defs>
 </svg>
 
