@@ -37,7 +37,7 @@ Reduced motion (OS setting, or `data-motion="reduced"` on `<html>`) sets every d
 ## Choreography
 
 1. **One focal motion at a time.** When a screen opens, the primary element (the reading, the bars) moves first; secondary elements follow within 60 to 120ms.
-2. **The ember moves last.** In every illustration the ember element is the final thing to settle, so the eye ends where the meaning is.
+2. **The lime moves last.** In every illustration the lime element is the final thing to settle, so the eye ends where the meaning is.
 3. **Consequences after confirmations.** Confirm the action (check, completion), then show what changed (bars move, reading settles).
 4. **No autoplay pile-ups.** In-view animations play once each as they’re reached; nothing loops except Loading, and Loading only while waiting.
 
@@ -67,7 +67,7 @@ Reduced motion (OS setting, or `data-motion="reduced"` on `<html>`) sets every d
 ```bash
 python3 source/lottie/build.py              # all animations, light and dark
 python3 source/lottie/build.py equilibrium  # one
-node source/lottie/gen_specs.js             # regenerate animation-specifications.md
+node source/lottie/gen_specs.cjs             # regenerate animation-specifications.md
 ```
 
 Static fallbacks (`assets/fallbacks/`) are exported from `source/lottie/export.html` in headless Chrome. Frame previews for review: `source/lottie/preview.html?name=equilibrium&frames=0,48,96`. Player tests: `source/lottie/player-test.html` (14 checks).

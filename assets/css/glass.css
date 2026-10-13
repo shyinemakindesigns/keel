@@ -1,0 +1,52 @@
+/* Glass buttons. Every selector starts with html, so these win over each page's older button rules
+   whatever order a bundler puts the stylesheets in.
+
+   Pill-shaped, translucent, blurred, with a top highlight. Accessibility is measured, not
+   assumed: the label and the edge are checked against every surface a button can sit on
+   (source/contrast_audit.py, "glass" rows), with the fill composited over that surface.
+     primary, light   navy glass at 86%, lime label     8.97:1 or more
+     secondary, light white glass at 62%, navy label   13.81:1 or more; edge 3.66:1 or more
+     primary, dark    lime glass at 92%, navy label     11.61:1 or more
+     secondary, dark  fog glass at 10%, fog label       8.94:1 or more; edge 4.14:1 or more
+   People who ask for less transparency or more contrast, and browsers without
+   backdrop-filter, get solid buttons with the same colors. Text buttons stay flat. */
+
+html .btn {
+  border-radius: 999px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  transition: background-color var(--dur-hover, 200ms) var(--ease-standard), box-shadow var(--dur-hover, 200ms) var(--ease-standard), transform var(--dur-press, 140ms) var(--ease-standard);
+}
+html .btn-primary { background: var(--glass-primary-bg); color: var(--glass-primary-ink); border: 1px solid var(--glass-primary-edge); }
+html .btn-primary:hover { background: var(--glass-primary-hover); }
+html .btn-primary:active { background: var(--glass-primary-hover); transform: scale(0.98); }
+html .btn-quiet, html .btn-secondary, html .btn-glass {
+  background: var(--glass-secondary-bg); color: var(--ink);
+  border: 1px solid var(--glass-secondary-edge);
+}
+html .btn-quiet:hover, html .btn-secondary:hover, html .btn-glass:hover { background: var(--glass-secondary-hover); }
+html .btn-quiet:active, html .btn-secondary:active, html .btn-glass:active { transform: scale(0.98); }
+
+html .btn-tertiary { box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* disabled: solid and readable, never glass */
+html .btn:disabled, html .btn[aria-disabled="true"], html .btn.is-disabled {
+  background: var(--disabled-bg); color: var(--disabled-ink); border-color: transparent;
+  box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; transform: none;
+}
+
+/* focus stays the system ring, outside the pill */
+html .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* solid fallbacks */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  html .btn { -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+  html .btn-primary, html .btn-primary:hover { background: var(--accent); color: var(--on-accent); }
+  html .btn-quiet, html .btn-secondary, html .btn-glass, html .btn-quiet:hover, html .btn-secondary:hover, html .btn-glass:hover {
+    background: var(--surface); border-color: var(--control);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html .btn-primary { background: var(--accent); }
+  html .btn-quiet, html .btn-secondary, html .btn-glass { background: var(--surface); }
+}

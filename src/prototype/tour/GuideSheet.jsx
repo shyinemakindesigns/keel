@@ -25,7 +25,7 @@ export default function GuideSheet({ S, current, actions }) {
           <path className="s-ink" d="M0 34h340" strokeWidth="1.5" />
           <path className="f-ink" d="M115 38h10l-2 56h-6z" /><ellipse className="f-ink" cx="120" cy="95" rx="13" ry="5.5" />
           <path className="f-hull" d="M70 16h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" />
-          <g fontFamily="Archivo, sans-serif" fontSize="12.5"><text x="196" y="30" className="f-ink" fontWeight="600">Waterline: payday</text><text x="148" y="94" className="f-ink2s">Depth: days of room past it</text></g>
+          <g fontFamily="Switzer, sans-serif" fontSize="12.5"><text x="196" y="30" className="f-ink" fontWeight="600">Waterline: payday</text><text x="148" y="94" className="f-ink2s">Depth: days of room past it</text></g>
         </svg>
         <p>The waterline is always your next payday. The keel hangs below it, and its depth is how many days past payday your money would still cover your usual spending and bills.</p>
         <p>A deep keel means room to spare. A short one means you’re close to payday with little left over, and the words beside it say what to do. It never turns red and never shakes.</p>

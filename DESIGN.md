@@ -8,27 +8,36 @@ Keel is a fictional personal finance app (a self-directed portfolio project, not
 
 ## Personality
 
-Calm, grounded, architectural, editorial, warm. Quiet confidence.
+Calm, precise, modern fintech. Clear, grounded, quietly confident.
 
-**Not:** urgent, playful, bouncy, gamified, alarming, glossy, neon, “fintech blue”.
+**Not:** urgent, playful, bouncy, gamified, alarming, cluttered, decorative.
 
-## Color: Mineral & Ember
+## Color: Harbor & Signal
+
+Cool grey-white surfaces, deep navy type, one lime signal. Source palette: MP174 by Alex Cristache, extended with accessible greys, status colors and a dark theme.
 
 | Role | Light | Dark |
 | --- | --- | --- |
-| Canvas (60%) | Porcelain Clay `#F6F3ED` | Basalt `#202725` |
-| Surface (30%) | Mineral Stone `#E6E2D9` | `#2A322F` |
-| Text | Volcanic Ink `#252A28`, Weathered Slate `#656B66` | Chalk `#F4F0E7`, `#B3B6AE` |
-| Accent (10%, actions only) | Oxidized Ember `#B94F36` (text-safe `#9E412B`) | `#E07F60` |
-| Status (never ember) | positive `#2E6A4E`, negative `#9B2C3A`, warning `#7D5300`, info `#3B5A72` | `#7FC4A0`, `#F09AA3`, `#E2B45C`, `#9DBCD6` |
+| Canvas (60%) | Fog White `#F4F5FA` | Abyss `#0B1530` |
+| Surface (30%) | Paper `#FFFFFF`, Cloud `#E9EDF5`, Mist Blue `#D4EAFF` (water) | Deep Navy `#112358`, Night `#1A2E66` |
+| Text | Deep Navy `#112358`, Slate `#4A5573` | Fog White `#F4F5FA`, Frost `#AEB9D6` |
+| Accent (10%, actions only) | Navy fills with Signal Lime `#F1FF62` labels; links and focus in Harbor Blue `#004499` | Signal Lime fills with navy labels; lime links and focus |
+| Data highlight | Ocean Blue `#0192C6` | `#3DB8EA` |
+| Status (never lime) | positive `#0B7350`, negative `#B42342`, warning `#8A5600`, info `#0A6A99` | `#5ED3A0`, `#FF8FA3`, `#FFC857`, `#7CC8F2` |
+
+Lime is 1.1:1 against the light surfaces: on light it is only a fill behind navy, and any lime shape that has to be seen carries a navy edge.
+
+## Buttons
+
+Pill-shaped glass: a translucent fill with a background blur and a top highlight. Labels are measured on the glass composited over every surface it can sit on (8.97:1 or more), the secondary button's edge is 3:1 or more, and people who ask for less transparency or more contrast get solid buttons.
 
 ## Type
 
-Fraunces (headlines, the reading’s date, wordmark) and Archivo (UI, body, numbers with tabular figures).
+Switzer (Indian Type Foundry, free via Fontshare), one family in three levels: display Regular with tight leading, data Medium with tabular figures, body Regular 14 to 17px.
 
 ## Shape
 
-One motif: a horizontal line (the waterline, which always means payday), a form resting on it, and weight hanging below. Illustrations are 3D-inspired: oblique projection, flat three-tone shading per material (porcelain, mineral, basalt, slate, ember), soft radial contact shadows. No gradients except shadows, no gloss, no glow.
+One motif: a horizontal line (the waterline, which always means payday), a form resting on it, and weight hanging below. Illustrations are 3D-inspired: oblique projection, flat three-tone shading per material (paper, cloud, navy, slate, signal lime), a thin navy edge on light, soft radial contact shadows. No gradients except shadows, no glow. Glass is for buttons only.
 
 ## Motion
 

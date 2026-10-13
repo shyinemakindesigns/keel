@@ -15,7 +15,7 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 | `keel-og-1200x630.png` | 1200 × 630 | Link preview image (already wired into `index.html`) |
 | `linkedin-carousel/keel-carousel.pdf` | 9 pages | Upload to LinkedIn as a document: it becomes a swipeable carousel |
 | `linkedin-carousel/keel-carousel-01.png` to `-09.png` | 1080 × 1350 each | The same slides as PNGs, for other platforms or a multi-image post |
-| `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 43.8s | LinkedIn video: the prototype in a phone frame, captioned |
+| `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 45.4s | LinkedIn video: the prototype in a phone frame, captioned |
 | `video/keel-prototype-demo-cover.png` | 1080 × 1350 | Video cover |
 | `source/` | | Editable HTML for every image and the video pipeline. Re-export images with `node portfolio/source/export.mjs` |
 
@@ -25,7 +25,7 @@ Every number on the slides is either a cited published figure (APA 2015; Karlsso
 
 **Title:** Keel: A Calm Money App, UX and Visual Design Case Study
 
-**Description:** A budgeting app concept that tells you you’re okay before anything else. Desk research on money stress and the ostrich effect, IA, wireframes, a Mineral and Ember identity, a motion system of Lottie and Rive files written in code, and a working prototype with real calculations. Fictional brand, self-directed project.
+**Description:** A budgeting app concept that tells you you’re okay before anything else. Desk research on money stress and the ostrich effect, IA, wireframes, a Harbor and Signal identity, a motion system of Lottie and Rive files written in code, and a working prototype with real calculations. Fictional brand, self-directed project.
 
 **Shorter description (if the field is limited):** A calm money app concept: one date instead of a balance, spending shown in days, and a working prototype.
 
@@ -81,7 +81,7 @@ Try the prototype: https://keel-casestudy.netlify.app/prototype/
 
 ## LinkedIn video post: the prototype in motion
 
-Assets: `video/keel-prototype-demo-1080x1350.mp4` (4:5, 43.8s, H.264, 30fps, 7.7 MB, no audio) and `video/keel-prototype-demo-cover.png` (the opening frame, for a custom thumbnail). Every frame is the working prototype recorded in a browser and placed in a phone frame, with on-screen captions so it reads with the sound off. Six scenes: setup, the reading, the purchase check, spending in days, adding to a goal, and comparing a plan, then an end card.
+Assets: `video/keel-prototype-demo-1080x1350.mp4` (4:5, 45.4s, H.264, 30fps, 9.8 MB, no audio) and `video/keel-prototype-demo-cover.png` (the opening frame, for a custom thumbnail). Every frame is the working prototype recorded in a browser and placed in a phone frame, with on-screen captions so it reads with the sound off. Six scenes: setup, the reading, the purchase check, spending in days, adding to a goal, and comparing a plan, then an end card.
 
 Post length: about 905 characters. Put the links in the first comment.
 
@@ -132,7 +132,7 @@ To re-record after the app changes: serve the built site on port 4319, then run 
 3. **Weight, not walls.** No red overages and no category limits. A $16.80 lunch is "about a third of a day of your usual spending." A purchase check shows the effect before you spend.
 4. **Settle, don't startle.** The keel eases to its new depth in about 900ms. No shakes, flashes or confetti.
 
-**What I made.** A long-form case study (problem, research, IA, wireframes, identity, motion, testing plan, reflection); a working prototype on mobile and desktop with light and dark themes and reduced motion; the Mineral and Ember color system; and a motion system of 12 Lottie animations and 4 Rive state machines, all written in code. It also has accessibility QA: 0 contrast failures across 713 measurements, focus kept inside dialogs, no sideways scrolling at 320px, and 61fps with the CPU slowed 4×.
+**What I made.** A long-form case study (problem, research, IA, wireframes, identity, motion, testing plan, reflection); a working prototype on mobile and desktop with light and dark themes and reduced motion; the Harbor and Signal color system; and a motion system of 12 Lottie animations and 4 Rive state machines, all written in code. It also has accessibility QA, automated with `npm test`: 0 contrast failures across 25,646 text measurements, focus kept inside dialogs, no sideways scrolling at 320px, and 61fps with the CPU slowed 4×.
 
 **Be upfront about limits.** No interviews and no usability tests: the research is a literature and competitor review, and the tests are a written plan with proposed measures. If asked, say it plainly. It shows judgment, not a gap.
 

@@ -12,12 +12,13 @@ Keel is not a real company, product or client project, and it is not affiliated 
 
 | Path | What it is |
 | --- | --- |
-| `design-system/`, `src/` | The design system page in React (Vite): Mineral & Ember tokens, calculated contrast, type, spacing, motion, and live accessible components. Shared React code in `src/shared`. See `docs/react-migration.md` |
+| `design-system/`, `src/` | The design system page in React (Vite): Harbor & Signal tokens, calculated contrast, type, spacing, motion, and live accessible components. Shared React code in `src/shared`. See `docs/react-migration.md` |
 | `index.html` | The case study: problem, research, define, architecture, wireframes, identity, illustration system, motion system (gallery and playground), application design, the embedded app, design system, testing plan, outcomes |
 | `prototype/`, `src/prototype/` | The app in React: a first-visit welcome, overview and guided tour, then onboarding, Steady, Spending, Goals and Plan. Works on its own, on a phone, and in a wide layout. The old `/prototype.html` address redirects here (a rule in `netlify.toml`) |
 | `system.html` | The animation library: every Lottie and Rive file, playable, with fallbacks and engineering notes |
 | `DESIGN.md` | Short brand brief |
-| `assets/tokens.css` | Mineral & Ember tokens (light and dark) and motion tokens |
+| `assets/tokens.css` | Harbor & Signal tokens (light and dark), glass button tokens and motion tokens |
+| `assets/css/glass.css` | The glass buttons, with solid fallbacks |
 | `assets/css/` | `components.css` (shared), `app.css` (the app), `case-study-motion.css` (the case study) |
 | `assets/js/keel-lottie.js` | `<keel-lottie>`: the one Lottie player (lazy, cached, visibility-aware, themed, reduced-motion aware) |
 | `assets/js/keel-charts.js` | Data-bound SVG charts shared by the app and the case study |
@@ -27,10 +28,10 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `assets/rive/`, `source/rive/` | Keel’s four Rive state machines and the code that writes them (`rivewriter.py`, `build_rive.py`, `rive-check.html`); the recolored CC BY toggle, its original and the recolor script |
 | `assets/fallbacks/` | Static SVG of each animation’s settled frame, both themes |
 | `assets/img/` | Screenshots (WebP) |
-| `source/lottie/` | `build.py` and `kit.py` (the Lottie builder), preview, export and player-test pages, `gen_specs.js`, the Fraunces wordmark outlines |
+| `source/lottie/` | `build.py` and `kit.py` (the Lottie builder), preview, export and player-test pages, `gen_specs.cjs`, the Switzer wordmark outlines and the script that extracts them (`wordmark.swift`), the fallback exporter |
 | `source/*.py` | Contrast audit, 60/30/10 check, the v1 keel animation generator |
 | `docs/motion-system/` | Motion system README, animation specifications and storyboards, Rive specification, QA report, phase audit |
-| `docs/stillform/` | Color-system audit |
+| `docs/stillform/` | The v1 audit that led to the second identity (Mineral & Ember), kept as a record |
 | `portfolio/` | Portfolio thumbnail, link-preview image, LinkedIn carousel (PNG and PDF), post copy and interview talking points; editable sources in `portfolio/source/` |
 | `netlify.toml` | Deploy config: runs `npm run build`, publishes `dist`, and redirects the old prototype address |
 | `tests/` | The automated test suite (`npm test`) |
@@ -71,10 +72,12 @@ Regenerate the animations or rerun the audits:
 
 ```bash
 python3 source/lottie/build.py      # every Lottie, light and dark
-node source/lottie/gen_specs.js     # docs/motion-system/animation-specifications.md
+python3 source/gen_lottie.py        # the keel-settle sailboat, light and dark
+node source/lottie/export-fallbacks.mjs   # static SVG fallbacks (serve the repo root on 4317 first)
+node source/lottie/gen_specs.cjs     # docs/motion-system/animation-specifications.md
 python3 source/rive/build_rive.py   # the four Rive files, light and dark artboards
 node portfolio/source/export.mjs    # thumbnail, link preview and LinkedIn carousel (needs Chrome)
-python3 source/contrast_audit.py
+python3 source/contrast_audit.py    # 94 pairings, including the glass buttons
 python3 source/weight_check.py path/to/screenshot.png   # needs Pillow
 ```
 
@@ -107,10 +110,10 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 ## Design notes in brief
 
-- **Palette, Mineral & Ember:** Porcelain Clay `#F6F3ED` canvas (60), Mineral Stone `#E6E2D9` surfaces (30), Volcanic Ink `#252A28` and Weathered Slate `#656B66` type, and one Oxidized Ember `#B94F36` accent (10) that only appears where there’s something to act on. Dark mode uses Basalt `#202725` with layered charcoal surfaces, Chalk `#F4F0E7` type and a lifted ember `#E07F60`
-- **Accessible derivatives:** where a brand value fails WCAG as given, a derived token takes that role instead of the brand hex changing: white labels on ember (Chalk is 4.36:1), `#9E412B` for ember text and focus (the brand hex is 4.48:1 as text), `#555B56` slate inside stone surfaces (the brand slate is 4.22:1 there)
-- **Status colors:** positive, negative (oxblood, distinct from ember), warning and info, in both themes, always paired with words
-- **Type:** Fraunces for headlines and the reading’s date, Archivo for UI and body
+- **Palette, Harbor & Signal:** Fog White `#F4F5FA` canvas (60), white cards (30), Deep Navy `#112358` and Slate `#4A5573` type, and one Signal Lime `#F1FF62` accent (10) that only appears where there’s something to act on. Harbor Blue `#004499` for links and focus, Ocean Blue `#0192C6` for the highlighted data series, Mist Blue `#D4EAFF` for the water. Dark mode uses Abyss `#0B1530` with layered navy surfaces, Fog White type and lime as the action color. Source palette: MP174 by Alex Cristache
+- **Accessibility rules in the palette:** lime is 1.1:1 on light, so on light it is only a fill behind navy (13.7:1), and lime shapes carry a navy edge. Glass buttons are measured with their fill composited over each surface (labels 8.97:1 or more), with solid fallbacks for reduced transparency and more contrast. 94 pairings, 0 failing (`source/contrast_audit.py`)
+- **Status colors:** positive, negative, warning and info, never lime, in both themes, always paired with words
+- **Type:** Switzer in three levels: display Regular, data Medium with tabular figures, body Regular
 - **Motif:** a waterline (always payday), a hull resting on it, and a weighted keel whose depth means room past payday. Used for the brand mark, the reading, loading, goal progress, section breaks and the tab icon
 - **Motion:** calm and decelerating. Screens and sheets use a 420ms settle curve, and the reading uses a damped spring. No shakes, flashes or success bursts
 - **Theme:** follows the OS by default; the case study has a toggle, remembered per browser, that also drives the embedded prototype and swaps the Lottie files
@@ -126,6 +129,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 - **v1:** case study, prototype, identity, animation and audits
 - **Mineral & Ember color system:** palette, semantic tokens, dark theme, recolored animation, re-run audits
+- **Harbor & Signal:** a cool fintech palette, Switzer type and glass buttons; every animation, Rive file, fallback and audit regenerated
 - **Motion-forward pass:** Lottie library, motion gallery and playground, expanded app (Spending, Goals, Plan, wide layout), embedded app with mobile and desktop modes, design system page, documentation, and an accessibility and performance audit (`docs/motion-system/qa-report.md`)
 - **Rive:** Keel’s four state machines, written in code and running in the case study
 - **React, phases 1 and 2:** the design system and the prototype in React, with a first-visit welcome, overview and guided tour

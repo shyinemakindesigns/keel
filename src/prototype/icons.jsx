@@ -1,5 +1,5 @@
 // Keel's icon set for the app and its guide. Nautical and material, drawn on a
-// 24 unit grid with a 1.6 stroke, round caps and joins; ember only where an icon
+// 24 unit grid with a 1.6 stroke, round caps and joins; the accent only where an icon
 // marks the one thing that matters. Decorative: the control around an icon names it.
 
 const base = { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', 'aria-hidden': true, focusable: 'false' };
@@ -29,7 +29,7 @@ export const TourIcon = () => (
   </svg>
 );
 
-/** Explore on my own: a compass rose, ember needle pointing north. */
+/** Explore on my own: a compass rose, accent needle pointing north. */
 export const CompassIcon = () => (
   <svg {...base}>
     <circle cx="12" cy="12" r="8.4" {...st} />

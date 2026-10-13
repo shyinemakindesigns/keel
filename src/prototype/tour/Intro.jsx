@@ -23,7 +23,7 @@ export default function Intro({ app }) {
           <path className="wl s-ink" d="M0 70h340" strokeWidth="1.5" fill="none" />
           <g className="hull-g"><path className="f-hull" d="M120 52h100c-2.4 12-10.5 24-23 24h-54c-12.5 0-20.6-12-23-24z" /></g>
           <g className="fin"><path className="f-ink" d="M165 74h10l-2 52h-6z" /><ellipse className="f-ink" cx="170" cy="127" rx="13" ry="5.5" /></g>
-          <g className="ticks" fontFamily="Archivo, sans-serif" fontSize="12.5"><path className="s-ink2s" d="M262 72V128M256 72h6M256 128h6" strokeWidth="1" fill="none" /><text className="f-ink" x="270" y="86" fontWeight="600">Payday</text><text className="f-ink2s" x="270" y="132">Room</text></g>
+          <g className="ticks" fontFamily="Switzer, sans-serif" fontSize="12.5"><path className="s-ink2s" d="M262 72V128M256 72h6M256 128h6" strokeWidth="1" fill="none" /><text className="f-ink" x="270" y="86" fontWeight="600">Payday</text><text className="f-ink2s" x="270" y="132">Room</text></g>
         </svg>
       </div>
       <div className="intro-copy">

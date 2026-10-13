@@ -1,0 +1,60 @@
+/* Keel motion layer: smoother and more responsive, still calm.
+   Loaded on every page after the page styles. Everything runs on the duration tokens,
+   so with reduced motion (the OS setting or the page switch) every value here is 0ms
+   and states change without travelling.
+
+   Two curves, generated from a simulated spring (source: the comment block below):
+     --ease-spring   damped spring, 3.5% overshoot: physical objects (sheets, the tab
+                     indicator, switch knobs, buttons). Settles in about 0.55s.
+     --ease-snappy   critically damped: content arriving (screens, rows, reveals).
+   Browsers without CSS linear() keep the earlier cubic-bezier curves. */
+:root {
+  --ease-spring: var(--ease-enter, cubic-bezier(0.22, 1, 0.36, 1));
+  --ease-snappy: var(--ease-settle, cubic-bezier(0.2, 0.7, 0.2, 1));
+  --dur-spring: 560ms;
+  --dur-rise: 380ms;
+  --rise-step: 45ms;
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    /* k 170, c 19, unit mass */
+    --ease-spring: linear(0, 0.06, 0.198, 0.364, 0.529, 0.675, 0.795, 0.886, 0.95, 0.993, 1.018, 1.031, 1.035, 1.033, 1.029, 1.023, 1.017, 1.012, 1.008, 1.004, 1.002, 1, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 0.999, 1);
+    /* k 300, c 32 */
+    --ease-snappy: linear(0, 0.069, 0.212, 0.372, 0.521, 0.647, 0.747, 0.823, 0.88, 0.92, 0.948, 0.967, 0.98, 0.988, 0.994, 0.997, 0.999, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  }
+}
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion="full"]) { --dur-spring: 0ms; --dur-rise: 0ms; --rise-step: 0ms; } }
+:root[data-motion="reduced"] { --dur-spring: 0ms; --dur-rise: 0ms; --rise-step: 0ms; }
+
+/* ---------------------------------------------------------- buttons: lift, press, spring back */
+html .btn {
+  transition: background-color var(--dur-hover, 200ms) var(--ease-standard), box-shadow var(--dur-hover, 200ms) var(--ease-standard),
+              transform var(--dur-spring) var(--ease-spring);
+}
+@media (hover: hover) {
+  html .btn:not(:disabled):hover { transform: translateY(-1px); }
+}
+html .btn:not(:disabled):active { transform: scale(0.97); transition-duration: var(--dur-hover, 200ms), var(--dur-hover, 200ms), 90ms; }
+html .chip, html .radio-chip .chip, html .seg button, html .tp-seg span { transition: background-color var(--dur-hover, 200ms) var(--ease-standard), color var(--dur-hover, 200ms) var(--ease-standard), transform var(--dur-spring) var(--ease-spring); }
+html .chip:active, html .seg button:active { transform: scale(0.96); }
+
+/* ---------------------------------------------------------- physical objects spring */
+html .sheet { transition-timing-function: var(--ease-spring); transition-duration: var(--dur-spring); }
+html .tab-ind { transition: transform var(--dur-spring) var(--ease-spring); }
+html .switch::after { transition: transform var(--dur-spring) var(--ease-spring), background-color var(--dur-hover, 200ms) var(--ease-standard); }
+html .sh-bar { transition-timing-function: var(--ease-spring); }
+
+/* ---------------------------------------------------------- the app: screens arrive in a quick cascade */
+@keyframes keel-rise { from { opacity: 0; transform: translateY(14px); } }
+.screen.in > * { animation: keel-rise var(--dur-rise) var(--ease-snappy) both; }
+.screen.in > *:nth-child(2) { animation-delay: calc(var(--rise-step) * 1); }
+.screen.in > *:nth-child(3) { animation-delay: calc(var(--rise-step) * 2); }
+.screen.in > *:nth-child(4) { animation-delay: calc(var(--rise-step) * 3); }
+.screen.in > *:nth-child(5) { animation-delay: calc(var(--rise-step) * 4); }
+.screen.in > *:nth-child(6) { animation-delay: calc(var(--rise-step) * 5); }
+.screen.in > *:nth-child(n+7) { animation-delay: calc(var(--rise-step) * 6); }
+/* the guided tour measures elements to draw its ring: no cascade while it runs */
+.touring .screen.in > * { animation: none; }
+
+/* ---------------------------------------------------------- the case study: reveals rise on the snappy curve */
+.js .reveal { transition: opacity var(--dur-move) var(--ease-snappy), transform var(--dur-move) var(--ease-snappy); }

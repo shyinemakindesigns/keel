@@ -24,7 +24,7 @@ layout, responsive and accessibility probes used before the move.
 
 | File | What it is |
 | --- | --- |
-| `src/styles/tokens.css` | Mineral & Ember tokens: primitives, semantic light and dark, spacing, radius, motion, reduced motion |
+| `src/styles/tokens.css` | Harbor & Signal tokens: primitives, semantic light and dark, spacing, radius, motion, reduced motion |
 | `prefs.js` | Theme and reduced-motion state, system preference until the person chooses |
 | `SiteHeader.jsx` | The sticky site header: site links, page sections with a tracking underline, theme and motion switches |
 | `Keel.jsx` | The keel figure and the illustration family |

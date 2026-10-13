@@ -14,9 +14,10 @@ rocks with decaying amplitude, and settles level, then holds. It plays once
 and stays still on its last frame, because the point of the illustration is
 the stillness at the end, not the rocking.
 
-Palette: exactly three colors per theme, all from the Mineral & Ember tokens.
-  light: Volcanic Ink #252A28, Oxidized Ember #B94F36, deep Mineral #DCD7CC
-  dark:  Chalk #F4F0E7, lifted Ember #E07F60, deep Basalt #353E3A
+Palette: exactly three colors per theme, all from the Harbor & Signal tokens.
+  light: Deep Navy #112358, Signal Lime #F1FF62, Mist Blue #D4EAFF
+  dark:  Fog White #F4F5FA, Signal Lime #F1FF62, Night #1A2E66
+On light, the lime hull and pennant get a navy edge (lime alone is 1.1:1 there).
 Lottie colors are baked into the file, so each theme gets its own JSON with
 identical keyframes and timing; the page swaps files when the theme changes.
 """
@@ -26,8 +27,8 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(HERE, "..", "assets", "lottie")
 THEMES = {
-    "keel-settle.json":      ("#252A28", "#B94F36", "#DCD7CC"),
-    "keel-settle-dark.json": ("#F4F0E7", "#E07F60", "#353E3A"),
+    "keel-settle.json":      ("#112358", "#F1FF62", "#D4EAFF", "#112358"),
+    "keel-settle-dark.json": ("#F4F5FA", "#F1FF62", "#1A2E66", None),
 }
 
 W, H = 480, 320
@@ -142,7 +143,8 @@ def bob_kfs():
     return [(t, [PIVOT[0], PIVOT[1] + dy, 0]) for t, dy in BOB]
 
 
-def build(INK, ACCENT, STONE):
+def build(INK, ACCENT, STONE, EDGE=None):
+    edge = [stroke(EDGE, 2)] if EDGE else []
     boat_ks = {
         "o": static(100),
         "r": animated(ROCK, 1),
@@ -157,6 +159,7 @@ def build(INK, ACCENT, STONE):
             i=[[2, 12], [0, 0], [12, 0], [0, 0]],
             o=[[0, 0], [-2, 12], [0, 0], [-12, 0]],
         ),
+        *edge,
         fill(ACCENT),
     ])
 
@@ -180,6 +183,7 @@ def build(INK, ACCENT, STONE):
 
     pennant = group("Pennant", [
         path(v=[[241, 99], [258, 103.5], [241, 108]]),
+        *edge,
         fill(ACCENT),
     ])
 
@@ -231,8 +235,8 @@ def build(INK, ACCENT, STONE):
 
 
 os.makedirs(OUT_DIR, exist_ok=True)
-for name, (ink, accent, stone) in THEMES.items():
-    anim = build(rgb(ink), rgb(accent), rgb(stone))
+for name, (ink, accent, stone, edge) in THEMES.items():
+    anim = build(rgb(ink), rgb(accent), rgb(stone), rgb(edge) if edge else None)
     out = os.path.join(OUT_DIR, name)
     with open(out, "w") as f:
         json.dump(anim, f, separators=(",", ":"))

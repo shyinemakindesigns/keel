@@ -1,5 +1,7 @@
 # Motion upgrade: Phase A audit and plan
 
+> **Record.** Written before the motion pass, in the Mineral & Ember palette. Keel now uses Harbor & Signal; colors named below refer to the earlier palette.
+
 Audit of `main` at `4c71691` (Mineral & Ember color system merged), written October 8, 2026, before any motion work.
 
 ## 1. Architecture as it stands

@@ -5,67 +5,70 @@ import { KeelFigure } from '../../shared/Keel.jsx';
 
 const PRIMITIVES = [
   { group: 'Foundation', items: [
-    ['Oxidized Ember', '--oxidized-ember', '#B94F36', 'The brand. Fills primary actions, the hull and selected states. Never small text on Porcelain Clay (4.48:1).'],
-    ['Porcelain Clay', '--porcelain-clay', '#F6F3ED', 'The canvas, about 60% of every light screen.'],
-    ['Mineral Stone', '--mineral-stone', '#E6E2D9', 'Surfaces: panels, rows, forms, navigation. About 30%.'],
-    ['Volcanic Ink', '--volcanic-ink', '#252A28', 'Primary text and the keel itself.'],
-    ['Weathered Slate', '--weathered-slate', '#656B66', 'Secondary text on the canvas only.'],
+    ['Fog White', '--fog', '#F4F5FA', 'The canvas, about 60% of every light screen. Cool grey-white, so white cards read as raised.'],
+    ['Paper', '--paper', '#FFFFFF', 'Surfaces: cards, panels, rows, forms. About 30%.'],
+    ['Deep Navy', '--deep', '#112358', 'Primary text, the keel, and primary buttons in light.'],
+    ['Slate', '--slate', '#4A5573', 'Secondary text. Passes on every light surface (6.0:1 at the lowest).'],
+    ['Signal Lime', '--signal', '#F1FF62', 'The one accent: button labels on navy, the hull, selected states. A fill, never text on light (1.1:1).'],
+  ] },
+  { group: 'Blues', items: [
+    ['Harbor Blue', '--harbor', '#004499', 'Links, text buttons and focus rings on light.'],
+    ['Ocean Blue', '--ocean', '#0192C6', 'The highlighted data series. Marks only, never text.'],
+    ['Mist Blue', '--mist', '#D4EAFF', 'The water band in the reading, and info tints.'],
+    ['Cloud', '--cloud', '#E9EDF5', 'Wells, quiet fills and disabled states.'],
   ] },
   { group: 'Dark foundation', items: [
-    ['Basalt', '--basalt', '#202725', 'The dark canvas.'],
-    ['Chalk', '--chalk', '#F4F0E7', 'Primary text on Basalt.'],
+    ['Abyss', '--abyss', '#0B1530', 'The dark canvas.'],
+    ['Night', '--night', '#1A2E66', 'Dark wells and the dark water band. Deep Navy is the dark surface.'],
+    ['Frost', '--frost', '#AEB9D6', 'Secondary text on dark.'],
+    ['Ocean lifted', '--ocean-lifted', '#3DB8EA', 'The data highlight on dark.'],
   ] },
-  { group: 'Derived', items: [
-    ['Mineral deep', '--mineral-deep', '#DCD7CC', 'The water band and inset wells.'],
-    ['Slate deep', '--slate-deep', '#555B56', 'Secondary text inside stone surfaces, where Weathered Slate falls short.'],
-    ['Ember text', '--ember-text', '#9E412B', 'Links, text buttons and focus rings on light backgrounds.'],
-    ['Ember hover', '--ember-hover', '#A4452F', 'Primary button, hovered.'],
-    ['Ember pressed', '--ember-pressed', '#8F3C29', 'Primary button, pressed.'],
-    ['Basalt raised', '--basalt-raised', '#2A322F', 'Dark surfaces.'],
-    ['Basalt deep', '--basalt-deep', '#353E3A', 'Dark wells and the dark water band.'],
-    ['Chalk muted', '--chalk-muted', '#B3B6AE', 'Secondary text on dark.'],
-    ['Ember lifted', '--ember-lifted', '#E07F60', 'Ember on dark: the brand hex is only 3.07:1 on Basalt.'],
-    ['Ember lifted hover', '--ember-lifted-hover', '#E68D70', 'Dark primary button, hovered.'],
-    ['Ember lifted pressed', '--ember-lifted-pressed', '#D9714F', 'Dark primary button, pressed.'],
+  { group: 'Derived for interaction', items: [
+    ['Navy hover', '--deep-hover', '#1E3576', 'Primary button, hovered (light).'],
+    ['Navy pressed', '--deep-pressed', '#0A1638', 'Primary button, pressed (light).'],
+    ['Lime hover', '--signal-hover', '#F5FF8C', 'Primary button, hovered (dark).'],
+    ['Lime pressed', '--signal-pressed', '#E3F24A', 'Primary button, pressed (dark).'],
   ] },
 ];
 
 const SEMANTIC = [
-  ['--canvas', 'Porcelain Clay', 'Basalt'],
-  ['--surface', 'Mineral Stone', 'Basalt raised'],
-  ['--surface-2', 'Mineral deep', 'Basalt deep'],
-  ['--ink', 'Volcanic Ink', 'Chalk'],
-  ['--ink-2', 'Weathered Slate', 'Chalk muted'],
-  ['--accent', 'Oxidized Ember', 'Ember lifted'],
-  ['--accent-hover', 'Ember hover', 'Ember lifted hover'],
-  ['--accent-pressed', 'Ember pressed', 'Ember lifted pressed'],
-  ['--on-accent', 'White', 'Basalt'],
-  ['--accent-ink', 'Ember text', 'Ember lifted'],
-  ['--focus', 'Ember text', 'Ember lifted'],
+  ['--canvas', 'Fog White', 'Abyss'],
+  ['--surface', 'Paper', 'Deep Navy'],
+  ['--surface-2', 'Cloud', 'Night'],
+  ['--ink', 'Deep Navy', 'Fog White'],
+  ['--ink-2', 'Slate', 'Frost'],
+  ['--accent', 'Deep Navy', 'Signal Lime'],
+  ['--accent-hover', 'Navy hover', 'Lime hover'],
+  ['--accent-pressed', 'Navy pressed', 'Lime pressed'],
+  ['--on-accent', 'Signal Lime', 'Deep Navy'],
+  ['--accent-ink', 'Harbor Blue', 'Signal Lime'],
+  ['--focus', 'Harbor Blue', 'Signal Lime'],
 ];
 
-// [foreground, background, requirement, note]
+// [foreground, background, requirement, note, only]
 const PAIRS = [
   ['--ink', '--canvas', 'text', 'Body text'],
-  ['--ink', '--surface', 'text', 'Text on panels'],
+  ['--ink', '--surface', 'text', 'Text on cards'],
+  ['--ink', '--surface-2', 'text', 'Text in wells'],
   ['--ink-2', '--canvas', 'text', 'Secondary text'],
-  ['--ink-2', '--surface', 'text', 'Light: fails, so inside stone surfaces --ink-2 is remapped to Slate deep (next row)'],
-  ['--slate-deep', '--surface', 'text', 'Secondary text on stone (light theme only)', 'light'],
+  ['--ink-2', '--surface', 'text', 'Secondary text on cards'],
+  ['--ink-2', '--surface-2', 'text', 'Secondary text in wells'],
   ['--accent-ink', '--canvas', 'text', 'Links and text buttons'],
-  ['--accent-ink', '--surface', 'text', 'Links on panels'],
-  ['--accent-ink', '--surface-2', 'text', 'Dark: fails, so links never sit on dark wells'],
-  ['--accent', '--canvas', 'large', 'Brand ember as large type or graphics only'],
+  ['--accent-ink', '--surface', 'text', 'Links on cards'],
+  ['--signal', '--canvas', 'text', 'Light: fails (1.1:1), so lime is never text or an unedged shape on light. Dark: the action color', 'light'],
   ['--on-accent', '--accent', 'text', 'Primary button label'],
   ['--on-accent', '--accent-hover', 'text', 'Hovered'],
   ['--on-accent', '--accent-pressed', 'text', 'Pressed'],
   ['--focus', '--canvas', 'ui', 'Focus ring'],
+  ['--focus', '--surface', 'ui', 'Focus ring on cards'],
   ['--control', '--canvas', 'ui', 'Input, chip and switch boundaries'],
-  ['--control', '--surface', 'ui', 'Boundaries on panels'],
+  ['--control', '--surface', 'ui', 'Boundaries on cards'],
+  ['--chart-highlight', '--canvas', 'ui', 'The selected data series'],
   ['--positive', '--canvas', 'text', 'Status: positive'],
   ['--negative', '--canvas', 'text', 'Status: negative'],
   ['--warning', '--canvas', 'text', 'Status: warning'],
   ['--info', '--canvas', 'text', 'Status: info'],
-  ['--positive', '--surface', 'text', 'Status on panels'],
+  ['--positive', '--surface', 'text', 'Status on cards'],
 ];
 
 function Verdict({ r, need }) {
@@ -146,7 +149,7 @@ export default function ColorSection() {
         <header className="sec-head">
           <span className="sec-num" aria-hidden="true">02</span>
           <h2 id="color-h">Color</h2>
-          <p className="lede">Mineral &amp; Ember: weathered, mineral neutrals and one oxidized accent. The neutrals carry the screen; ember appears only where there is something to do.</p>
+          <p className="lede">Harbor &amp; Signal: cool grey-white surfaces, deep navy type and one lime signal. The neutrals carry the screen; lime appears only where there is something to do. Source palette: MP174 by Alex Cristache, extended with accessible greys, status colors and a dark theme.</p>
         </header>
 
         <h3 className="h-part">Primitive palette</h3>
@@ -187,7 +190,7 @@ export default function ColorSection() {
         </div>
 
         <h3 className="h-part">Light and dark</h3>
-        <p className="measure">The same interface, built once on semantic tokens. Dark is designed, not inverted: surfaces step up in lightness, ember lifts so it holds on Basalt, and the button label turns to Basalt because white on lifted ember would fail.</p>
+        <p className="measure">The same interface, built once on semantic tokens. Dark is designed, not inverted: three layered navies, and lime becomes the action color with navy labels. In light, the primary button is navy with a lime label, because lime on a light surface is 1.1:1.</p>
         <div className="themes">
           <figure data-theme="light" className="theme-spec"><figcaption>Light</figcaption><MiniApp id="light" /></figure>
           <figure data-theme="dark" className="theme-spec"><figcaption>Dark</figcaption><MiniApp id="dark" /></figure>
@@ -199,7 +202,7 @@ export default function ColorSection() {
         <div className="two-col status-block">
           <div>
             <h3 className="h-part">Status</h3>
-            <p>Four roles, never the brand ember, and always a shape and a word as well as a color. On dark surfaces the same roles step up in lightness to keep their contrast.</p>
+            <p>Four roles, never the brand lime, and always a shape and a word as well as a color. On dark surfaces the same roles step up in lightness to keep their contrast.</p>
           </div>
           <ul className="statuses">
             <li className="st-positive"><StatusIcon kind="positive" /><span><b>Positive</b>Rent is covered.</span><code>--status-positive</code></li>
@@ -212,7 +215,7 @@ export default function ColorSection() {
         <div className="two-col">
           <div>
             <h3 className="h-part">Data</h3>
-            <p>Five neutral steps carry every chart. Ember marks the one thing being looked at, and every value has a direct label, so no chart depends on telling colors apart.</p>
+            <p>Five navy steps carry every chart. Ocean Blue marks the one thing being looked at, and every value has a direct label, so no chart depends on telling colors apart.</p>
             <ol className="ramp">
               {[1, 2, 3, 4, 5].map((n) => (<li key={n}><span style={{ background: `var(--chart-${n})` }} /><code>--data-{n}</code></li>))}
               <li><span style={{ background: 'var(--chart-highlight)' }} /><code>--data-highlight</code></li>
@@ -236,12 +239,12 @@ export default function ColorSection() {
         </div>
 
         <h3 className="h-part">Distribution</h3>
-        <div className="dist" role="img" aria-label="Color proportion: 60% canvas, 30% surface, at most 10% ember.">
+        <div className="dist" role="img" aria-label="Color proportion: 60% canvas, 30% surface, at most 10% accent.">
           <span style={{ width: '60%' }} className="d-canvas"><b>Canvas</b> 60%</span>
           <span style={{ width: '30%' }} className="d-surface"><b>Surface</b> 30%</span>
-          <span style={{ width: '10%' }} className="d-ember"><b>Ember</b> 10%</span>
+          <span style={{ width: '10%' }} className="d-accent"><b>Accent</b> 10%</span>
         </div>
-        <p className="dist-note">Ember is reserved for moments of action, selection, and meaningful emphasis. Ten percent is a ceiling, not a quota.</p>
+        <p className="dist-note">The accent (navy fills with lime in light, lime in dark) is reserved for action, selection and meaningful emphasis. Ten percent is a ceiling, not a quota.</p>
       </div>
     </section>
   );

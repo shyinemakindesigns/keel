@@ -1,108 +1,130 @@
-/* Keel design tokens: Mineral & Ember (creative direction: STILLFORM)
-   Shared by the case study (index.html) and the prototype (prototype.html).
+/* Keel design tokens: Harbor & Signal
+   Shared by the case study (index.html), the animation library (system.html) and the
+   prototype (/prototype/). The React pages use src/styles/tokens.css, with the same values.
+
+   Cool white and grey surfaces, deep navy type, one lime signal. Source palette:
+   MP174 by Alex Cristache (#F4F5FA, #D4EAFF, #F1FF62, #0192C6, #004499, #112358),
+   extended with accessible greys, status colors and a dark theme.
 
    Two tiers, one system:
      1. Brand primitives  (--color-*)   the named palette, never used directly by components
      2. Semantic tokens   (--canvas, --ink, --accent, --positive ...)  what components use
    Dark mode redefines only the semantic tier.
 
-   Every ratio quoted here is WCAG 2.1, produced by source/contrast_audit.py.        */
+   Every ratio quoted here is WCAG 2.x, produced by source/contrast_audit.py.        */
 
 :root {
   /* ---------------------------------------------------------- 1. brand primitives */
-  --color-brand-primary:         #B94F36; /* Oxidized Ember */
-  --color-background-primary:    #F6F3ED; /* Porcelain Clay */
-  --color-background-secondary:  #E6E2D9; /* Mineral Stone */
-  --color-text-primary:          #252A28; /* Volcanic Ink */
-  --color-text-secondary:        #656B66; /* Weathered Slate */
-  --color-background-dark:       #202725; /* Basalt */
-  --color-text-dark:             #F4F0E7; /* Chalk */
-
-  /* accessible derivatives of the primitives */
-  --color-mineral-deep:          #DCD7CC; /* water band, wells */
-  --color-slate-deep:            #555B56; /* slate that passes on Mineral Stone */
-  --color-ember-text:            #9E412B; /* ember for text and focus: brand hex is 4.48:1 on porcelain */
-  --color-ember-hover:           #A4452F;
-  --color-ember-pressed:         #8F3C29;
-  --color-basalt-raised:         #2A322F;
-  --color-basalt-deep:           #353E3A;
-  --color-chalk-muted:           #B3B6AE;
-  --color-ember-lifted:          #E07F60; /* ember on basalt: brand hex is 3.07:1 there */
+  --color-fog:     #F4F5FA; /* Fog White: the light canvas */
+  --color-paper:   #FFFFFF; /* Paper: cards and panels */
+  --color-cloud:   #E9EDF5; /* Cloud: wells, disabled, quiet fills */
+  --color-mist:    #D4EAFF; /* Mist Blue: the water band, info tints */
+  --color-signal:  #F1FF62; /* Signal Lime: the one accent. A fill, never text on light */
+  --color-ocean:   #0192C6; /* Ocean Blue: the highlighted data series */
+  --color-harbor:  #004499; /* Harbor Blue: links and focus on light */
+  --color-deep:    #112358; /* Deep Navy: type, primary actions, the dark surface */
+  --color-slate:   #4A5573; /* Slate: secondary type (6.8:1 on fog, 7.4:1 on paper) */
+  --color-abyss:   #0B1530; /* Abyss: the dark canvas */
+  --color-night:   #1A2E66; /* Night: dark wells and the dark water band */
+  --color-frost:   #AEB9D6; /* Frost: secondary type on dark */
+  --color-ocean-lifted: #3DB8EA; /* ocean on dark */
 
   /* ---------------------------------------------------------- 2. semantic, light */
   color-scheme: light;
 
-  /* surfaces: 60 / 30 / 10 */
-  --canvas:    var(--color-background-primary);   /* 60 */
-  --surface:   var(--color-background-secondary); /* 30: panels, rows, nav surfaces, forms */
-  --surface-2: var(--color-mineral-deep);         /* water, wells. Only --ink and --ink-2-on-surface text */
+  /* surfaces: a grey-white canvas with white cards on it */
+  --canvas:    var(--color-fog);
+  --surface:   var(--color-paper);
+  --surface-2: var(--color-cloud);
 
   /* text */
-  --ink:   var(--color-text-primary);   /* 13.2:1 on canvas, 11.3:1 on surface */
-  --ink-2: var(--color-text-secondary); /* 4.9:1 on canvas. Swaps to --ink-on-surface-2 inside surfaces */
-  --ink-3: var(--color-text-secondary);
-  --ink-2-on-surface: var(--color-slate-deep); /* 5.4:1 on surface, 4.9:1 on surface-2 */
+  --ink:   var(--color-deep);    /* 13.7:1 on fog, 14.9:1 on paper, 12.7:1 on cloud */
+  --ink-2: var(--color-slate);   /* 6.8:1 on fog, 6.3:1 on cloud, 6.0:1 on mist */
+  --ink-3: var(--color-slate);
+  --ink-2-on-surface: var(--color-slate);
 
-  /* the accent: one hue, distinct roles */
-  --accent:         var(--color-brand-primary);  /* fills: primary buttons, hull, active tab, selected chip */
-  --accent-hover:   var(--color-ember-hover);
-  --accent-pressed: var(--color-ember-pressed);
-  --on-accent:      #FFFFFF;                     /* 4.96:1 on ember. Chalk is 4.36:1 and fails */
-  --accent-ink:     var(--color-ember-text);     /* links, text buttons: 5.8:1 canvas, 5.0:1 surface */
+  /* actions: navy fills with a lime label; links in harbor blue */
+  --accent:         var(--color-deep);   /* primary buttons, active tab, selected chip */
+  --accent-hover:   #1E3576;
+  --accent-pressed: #0A1638;
+  --on-accent:      var(--color-signal); /* 13.7:1 on navy; 10.5:1 on hover */
+  --accent-ink:     var(--color-harbor); /* links, text buttons: 8.4:1 fog, 9.2:1 paper */
+  --signal:         var(--color-signal); /* highlight fills, the hull. Needs a navy edge on light */
+  --on-signal:      var(--color-deep);
 
   /* secondary and tertiary actions */
-  --secondary-bg:     var(--color-background-secondary);
-  --secondary-border: rgba(37, 42, 40, 0.22);
-  --tertiary-hover:   rgba(37, 42, 40, 0.06);
+  --secondary-bg:     var(--color-paper);
+  --secondary-border: rgba(17, 35, 88, 0.24);
+  --tertiary-hover:   rgba(17, 35, 88, 0.05);
 
-  /* disabled: readable, not invisible (5.4:1 on surface) */
-  --disabled-bg:   var(--color-mineral-deep);
-  --disabled-ink:  var(--color-slate-deep);
+  /* disabled: readable, not invisible (6.3:1 on cloud) */
+  --disabled-bg:   var(--color-cloud);
+  --disabled-ink:  var(--color-slate);
 
   /* lines */
-  --hairline: rgba(37, 42, 40, 0.12); /* decorative edges of raised surfaces (1.4.11 exempt) */
-  --rule:     rgba(37, 42, 40, 0.18); /* row dividers */
-  --control:  rgba(37, 42, 40, 0.58); /* input, chip and switch boundaries: meets 1.4.11 */
-  --focus:    var(--color-ember-text);
+  --hairline: rgba(17, 35, 88, 0.10); /* decorative edges of cards (1.4.11 exempt) */
+  --rule:     rgba(17, 35, 88, 0.14); /* row dividers */
+  --control:  rgba(17, 35, 88, 0.62); /* input, chip and switch boundaries: 3.2:1 on mist, more elsewhere */
+  --focus:    var(--color-harbor);
 
-  /* status: never ember, never color alone (always with a word or icon) */
-  --positive: #2E6A4E;  /* 5.8:1 canvas */
-  --negative: #9B2C3A;  /* 6.7:1 canvas. Oxblood, distinct from ember */
-  --warning:  #7D5300;  /* 6.1:1 canvas */
-  --info:     #3B5A72;  /* 6.6:1 canvas */
-  --neutral:  var(--color-text-secondary);
-  --positive-tint: rgba(46, 106, 78, 0.10);
-  --negative-tint: rgba(155, 44, 58, 0.09);
-  --warning-tint:  rgba(125, 83, 0, 0.10);
-  --info-tint:     rgba(59, 90, 114, 0.10);
+  /* status: never lime, never color alone (always with a word or icon) */
+  --positive: #0B7350;  /* 5.4:1 fog */
+  --negative: #B42342;  /* 5.9:1 fog */
+  --warning:  #8A5600;  /* 5.7:1 fog */
+  --info:     #0A6A99;  /* 5.5:1 fog */
+  --neutral:  var(--color-slate);
+  --positive-tint: rgba(11, 115, 80, 0.09);
+  --negative-tint: rgba(180, 35, 66, 0.08);
+  --warning-tint:  rgba(138, 86, 0, 0.09);
+  --info-tint:     rgba(1, 146, 198, 0.10);
 
-  /* data visualization: one ink ramp, ember reserved for the selected series */
-  --data-1: #252A28;
-  --data-2: #4A504C;
-  --data-3: #7A7F79;
-  --data-4: #A6A9A2;
-  --data-5: #C9C8BF;
-  --data-muted: #DFDBD2;
-  --data-highlight: var(--color-brand-primary);
+  /* data visualization: one navy ramp, ocean blue for the selected series */
+  --data-1: #112358;
+  --data-2: #3D4E7A;
+  --data-3: #6C7899;
+  --data-4: #A3ACC4;
+  --data-5: #CDD3E2;
+  --data-muted: #E3E7F0;
+  --data-highlight: var(--color-ocean);  /* 3.5:1 on paper, 3.3:1 on fog: marks, not text */
 
   /* illustration */
-  --illo-line:   var(--color-text-primary);
-  --illo-hull:   var(--color-brand-primary);
-  --illo-water:  var(--color-mineral-deep);
-  --illo-ballast: var(--color-text-primary);
+  --illo-line:   var(--color-deep);
+  --illo-hull:   var(--color-signal);
+  --illo-hull-edge: var(--color-deep); /* lime alone is 1.1:1 on light; the edge carries the contrast */
+  --illo-water:  var(--color-mist);
+  --illo-ballast: var(--color-deep);
 
-  /* elevation: border first, then a soft shadow only for things that float */
-  --lift: 0 1px 2px rgba(37, 42, 40, 0.05), 0 8px 24px -12px rgba(37, 42, 40, 0.16);
-  --scrim: rgba(32, 39, 37, 0.36);
+  /* elevation: border first, then a soft navy-tinted shadow only for things that float */
+  --lift: 0 1px 2px rgba(17, 35, 88, 0.06), 0 12px 32px -14px rgba(17, 35, 88, 0.20);
+  --scrim: rgba(11, 21, 48, 0.40);
+
+
+  /* glass buttons (assets/css/glass.css) */
+  --glass-blur: blur(16px) saturate(150%);
+  --glass-primary-bg: rgba(17, 35, 88, 0.86);
+  --glass-primary-hover: rgba(17, 35, 88, 0.94);
+  --glass-primary-ink: #F1FF62;
+  --glass-primary-edge: rgba(255, 255, 255, 0.16);
+  --glass-secondary-bg: rgba(255, 255, 255, 0.62);
+  --glass-secondary-hover: rgba(255, 255, 255, 0.86);
+  --glass-secondary-edge: rgba(17, 35, 88, 0.58);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --glass-shadow: 0 10px 28px -14px rgba(17, 35, 88, 0.45);
 
   /* shape */
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
 
-  /* type (unchanged in the color refinement) */
-  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --sans:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+  /* type: one family, Switzer (Indian Type Foundry, free via Fontshare), in three levels:
+       display  Regular, tight leading, near-zero tracking   (headlines, the hero)
+       data     Medium, tabular figures                      (amounts, dates, the reading)
+       body     Regular 14 to 17px                           (UI and prose)                  */
+  --serif: "Switzer", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;   /* the display role; name kept for the pages that use it */
+  --sans:  "Switzer", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.01em;
+  --data-weight: 500;
 
   /* motion: Keel Motion Language (settle, reveal, connect, respond, reassure)
      Durations follow the interaction, not a single global speed. */
@@ -123,101 +145,126 @@
 }
 
 /* ---------------------------------------------------------- 2b. semantic, dark
-   Not an inversion: basalt with layered charcoal, warm chalk type, a lifted ember. */
+   Not an inversion: a deep navy night with lime as the action color. */
 :root[data-theme="dark"] {
-  color-scheme: dark;
-  --canvas:    var(--color-background-dark);
-  --surface:   var(--color-basalt-raised);
-  --surface-2: var(--color-basalt-deep);
-  --ink:   var(--color-text-dark);      /* 13.4:1 on basalt */
-  --ink-2: var(--color-chalk-muted);    /* 7.4:1 on basalt, 5.4:1 on deep basalt */
-  --ink-3: var(--color-chalk-muted);
-  --ink-2-on-surface: var(--color-chalk-muted);
-  --accent:         var(--color-ember-lifted);
-  --accent-hover:   #E68D70;
-  --accent-pressed: #D9714F;
-  --on-accent:      var(--color-background-dark); /* 5.4:1 */
-  --accent-ink:     #E38A6C;                      /* 5.9:1 basalt, 5.1:1 raised */
-  --secondary-bg:     var(--color-basalt-raised);
-  --secondary-border: rgba(244, 240, 231, 0.22);
-  --tertiary-hover:   rgba(244, 240, 231, 0.07);
-  --disabled-bg:  var(--color-basalt-deep);
-  --disabled-ink: var(--color-chalk-muted);
-  --hairline: rgba(244, 240, 231, 0.12);
-  --rule:     rgba(244, 240, 231, 0.16);
-  --control:  rgba(244, 240, 231, 0.50);
-  --focus:    #E38A6C;
-  --positive: #7FC4A0;
-  --negative: #F09AA3;
-  --warning:  #E2B45C;
-  --info:     #9DBCD6;
-  --neutral:  var(--color-chalk-muted);
-  --positive-tint: rgba(127, 196, 160, 0.12);
-  --negative-tint: rgba(240, 154, 163, 0.12);
-  --warning-tint:  rgba(226, 180, 92, 0.12);
-  --info-tint:     rgba(157, 188, 214, 0.12);
-  --data-1: #F4F0E7;
-  --data-2: #C9C8BF;
-  --data-3: #9A9E97;
-  --data-4: #6E746E;
-  --data-5: #4D5550;
-  --data-muted: #2F3734;
-  --data-highlight: var(--color-ember-lifted);
-  --illo-line:  var(--color-text-dark);
-  --illo-hull:  var(--color-ember-lifted);
-  --illo-water: var(--color-basalt-deep);
-  --illo-ballast: #9A9E97;
-  --lift: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 28px -12px rgba(0, 0, 0, 0.5);
-  --scrim: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+    --canvas:    var(--color-abyss);
+    --surface:   var(--color-deep);
+    --surface-2: var(--color-night);
+    --ink:   var(--color-fog);       /* 16.6:1 on abyss, 13.7:1 on deep */
+    --ink-2: var(--color-frost);     /* 9.2:1 on abyss, 6.6:1 on night */
+    --ink-3: var(--color-frost);
+    --ink-2-on-surface: var(--color-frost);
+    --accent:         var(--color-signal);   /* in dark, lime is the action color */
+    --accent-hover:   #F5FF8C;
+    --accent-pressed: #E3F24A;
+    --on-accent:      var(--color-deep);     /* 13.7:1 on lime */
+    --accent-ink:     var(--color-signal);   /* links and text buttons: 16.5:1 abyss, 11.8:1 night */
+    --signal:         var(--color-signal);
+    --on-signal:      var(--color-deep);
+    --secondary-bg:     var(--color-deep);
+    --secondary-border: rgba(244, 245, 250, 0.24);
+    --tertiary-hover:   rgba(244, 245, 250, 0.07);
+    --disabled-bg:  var(--color-night);
+    --disabled-ink: var(--color-frost);
+    --hairline: rgba(244, 245, 250, 0.10);
+    --rule:     rgba(244, 245, 250, 0.14);
+    --control:  rgba(244, 245, 250, 0.50);  /* 3.9:1 on night, 4.5:1 on deep */
+    --focus:    var(--color-signal);
+    --positive: #5ED3A0;
+    --negative: #FF8FA3;
+    --warning:  #FFC857;
+    --info:     #7CC8F2;
+    --neutral:  var(--color-frost);
+    --positive-tint: rgba(94, 211, 160, 0.14);
+    --negative-tint: rgba(255, 143, 163, 0.14);
+    --warning-tint:  rgba(255, 200, 87, 0.14);
+    --info-tint:     rgba(124, 200, 242, 0.14);
+    --data-1: #F4F5FA;
+    --data-2: #B9C3DD;
+    --data-3: #8391B8;
+    --data-4: #56658F;
+    --data-5: #34457A;
+    --data-muted: #1F3470;
+    --data-highlight: var(--color-ocean-lifted);
+    --illo-line:  var(--color-fog);
+    --illo-hull:  var(--color-signal);
+    --illo-hull-edge: var(--color-signal);
+    --illo-water: var(--color-night);
+    --illo-ballast: var(--color-frost);
+    --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -14px rgba(0, 0, 0, 0.55);
+    --scrim: rgba(3, 8, 22, 0.6);
+    --glass-primary-bg: rgba(241, 255, 98, 0.92);
+    --glass-primary-hover: rgba(245, 255, 140, 0.96);
+    --glass-primary-ink: #112358;
+    --glass-primary-edge: rgba(255, 255, 255, 0.30);
+    --glass-secondary-bg: rgba(244, 245, 250, 0.10);
+    --glass-secondary-hover: rgba(244, 245, 250, 0.16);
+    --glass-secondary-edge: rgba(244, 245, 250, 0.50);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    --glass-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --canvas:    var(--color-background-dark);
-    --surface:   var(--color-basalt-raised);
-    --surface-2: var(--color-basalt-deep);
-    --ink:   var(--color-text-dark);
-    --ink-2: var(--color-chalk-muted);
-    --ink-3: var(--color-chalk-muted);
-    --ink-2-on-surface: var(--color-chalk-muted);
-    --accent:         var(--color-ember-lifted);
-    --accent-hover:   #E68D70;
-    --accent-pressed: #D9714F;
-    --on-accent:      var(--color-background-dark);
-    --accent-ink:     #E38A6C;
-    --secondary-bg:     var(--color-basalt-raised);
-    --secondary-border: rgba(244, 240, 231, 0.22);
-    --tertiary-hover:   rgba(244, 240, 231, 0.07);
-    --disabled-bg:  var(--color-basalt-deep);
-    --disabled-ink: var(--color-chalk-muted);
-    --hairline: rgba(244, 240, 231, 0.12);
-    --rule:     rgba(244, 240, 231, 0.16);
-    --control:  rgba(244, 240, 231, 0.50);
-    --focus:    #E38A6C;
-    --positive: #7FC4A0;
-    --negative: #F09AA3;
-    --warning:  #E2B45C;
-    --info:     #9DBCD6;
-    --neutral:  var(--color-chalk-muted);
-    --positive-tint: rgba(127, 196, 160, 0.12);
-    --negative-tint: rgba(240, 154, 163, 0.12);
-    --warning-tint:  rgba(226, 180, 92, 0.12);
-    --info-tint:     rgba(157, 188, 214, 0.12);
-    --data-1: #F4F0E7;
-    --data-2: #C9C8BF;
-    --data-3: #9A9E97;
-    --data-4: #6E746E;
-    --data-5: #4D5550;
-    --data-muted: #2F3734;
-    --data-highlight: var(--color-ember-lifted);
-    --illo-line:  var(--color-text-dark);
-    --illo-hull:  var(--color-ember-lifted);
-    --illo-water: var(--color-basalt-deep);
-    --illo-ballast: #9A9E97;
-  --illo-ballast: #9A9E97;
-    --lift: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 28px -12px rgba(0, 0, 0, 0.5);
-    --scrim: rgba(0, 0, 0, 0.5);
+    --canvas:    var(--color-abyss);
+    --surface:   var(--color-deep);
+    --surface-2: var(--color-night);
+    --ink:   var(--color-fog);       /* 16.6:1 on abyss, 13.7:1 on deep */
+    --ink-2: var(--color-frost);     /* 9.2:1 on abyss, 6.6:1 on night */
+    --ink-3: var(--color-frost);
+    --ink-2-on-surface: var(--color-frost);
+    --accent:         var(--color-signal);   /* in dark, lime is the action color */
+    --accent-hover:   #F5FF8C;
+    --accent-pressed: #E3F24A;
+    --on-accent:      var(--color-deep);     /* 13.7:1 on lime */
+    --accent-ink:     var(--color-signal);   /* links and text buttons: 16.5:1 abyss, 11.8:1 night */
+    --signal:         var(--color-signal);
+    --on-signal:      var(--color-deep);
+    --secondary-bg:     var(--color-deep);
+    --secondary-border: rgba(244, 245, 250, 0.24);
+    --tertiary-hover:   rgba(244, 245, 250, 0.07);
+    --disabled-bg:  var(--color-night);
+    --disabled-ink: var(--color-frost);
+    --hairline: rgba(244, 245, 250, 0.10);
+    --rule:     rgba(244, 245, 250, 0.14);
+    --control:  rgba(244, 245, 250, 0.50);  /* 3.9:1 on night, 4.5:1 on deep */
+    --focus:    var(--color-signal);
+    --positive: #5ED3A0;
+    --negative: #FF8FA3;
+    --warning:  #FFC857;
+    --info:     #7CC8F2;
+    --neutral:  var(--color-frost);
+    --positive-tint: rgba(94, 211, 160, 0.14);
+    --negative-tint: rgba(255, 143, 163, 0.14);
+    --warning-tint:  rgba(255, 200, 87, 0.14);
+    --info-tint:     rgba(124, 200, 242, 0.14);
+    --data-1: #F4F5FA;
+    --data-2: #B9C3DD;
+    --data-3: #8391B8;
+    --data-4: #56658F;
+    --data-5: #34457A;
+    --data-muted: #1F3470;
+    --data-highlight: var(--color-ocean-lifted);
+    --illo-line:  var(--color-fog);
+    --illo-hull:  var(--color-signal);
+    --illo-hull-edge: var(--color-signal);
+    --illo-water: var(--color-night);
+    --illo-ballast: var(--color-frost);
+    --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -14px rgba(0, 0, 0, 0.55);
+    --scrim: rgba(3, 8, 22, 0.6);
+    --glass-primary-bg: rgba(241, 255, 98, 0.92);
+    --glass-primary-hover: rgba(245, 255, 140, 0.96);
+    --glass-primary-ink: #112358;
+    --glass-primary-edge: rgba(255, 255, 255, 0.30);
+    --glass-secondary-bg: rgba(244, 245, 250, 0.10);
+    --glass-secondary-hover: rgba(244, 245, 250, 0.16);
+    --glass-secondary-edge: rgba(244, 245, 250, 0.50);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    --glass-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+
   }
 }
 
@@ -235,6 +282,8 @@
 .s-ink2   { stroke: var(--ink-2); }
 .s-accent-ink { stroke: var(--accent-ink); }
 .s-hull   { stroke: var(--illo-hull); }
+.f-hi     { fill: var(--data-highlight); }   /* the selected data series: ocean blue */
+.s-hi     { stroke: var(--data-highlight); }
 .s-rule   { stroke: var(--rule); }
 .s-control{ stroke: var(--control); }
 
@@ -250,4 +299,8 @@
   --dur-settle: 0ms; --dur-illustration: 0ms; --dur-hero: 0ms; --stagger: 0ms;
 }
 .f-ink2s  { fill: var(--ink-2-on-surface); }
+/* the hull: lime, with a navy edge on light where lime alone is 1.1:1 */
+.f-hull   { stroke: var(--illo-hull-edge); stroke-width: 2; vector-effect: non-scaling-stroke; paint-order: stroke; }
+/* data level: amounts and dates line up in columns */
+.tnum, table, output, time, .amt, .val, .date, .num { font-variant-numeric: tabular-nums; }
 .s-ink2s  { stroke: var(--ink-2-on-surface); }

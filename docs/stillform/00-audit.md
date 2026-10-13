@@ -1,5 +1,7 @@
 # STILLFORM: Phase 0 audit
 
+> **Record.** This is the audit of v1 that led to the second identity, Mineral & Ember. Keel now uses a third, Harbor & Signal (see `DESIGN.md` and `assets/tokens.css`); colors and numbers below describe the earlier palettes.
+
 Audit of Keel v1 (merged to `main` as `c8f1b5b`) before the STILLFORM upgrade. Written October 8, 2026.
 
 ## 1. Existing architecture
