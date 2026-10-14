@@ -34,6 +34,8 @@
   if (window.customElements && customElements.get('keel-lottie')) return;
 
   var BASE = (document.currentScript && document.currentScript.dataset.base) || 'assets/';
+  // Asset version: bump when animation or fallback files are replaced, so browsers don't keep old copies.
+  var V = '?v=3';
   var runtime = null;
 
   function loadRuntime() {
@@ -110,8 +112,8 @@
       // also write the <picture> into the HTML so it shows with JavaScript off.
       if (!this.hasAttribute('no-fallback') && !this.querySelector(':scope > picture, :scope > img')) {
         var n = this.getAttribute('name'), pic = document.createElement('picture');
-        pic.innerHTML = '<source srcset="' + BASE + 'fallbacks/' + n + '-dark.svg" media="(prefers-color-scheme: dark)">' +
-          '<img src="' + BASE + 'fallbacks/' + n + (isDark() ? '-dark' : '') + '.svg" alt="" aria-hidden="true">';
+        pic.innerHTML = '<source srcset="' + BASE + 'fallbacks/' + n + '-dark.svg' + V + '" media="(prefers-color-scheme: dark)">' +
+          '<img src="' + BASE + 'fallbacks/' + n + (isDark() ? '-dark' : '') + '.svg' + V + '" alt="" aria-hidden="true">';
         this.appendChild(pic);
       }
       var still = this.querySelector(':scope > picture img, :scope > img');
@@ -129,7 +131,7 @@
     get totalFrames() { return this.anim ? this.anim.totalFrames : 0; }
     get isPlaying() { return !!(this.anim && !this.anim.isPaused); }
 
-    _src() { return BASE + 'lottie/' + this.getAttribute('name') + (isDark() ? '-dark' : '') + '.json'; }
+    _src() { return BASE + 'lottie/' + this.getAttribute('name') + (isDark() ? '-dark' : '') + '.json' + V; }
     _poster() {
       var p = this.getAttribute('poster') || 'end';
       if (!this.anim) return 0;
