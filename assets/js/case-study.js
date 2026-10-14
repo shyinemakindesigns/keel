@@ -119,8 +119,40 @@
   $$('.reveal, .horizon, .ia-draw').forEach(function (el) { if (revealIO) revealIO.observe(el); else el.classList.add('in'); });
 
   // ================================================================ lo-fi to hi-fi comparison
-  var lohiR = $('#lohi-range');
-  if (lohiR) lohiR.addEventListener('input', function () { $('#lohi').style.setProperty('--cut', this.value + '%'); });
+  // Sketch to screen: drag to compare; hover to watch the divider sweep from the sketch
+  // to the screen and back, then settle where the slider was. Never with reduced motion.
+  var lohiR = $('#lohi-range'), lohi = $('#lohi');
+  if (lohiR && lohi) {
+    var setCut = function (v) { lohi.style.setProperty('--cut', v + '%'); lohiR.value = Math.round(v); };
+    var raf = 0, playing = false, rest = +lohiR.value;
+    var easeIO = function (k) { return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
+    var stop = function (settle) {
+      cancelAnimationFrame(raf); playing = false;
+      if (settle) {   // ease back to where the reader left the slider
+        var from = +lohiR.value, t0 = performance.now();
+        var back = function (now) { var k = Math.min(1, (now - t0) / 500); setCut(from + (rest - from) * easeIO(k)); if (k < 1) raf = requestAnimationFrame(back); };
+        raf = requestAnimationFrame(back);
+      }
+    };
+    var play = function () {
+      if (playing || reduced()) return;
+      cancelAnimationFrame(raf); playing = true;
+      // legs: to the sketch (100), to the screen (0), and around again while the pointer stays
+      var legs = [100, 0], i = 0, from = +lohiR.value, t0 = performance.now(), dur = 1600;
+      var step = function (now) {
+        var k = Math.max(0, Math.min(1, (now - t0) / dur)), to = legs[i % 2];
+        setCut(from + (to - from) * easeIO(k));
+        if (k >= 1) { from = to; i++; t0 = now + 500; }   // hold each end for half a second
+        if (playing) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+    lohiR.addEventListener('input', function () { if (playing) stop(false); rest = +this.value; setCut(rest); });
+    if (window.matchMedia('(hover: hover)').matches) {
+      lohi.addEventListener('pointerenter', play);
+      lohi.addEventListener('pointerleave', function () { if (playing) stop(true); });
+    }
+  }
 
   // ================================================================ sample data for gallery and playground charts
   var C = window.KeelCharts, D = function (m, d) { return new Date(2026, m, d); }, TODAY = D(9, 8);

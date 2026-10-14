@@ -33,7 +33,8 @@ Keel is not a real company, product or client project, and it is not affiliated 
 | `docs/motion-system/` | Motion system README, animation specifications and storyboards, Rive specification, QA report, phase audit |
 | `docs/stillform/` | The v1 audit that led to the second identity (Mineral & Ember), kept as a record |
 | `portfolio/` | Portfolio thumbnail, link-preview image, LinkedIn carousel (PNG and PDF), post copy and interview talking points; editable sources in `portfolio/source/` |
-| `netlify.toml` | Deploy config: runs `npm run build`, publishes `dist`, and redirects the old prototype address |
+| `vercel.json` | Deploy config (live on Vercel): runs `npm run build`, publishes `dist`, redirects the old prototype address, sets Rive headers |
+| `netlify.toml` | The same config for Netlify |
 | `tests/` | The automated test suite (`npm test`) |
 
 ## Run it
@@ -68,7 +69,7 @@ Seven suites: `pages` (every page and app state, light and dark, at 320, 390, 76
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 
-**Deploy:** Vercel (import the GitHub repo; `vercel.json` sets the build to `npm run build`, the output to `dist`, the old prototype redirect and the Rive headers) or Netlify (`netlify.toml` does the same). The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
+**Deploy:** live at <https://keel-casestudy.vercel.app>. Vercel builds every push to `main`; `vercel.json` sets the build (`npm run build`), the output (`dist`), the old prototype redirect and the Rive headers. `netlify.toml` holds the same setup for Netlify. The link-preview tags in `index.html` use the Vercel address; change them if you deploy elsewhere.
 
 Regenerate the animations or rerun the audits:
 
