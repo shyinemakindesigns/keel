@@ -3,6 +3,7 @@ import Screen from '../Screen.jsx';
 import { GuideButton } from '../tour/GuideButton.jsx';
 import { Confirm } from './Goals.jsx';
 import { planSeries, estimate, reading, fmtDate, fmtLong, money, daysWord, TODAY, DAILY } from '../model.js';
+import { useRegion } from '../region.js';
 
 export const DAILY_CUTS = [0, 5, 10];
 
@@ -47,6 +48,7 @@ function DailyDemo({ S, cut, setCut }) {
 }
 
 export default function Plan({ app }) {
+  const R = useRegion();
   const { S, current, planExtra, setPlanExtra, applyPlan, planConfirm, openGuide, dailyCut, setDailyCut } = app;
   const active = current === 'plan';
   const sc = useRef(null), shown = useRef(null), prevExtra = useRef(planExtra);
@@ -87,7 +89,7 @@ export default function Plan({ app }) {
       <div className="col-a">
         <DailyDemo S={S} cut={dailyCut} setCut={setDailyCut} />
         <div className="panel card" style={{ marginTop: 18 }} data-tour="plan-slider">
-          <div className="range-out"><label htmlFor="pl-extra" style={{ fontWeight: 600 }}>Set aside more each paycheck</label><output id="pl-out" htmlFor="pl-extra">{money(extra)}</output></div>
+          <div className="range-out"><label htmlFor="pl-extra" style={{ fontWeight: 600 }}>Set aside more each {R.paycheck}</label><output id="pl-out" htmlFor="pl-extra">{money(extra)}</output></div>
           <input className="range" id="pl-extra" type="range" min="0" max="300" step="25" value={extra} aria-describedby="pl-help" onChange={(e) => setPlanExtra(+e.target.value)} />
           <p className="meta" id="pl-help">On top of the {money(car ? car.per : 0)} already going to Car repair fund. Pay arrives every two weeks.</p>
         </div>
@@ -95,7 +97,7 @@ export default function Plan({ app }) {
         <div className="legend2" aria-hidden="true"><span><i className="dash"></i>Current plan</span><span><i className="hi"></i>With the change</span></div>
         <div className="sr">
           <table id="sc-table">
-            <caption>Projected savings, current plan and with {money(extra)} more each paycheck</caption>
+            <caption>Projected savings, current plan and with {money(extra)} more each {R.paycheck}</caption>
             <tbody>
               <tr><th scope="col">Date</th><th scope="col">Current plan</th><th scope="col">With the change</th></tr>
               {s.dates.map((d, i) => (i % 2 === 0 ? <tr key={i}><th scope="row">{fmtLong(d)}</th><td>{money(s.cur[i])}</td><td>{money(s.wth[i])}</td></tr> : null))}
@@ -109,7 +111,7 @@ export default function Plan({ app }) {
           <button className="btn btn-primary btn-block" id="pl-apply" type="button" disabled={extra === 0} onClick={applyPlan}>Apply to Car repair fund</button>
           <Confirm msg={planConfirm} id="pl-confirm" />
         </div>
-        <p className="note">A projection, not a promise. It assumes your pay and bills stay the same, and it doesn’t move today’s reading, because the change starts with your next paycheck.</p>
+        <p className="note">A projection, not a promise. It assumes your pay and bills stay the same, and it doesn’t move today’s reading, because the change starts with your next {R.paycheck}.</p>
       </div>
     </Screen>
   );

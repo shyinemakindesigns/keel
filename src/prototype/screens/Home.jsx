@@ -5,10 +5,12 @@ import { GuideButton } from '../tour/GuideButton.jsx';
 import { Mark } from '../icons.jsx';
 import { reading, pace, payday, fmtDate, money, daysWord, parse, MON, TODAY } from '../model.js';
 import { reduced, cssMs } from '../util.js';
+import { useRegion } from '../region.js';
 
 let paceIntroDone = false;
 
 export default function Home({ app }) {
+  const R = useRegion();
   const { S, current, whatif, setWhatif, keelStart, demoDepth, openGuide, resetDemo } = app;
   const r = reading(S, 0), steady = r.margin >= 0, pd = payday(S);
   const active = current === 'home';
@@ -110,7 +112,7 @@ export default function Home({ app }) {
       </section>
 
       <section className="upcoming-block" aria-labelledby="up-h">
-        <div className="section-label"><h2 className="sl-h" id="up-h">Coming up</h2><span id="upcoming-sub">{allCovered ? 'covered by this paycheck or the next' : ''}</span></div>
+        <div className="section-label"><h2 className="sl-h" id="up-h">Coming up</h2><span id="upcoming-sub">{allCovered ? `covered by this ${R.paycheck} or the next` : ''}</span></div>
         <svg className="timeline" id="timeline" ref={tl} viewBox="0 0 340 74" role="img" aria-labelledby="tl-desc"><desc id="tl-desc"></desc></svg>
         <div className="rows" id="upcoming">
           {up.map((b) => {
@@ -118,7 +120,7 @@ export default function Home({ app }) {
             return (
               <div className="row" key={b.id}>
                 <div className="bill-when"><b>{d.getDate()}</b><small>{MON[d.getMonth()]}</small></div>
-                <div className="grow"><div className="title">{b.name}{b === nextBill && <span className="next-flag">Next</span>}</div><div className="tag">{covered ? 'Set aside' : 'After your reading, comes from your next paycheck'}</div></div>
+                <div className="grow"><div className="title">{b.name}{b === nextBill && <span className="next-flag">Next</span>}</div><div className="tag">{covered ? 'Set aside' : `After your reading, comes from your next ${R.paycheck}`}</div></div>
                 <div className="amt">{money(b.amt)}</div>
               </div>
             );

@@ -1,6 +1,7 @@
 import { reading, fmtDate, daysWord, weightPhrase, money, DAILY } from '../model.js';
 import { depthFor } from '../KeelViz.jsx';
 import { CheckIcon } from '../icons.jsx';
+import { term } from '../region.js';
 
 // The tour, step by step. Every step names a real element (target), the screen it
 // lives on, and what the visitor can do there. The panel mirrors page actions as
@@ -78,10 +79,10 @@ export const STEPS = [
       const g = S.goals.find((x) => x.id === 'car');
       return (
         <>
-          {g && <p className="tp-note">Target <b>{money(g.target)}</b> · saved <b>{money(g.saved)}</b> · {money(g.per)} each paycheck.</p>}
+          {g && <p className="tp-note">Target <b>{money(g.target)}</b> · saved <b>{money(g.saved)}</b> · {money(g.per)} each {term('paycheck')}.</p>}
           <button type="button" className="btn btn-quiet tp-action" onClick={(e) => openAdd('car', e.currentTarget)}>Try adding money</button>
           <p className="tp-status" aria-live="polite">{flags.goalAdded
-            ? <>Added {money(flags.goalAdded)}. The goal moved, and Steady now shows what it took from checking. It changes the sample data; reset it any time from the Guide.</>
+            ? <>Added {money(flags.goalAdded)}. The goal moved, and Steady now shows what it took from {term('checking')}. It changes the sample data; reset it any time from the Guide.</>
             : <>Pick an amount and you’ll see what it does to your reading before you confirm. New goals start from the New goal button.</>}</p>
         </>
       );
@@ -97,7 +98,7 @@ export const STEPS = [
       return (
         <p className="tp-status" aria-live="polite">{dailyCut
           ? <><b>{gain > 0 ? daysWord(gain) + ' more room' : 'No change'}</b> at ${DAILY - dailyCut} a day. Only the daily figure changes.</>
-          : <>Choose $5 or $10 less a day to compare. Below, a slider tries saving more each paycheck.</>}</p>
+          : <>Choose $5 or $10 less a day to compare. Below, a slider tries saving more each {term('paycheck')}.</>}</p>
       );
     },
   },

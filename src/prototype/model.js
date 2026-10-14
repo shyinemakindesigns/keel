@@ -2,6 +2,7 @@
 // this state, so a change anywhere shows up everywhere it should.
 // Ported from assets/js/app.js without changing a single rule.
 
+import { term } from './region.js';
 export const TODAY = new Date(2026, 9, 8);   // Thu Oct 8 2026, fixed so the dates always make sense
 export const DAILY = 48;                     // usual day-to-day spending (sample's last 8 weeks)
 export const LAST_PAYDAY = new Date(2026, 9, 2);
@@ -127,7 +128,7 @@ export function goalEstimateText(S, g) {
   const e = estimate(S, g);
   if (e.done) return 'Funded. Nice and steady.';
   if (e.none) return 'No regular amount yet.';
-  return money(g.per) + ' each paycheck · done around ' + fmtLong(e.date);
+  return money(g.per) + ' each ' + term('paycheck') + ' · done around ' + fmtLong(e.date);
 }
 
 export function planSeries(S, extra) {

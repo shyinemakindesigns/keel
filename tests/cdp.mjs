@@ -24,9 +24,11 @@ export async function launch() {
   let id = 0;
   const pending = new Map();
   const log = { errors: [], failed: [] };
+  const listeners = [];   // on(method, fn): protocol events, e.g. Page.screencastFrame
   ws.onmessage = (ev) => {
     const m = JSON.parse(ev.data);
     if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); return; }
+    if (m.method) listeners.forEach(([name, fn]) => { if (name === m.method) fn(m.params); });
     if (m.method === 'Runtime.exceptionThrown') {
       const d = m.params.exceptionDetails;
       log.errors.push('exception: ' + ((d.exception && d.exception.description) || d.text).split('\n')[0].slice(0, 200));
@@ -51,6 +53,7 @@ export async function launch() {
   await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
   const api = {
     log, send,
+    on(method, fn) { listeners.push([method, fn]); },
     // Evaluates test code inside the test browser's page (Keel's own pages, served locally).
     async run(expr) {
       const r = await send('Runtime.evaluate', { expression: expr, awaitPromise: true, returnByValue: true });

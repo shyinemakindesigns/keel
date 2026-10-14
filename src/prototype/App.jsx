@@ -14,6 +14,7 @@ import GuideSheet from './tour/GuideSheet.jsx';
 import { STEPS, SCREEN_GUIDE } from './tour/steps.jsx';
 import { getVisitor, setVisitor } from './tour/visitor.js';
 import { TabIcon, Mark, GuideIcon } from './icons.jsx';
+import { term } from './region.js';
 
 const TABS = ['home', 'spending', 'goals', 'plan'];
 const TAB_LABEL = { home: 'Steady', spending: 'Spending', goals: 'Goals', plan: 'Plan' };
@@ -120,7 +121,7 @@ export default function App() {
     const per = car.per + planExtra;
     update((n) => { n.goals.find((g) => g.id === 'car').per = per; });
     setPlanExtra(0);
-    setPlanConfirm({ text: `Saved: ${money(per)} each paycheck to Car repair fund.`, key: Date.now() });
+    setPlanConfirm({ text: `Saved: ${money(per)} each ${term('paycheck')} to Car repair fund.`, key: Date.now() });
     announce('Plan saved.');
   };
   const resetDemo = useCallback(() => {

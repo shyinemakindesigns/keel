@@ -13,12 +13,13 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 | File | Size | Use |
 | --- | --- | --- |
 | `keel-thumbnail-1600x1200.png` | 1600 × 1200 | Portfolio grid thumbnail (Wix) |
+| `video/keel-thumbnail-loop-1600x1200.mp4` | 1600 × 1200, 8.2s loop, 0.8 MB | Animated version of the thumbnail: the keel previews a $250 purchase and settles back; loops without a seam |
 | `keel-og-1200x630.png` | 1200 × 630 | Link preview image (already wired into `index.html`) |
 | `linkedin-carousel/keel-carousel.pdf` | 9 pages | Upload to LinkedIn as a document: it becomes a swipeable carousel |
 | `linkedin-carousel/keel-carousel-01.png` to `-09.png` | 1080 × 1350 each | The same slides as PNGs, for other platforms or a multi-image post |
-| `video/keel-showcase-1080x1350.mp4` | 4:5, 69.4s | **Main LinkedIn video:** the whole project in about a minute (brand animation, the problem, the prototype, the motion system, the design system, the links), captioned |
+| `video/keel-showcase-1080x1350.mp4` | 4:5, 69.1s | **Main LinkedIn video:** the whole project in about a minute (brand animation, the problem, the prototype, the motion system, the design system, the links), captioned, with an original score |
 | `video/keel-showcase-cover.png` | 1080 × 1350 | Showcase video cover |
-| `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 45.4s | Shorter video: the prototype alone in a phone frame, captioned |
+| `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 45.1s | Shorter video: the prototype alone in a phone frame, captioned |
 | `video/keel-prototype-demo-cover.png` | 1080 × 1350 | Prototype video cover |
 | `source/` | | Editable HTML for every image and the video pipeline. Re-export images with `node portfolio/source/export.mjs` |
 
@@ -26,15 +27,15 @@ Every number on the slides is either a cited published figure (APA 2015; Karlsso
 
 ## Portfolio (Wix)
 
-**Cover image:** `keel-thumbnail-1600x1200.png`. For a video slot on the project page, use `video/keel-showcase-1080x1350.mp4`.
+**Cover:** `video/keel-thumbnail-loop-1600x1200.mp4`, the animated thumbnail (8.2s, loops without a seam, no audio). In Wix, upload it as a video in the gallery or project cover and turn on autoplay and loop, with sound off. If a slot only takes images, use `keel-thumbnail-1600x1200.png`, which is the loop's first frame. For a video on the project page, use `video/keel-showcase-1080x1350.mp4`.
 
 **Title:** Keel: A Calm Fintech App, UX and Visual Design Case Study
 
 **Subtitle (if the layout has one):** Designing a money app for the bad weeks
 
-**Description:** Keel is a fintech concept that answers one question before anything else: how long are you covered? Instead of red overages, the home screen shows one date, drawn as a keel under a waterline that means payday. The project covers desk research on money stress and the ostrich effect, information architecture, wireframes, the Harbor & Signal identity and design system (94 contrast pairings, 0 failing), a motion system of 12 Lottie and 4 Rive animations written in code, and a working React prototype with real calculations. Fictional brand, self-directed project; no user testing yet, and the case study says so.
+**Description:** Keel is a fintech concept for people in the United States and Canada that answers one question before anything else: how long are you covered? Instead of red overages, the home screen shows one date, drawn as a keel under a waterline that means payday. The project covers desk research on money stress in both countries and the ostrich effect, proto-personas, pain points, a user journey, a competitor comparison, information architecture, wireframes, the Harbor & Signal identity and design system (94 contrast pairings, 0 failing), a motion system of 12 Lottie and 4 Rive animations written in code, and a working React prototype with real calculations. Fictional brand, self-directed project; no user testing yet, and the case study says so.
 
-**Shorter description (if the field is limited):** A calm fintech concept: one date instead of a balance, spending shown in days, and a working prototype.
+**Shorter description (if the field is limited):** A calm fintech concept for the U.S. and Canada: one date instead of a balance, spending shown in days, and a working prototype.
 
 **Details:** Role: UX and visual design, motion design, front-end prototype. Built with React, Vite, Lottie and Rive. Type: Switzer. 2026.
 
@@ -45,14 +46,14 @@ Every number on the slides is either a cited published figure (APA 2015; Karlsso
 
 ## LinkedIn post
 
-Assets: `linkedin-carousel/keel-carousel.pdf` (document post). Post length: about 1,070 characters. Put the links in the first comment.
+Assets: `linkedin-carousel/keel-carousel.pdf` (document post). Post length: about 1,140 characters. Put the links in the first comment.
 
 ```
 Most budgeting apps are built for the weeks you don't need them.
 
 On a rough week, they meet you with red.
 
-Behavioral research has a name for what happens next: the ostrich effect. People check their finances less when the news is bad. And the APA found 72% of adults feel money stress at least some of the time. So a red overage isn't feedback. It's a reason to close the app.
+Behavioral research has a name for what happens next: the ostrich effect. People check their finances less when the news is bad. 72% of U.S. adults feel money stress at least some of the time (APA), and for 43% of Canadians money is the leading source of stress (FP Canada). So a red overage isn't feedback. It's a reason to close the app.
 
 Keel is a self-directed case study that flips the headline. The home screen doesn't lead with a balance. It leads with one date, "steady through Oct 25", drawn as a keel under a waterline that always means payday. Deeper keel, more days of room.
 
@@ -92,17 +93,17 @@ Design system: https://keel-casestudy.vercel.app/design-system/
 
 ## LinkedIn video post: the whole project in a minute (main post)
 
-Assets: `video/keel-showcase-1080x1350.mp4` (4:5, 69.4s, H.264, 30fps, 14.3 MB, no audio) and `video/keel-showcase-cover.png`. Captions are on screen, so it reads with the sound off. Six parts: the brand animation and the hook, the problem (APA, cited on screen), the prototype walkthrough, the motion system (real Lottie files), the design system (palette, Switzer, glass buttons, contrast) and the three links.
+Assets: `video/keel-showcase-1080x1350.mp4` (4:5, 69.1s, H.264, 30fps, 15.7 MB, AAC stereo music) and `video/keel-showcase-cover.png`. Captions are on screen, so it reads with the sound off; with sound on there’s an original score (calm, 70 bpm, a chime on each scene change), composed in code by `source/video/music.js`, so there’s no music license to clear. To use your own music or add a voiceover instead, see `gemini-audio-prompts.md`. Six parts: the brand animation and the hook, the problem (APA for the U.S. and FP Canada, cited on screen), the prototype walkthrough, the motion system (real Lottie files), the design system (palette, Switzer, glass buttons, contrast) and the three links.
 
-Post length: about 1,080 characters. Put the links in the first comment.
+Post length: about 1,180 characters. Put the links in the first comment.
 
 ```
 Most money apps are built like smoke alarms.
 Loud, red, and only useful once something is already burning.
 
-72% of U.S. adults say they feel stressed about money at least some of the time (APA). Behavioral research has a name for what happens next: the ostrich effect. When the news looks bad, people check their finances less. Red numbers don't change behavior. They change who opens the app.
+72% of U.S. adults say they feel stressed about money at least some of the time (APA). In Canada, money is the leading source of stress for 43% (FP Canada). Behavioral research has a name for what happens next: the ostrich effect. When the news looks bad, people check their finances less. Red numbers don't change behavior. They change who opens the app.
 
-Keel is a fintech concept designed for the bad week. The home screen answers one question first: how long are you covered? One date, drawn as a keel under a waterline that always means payday. A $16.80 lunch reads as "about a third of a day," not an overage, and a purchase gets checked before it happens.
+Keel is a fintech concept for the U.S. and Canada, designed for the bad week. The home screen answers one question first: how long are you covered? One date, drawn as a keel under a waterline that always means payday. A $16.80 lunch reads as "about a third of a day," not an overage, and a purchase gets checked before it happens.
 
 The video walks the whole build in about a minute:
 → a working prototype on sample data
@@ -124,12 +125,12 @@ Live demo: https://keel-casestudy.vercel.app/prototype/
 Design system: https://keel-casestudy.vercel.app/design-system/
 ```
 
-**Alt text:** "A one-minute video about Keel, a fintech app concept. The Keel logo animates in, then a statistic: 72% of U.S. adults feel stressed about money. The working prototype plays in a phone frame: a first reading of steady through Oct 25, a purchase check, spending in days, adding to a goal and comparing a plan. Then four of the project's animations, the design system's palette, typeface and buttons, and links to the case study, live demo and design system."
+**Alt text:** "A one-minute video about Keel, a fintech app concept. The Keel logo animates in, then two statistics: 72% of U.S. adults feel stressed about money, and for 43% of Canadians it's the leading source of stress. The working prototype plays in a phone frame: a first reading of steady through Oct 25, a purchase check, spending in days, adding to a goal and comparing a plan. Then four of the project's animations, the design system's palette, typeface and buttons, and links to the case study, live demo and design system."
 
 ### Why this should travel
 
 - **The hook is contrarian and visual.** "Built like smoke alarms" is a picture people can argue with, and the second line pays it off.
-- **One strong stat, cited.** The APA figure and the ostrich effect carry the argument; the rest is the product.
+- **One stat per country, cited.** The APA figure for the U.S. and FP Canada's for Canada speak to both audiences; the ostrich effect carries the argument.
 - **The video holds attention without sound.** Every scene has a caption, and something new appears every few seconds.
 - **The arrows make the build scannable**: prototype, motion, design system, three proofs in three lines.
 - **Links in the first comment** keep the post from being treated as outbound; the closing question gives people a reason to comment.
@@ -144,7 +145,7 @@ Design system: https://keel-casestudy.vercel.app/design-system/
 
 ## LinkedIn video post: the prototype in motion (shorter alternative)
 
-Assets: `video/keel-prototype-demo-1080x1350.mp4` (4:5, 45.4s, H.264, 30fps, 9.8 MB, no audio) and `video/keel-prototype-demo-cover.png` (the opening frame, for a custom thumbnail). Every frame is the working prototype recorded in a browser and placed in a phone frame, with on-screen captions so it reads with the sound off. Six scenes: setup, the reading, the purchase check, spending in days, adding to a goal, and comparing a plan, then an end card.
+Assets: `video/keel-prototype-demo-1080x1350.mp4` (4:5, 45.1s, H.264, 30fps, 9.7 MB, no audio) and `video/keel-prototype-demo-cover.png` (the opening frame, for a custom thumbnail). Every frame is the working prototype recorded in a browser and placed in a phone frame, with on-screen captions so it reads with the sound off. Six scenes: setup, the reading, the purchase check, spending in days, adding to a goal, and comparing a plan, then an end card.
 
 Post length: about 905 characters. Put the links in the first comment.
 
@@ -186,7 +187,9 @@ To re-record after the app changes: serve the built site on port 4319 and run `p
 
 **One sentence.** Keel is a budgeting app concept that replaces "what did you spend?" with "how long are you covered?", because research shows people look away from their finances exactly when things get hard.
 
-**The problem.** Most budgeting apps are built around limits: category ceilings, red overages, alerts. That assumes people lack information. But the APA's *Stress in America* survey (2015) found 72% of adults feel money stress at least some of the time, and the ostrich effect (Karlsson, Loewenstein and Seppi, 2009; Sicherman et al., 2016) shows people check their finances less when the news is bad. So red numbers teach people to stop opening the app on the weeks they need it most.
+**Who it’s for.** Adults in the United States and Canada on a regular pay cycle. The prototype switches wording between the two (chequing or checking, paycheque or paycheck, CAD or USD). Three proto-personas (Maya in Columbus, Jordan in Calgary, Priya in Toronto) keep decisions concrete; they’re assumptions to test, not interview findings.
+
+**The problem.** Most budgeting apps are built around limits: category ceilings, red overages, alerts. That assumes people lack information. But the APA's *Stress in America* survey (2015) found 72% of U.S. adults feel money stress at least some of the time, FP Canada’s 2026 Financial Stress Index found money is the leading source of stress for 43% of Canadians, and the ostrich effect (Karlsson, Loewenstein and Seppi, 2009; Sicherman et al., 2016) shows people check their finances less when the news is bad. So red numbers teach people to stop opening the app on the weeks they need it most.
 
 **The question.** How might we give someone one calm, honest answer about whether they're okay, one they'd still open on a bad week?
 

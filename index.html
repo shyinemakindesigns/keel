@@ -9,7 +9,7 @@
 <meta property="og:title" content="Keel: a calm fintech app, UX and visual design case study">
 <meta property="og:description" content="A money app that tells you you’re okay before anything else. Research, IA, the Harbor &amp; Signal design system, a motion system written in code, and a working prototype.">
 <meta property="og:url" content="https://keel-casestudy.vercel.app/">
-<meta property="og:image" content="https://keel-casestudy.vercel.app/portfolio/keel-og-1200x630.png?v=4">
+<meta property="og:image" content="https://keel-casestudy.vercel.app/portfolio/keel-og-1200x630.png?v=5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Keel wordmark beside the app's Steady screen: steady through Oct 25, with the keel under the payday waterline.">
@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
-<link rel="icon" href="assets/favicon.svg?v=4" type="image/svg+xml">
-<link rel="stylesheet" href="assets/tokens.css?v=4">
+<link rel="icon" href="assets/favicon.svg?v=5" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tokens.css?v=5">
 <script>
   (function () {
     var d = document.documentElement, t = null, m = null;
@@ -335,10 +335,10 @@
   footer { border-top: 1px solid var(--rule); }
   footer .in { max-width: 1240px; margin: 0 auto; padding: 28px 24px 48px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 15px; color: var(--ink-2); }
 </style>
-<link rel="stylesheet" href="assets/css/components.css?v=4">
-<link rel="stylesheet" href="assets/css/case-study-motion.css?v=4">
-<link rel="stylesheet" href="assets/css/glass.css?v=4">
-<link rel="stylesheet" href="assets/css/motion.css?v=4">
+<link rel="stylesheet" href="assets/css/components.css?v=5">
+<link rel="stylesheet" href="assets/css/case-study-motion.css?v=5">
+<link rel="stylesheet" href="assets/css/glass.css?v=5">
+<link rel="stylesheet" href="assets/css/motion.css?v=5">
 </head>
 <body>
 
@@ -404,7 +404,7 @@
 
   <figure class="hero-art">
     <keel-lottie id="hero-lottie" name="equilibrium" trigger="inview" poster="end" label="Animated illustration: a sculptural balance object starts off level, rocks, and settles; an ember sphere lowers onto the pivot last.">
-      <picture><source srcset="assets/fallbacks/equilibrium-dark.svg?v=4" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/equilibrium.svg?v=4" alt=""></picture>
+      <picture><source srcset="assets/fallbacks/equilibrium-dark.svg?v=5" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/equilibrium.svg?v=5" alt=""></picture>
     </keel-lottie>
     <figcaption class="bar caption">
       <span>Hero Equilibrium, a hand-authored Lottie. It plays once when it comes into view and holds still, because the stillness is the point.</span>
@@ -501,6 +501,7 @@
         <tr><th scope="row">Ostrich effect <a href="#ref-2">[2]</a>, Financial Attention <a href="#ref-3">[3]</a></th><td>Attention to finances goes up with good news and down with bad news.</td><td><p>The home screen has to be safe to open on a bad week.</p><p>Lead with what’s holding steady, then show what moved.</p></td></tr>
         <tr><th scope="row">CFPB financial well-being <a href="#ref-4">[4]</a></th><td>Well-being is about present and future security and freedom of choice, and it’s partly subjective.</td><td><p>The headline metric should express security over time (“how long am I covered”) rather than a balance or a category total.</p></td></tr>
         <tr><th scope="row">APA Stress in America <a href="#ref-1">[1]</a></th><td>Most adults report money stress at least some of the time.</td><td><p>Default tone is calm. No alarm colors, no shaking error states, no urgency in motion.</p></td></tr>
+        <tr><th scope="row">FP Canada Financial Stress Index <a href="#ref-10">[10]</a></th><td>43% of Canadians say money is the leading source of stress in their lives (2,002 adults surveyed by Leger, January 2026).</td><td><p>The calm default holds on both sides of the border. Keel is designed for adults in the United States and Canada.</p></td></tr>
       </tbody>
     </table>
   </div>
@@ -541,6 +542,144 @@
   <h3>The gap</h3>
   <div class="prose">
     <p>In the material I reviewed, the headline is usually a balance, a remaining budget, or a set of category totals. YNAB’s Age of Money is the closest precedent to what Keel does, because it measures money in time instead of dollars. The difference is direction. Age of Money looks back at how long money sat before it was spent. Keel’s reading looks forward: <strong>if nothing else came in, how long are you covered?</strong> That one forward-looking answer, shown before any detail, is the product.</p>
+  </div>
+
+  <h3>Who it’s for</h3>
+  <div class="prose">
+    <p>Adults in the United States and Canada who are paid on a regular cycle and want to know, before anything else, whether they’re okay until the next payday. The two countries share the dollar sign and most of the vocabulary; where they differ, the prototype follows the reader’s region: chequing or checking, paycheque or paycheck, CAD or USD. It picks the region from the browser’s language settings, and the Guide has a switch.</p>
+  </div>
+
+
+  <h3>Proto-personas</h3>
+  <div class="prose"><p class="small muted">Assumption-based personas, built from the research above to keep design decisions concrete. They aren’t composites of real interviews; the people, places and details are illustrative, and each one lists what a study would need to confirm.</p></div>
+  <div class="personas figure">
+    <article class="persona">
+      <header class="p-head">
+        <svg class="av" viewBox="0 0 96 96" aria-hidden="true" style="--av-delay:0s">
+          <circle class="av-bg" cx="48" cy="48" r="47"/>
+          <g class="av-body"><path d="M14 98c2-19 16-29 34-29s32 10 34 29z" fill="var(--color-harbor)"/><rect x="42" y="58" width="12" height="12" rx="4" fill="#C68B6E"/></g>
+          <g class="av-head"><path d="M29 44a19 19 0 0 1 38 0v13a6 6 0 0 1-6 6H35a6 6 0 0 1-6-6z" fill="#2A1C17"/><circle cx="48" cy="44" r="17" fill="#C68B6E"/><path d="M31 41c1.5-11 8.5-17 17-17s15.5 6 17 17c-6-5.5-13.5-7.5-21-5.5-5 1.3-9 3.2-13 5.5z" fill="#2A1C17"/>
+            <g class="av-eyes"><circle cx="41.5" cy="45" r="1.9"/><circle cx="54.5" cy="45" r="1.9"/></g>
+            <path class="av-mouth" d="M43 52.5q5 3.6 10 0"/></g>
+          <g class="av-badge"><circle cx="78" cy="78" r="12"/><path d="M71.6 75.6h12.8c-.4 2.2-1.6 3.6-3.4 3.6h-6c-1.8 0-3-1.4-3.4-3.6z"/><path d="M77.3 79.2h1.4l-.3 4.6h-.8z"/><ellipse cx="78" cy="84.2" rx="2.4" ry="1"/></g>
+        </svg>
+        <div><h4>Maya, 29</h4><p class="p-place">Columbus, Ohio · United States</p></div>
+      </header>
+      <ul class="p-tags"><li>Paid every two weeks</li><li>Renter</li><li>One car</li></ul>
+      <p class="p-situation">Salaried, paid every two weeks, rents, one car. Deleted a budgeting app after a run of red category warnings; now she checks her balance and guesses.</p>
+      <dl>
+        <div><dt>Needs</dt><dd>To know she can cover rent and car insurance before payday, without dreading the answer.</dd></div>
+        <div><dt>Where tools let her down</dt><dd>Bad news makes her look away <a href="#ref-2">[2]</a>, and a balance doesn’t say how long she’s covered <a href="#ref-4">[4]</a>.</dd></div>
+        <div><dt>How Keel helps</dt><dd>Steady through a date, bills already set aside, and a purchase check before she buys.</dd></div>
+        <div><dt>To confirm</dt><dd>Whether the date replaces her balance check, and whether she opens Keel on a bad week.</dd></div>
+      </dl>
+    </article>
+    <article class="persona">
+      <header class="p-head">
+        <svg class="av" viewBox="0 0 96 96" aria-hidden="true" style="--av-delay:-1.7s">
+          <circle class="av-bg" cx="48" cy="48" r="47"/>
+          <g class="av-body"><path d="M14 98c2-19 16-29 34-29s32 10 34 29z" fill="var(--color-deep)"/><rect x="42" y="58" width="12" height="12" rx="4" fill="#8D5A3B"/></g>
+          <g class="av-head"><circle cx="48" cy="44" r="17" fill="#8D5A3B"/><path d="M31 40c0-11 7.5-17.5 17-17.5S65 29 65 40c-4-4.6-9.8-6.6-17-6.6S35 35.4 31 40z" fill="#1D1410"/>
+            <g class="av-eyes"><circle cx="41.5" cy="45" r="1.9"/><circle cx="54.5" cy="45" r="1.9"/></g>
+            <path class="av-mouth" d="M43 52.5q5 3.6 10 0"/><path d="M33.5 49c1.8 9.5 7.6 13.6 14.5 13.6S60.7 58.5 62.5 49c-3 3.6-8 5.4-14.5 5.4S36.5 52.6 33.5 49z" fill="#1D1410"/></g>
+          <g class="av-badge"><circle cx="78" cy="78" r="12"/><path d="M71.6 75.6h12.8c-.4 2.2-1.6 3.6-3.4 3.6h-6c-1.8 0-3-1.4-3.4-3.6z"/><path d="M77.3 79.2h1.4l-.3 4.6h-.8z"/><ellipse cx="78" cy="84.2" rx="2.4" ry="1"/></g>
+        </svg>
+        <div><h4>Jordan, 34</h4><p class="p-place">Calgary, Alberta · Canada</p></div>
+      </header>
+      <ul class="p-tags"><li>Shift work</li><li>Pay varies</li><li>Chequing</li></ul>
+      <p class="p-situation">Shift supervisor, paid every two weeks into chequing; his hours, and so his pay, change from week to week.</p>
+      <dl>
+        <div><dt>Needs</dt><dd>A buffer he can trust when shifts are short.</dd></div>
+        <div><dt>Where tools let him down</dt><dd>Money is the leading source of stress for 43% of Canadians <a href="#ref-10">[10]</a>, and after Mint there were fewer comparable apps in Canada <a href="#ref-11">[11]</a>.</dd></div>
+        <div><dt>How Keel helps</dt><dd>The reading ignores future income, so a short paycheque can’t inflate it; room is shown in days.</dd></div>
+        <div><dt>To confirm</dt><dd>Keel assumes a steady pay cycle. Irregular income is the open design problem, and Jordan is who it would be tested with first.</dd></div>
+      </dl>
+    </article>
+    <article class="persona">
+      <header class="p-head">
+        <svg class="av" viewBox="0 0 96 96" aria-hidden="true" style="--av-delay:-3.2s">
+          <circle class="av-bg" cx="48" cy="48" r="47"/>
+          <g class="av-body"><path d="M14 98c2-19 16-29 34-29s32 10 34 29z" fill="var(--color-ocean)"/><rect x="42" y="58" width="12" height="12" rx="4" fill="#A86F4C"/></g>
+          <g class="av-head"><path d="M28 44a20 20 0 0 1 40 0v24c0 3.5-2.6 6-6 6H34c-3.4 0-6-2.5-6-6z" fill="#16121A"/><circle cx="48" cy="24" r="6.5" fill="#16121A"/><circle cx="48" cy="44" r="17" fill="#A86F4C"/><path d="M31 42.5c1-12.5 8.6-19.5 17-19.5 9.2 0 16 6.6 17 17.5-7.8-1.2-14.6-5.6-18.6-11.4C43.6 34.8 38 39.6 31 42.5z" fill="#16121A"/>
+            <g class="av-eyes"><circle cx="41.5" cy="45" r="1.9"/><circle cx="54.5" cy="45" r="1.9"/></g>
+            <path class="av-mouth" d="M43 52.5q5 3.6 10 0"/></g>
+          <g class="av-badge"><circle cx="78" cy="78" r="12"/><path d="M71.6 75.6h12.8c-.4 2.2-1.6 3.6-3.4 3.6h-6c-1.8 0-3-1.4-3.4-3.6z"/><path d="M77.3 79.2h1.4l-.3 4.6h-.8z"/><ellipse cx="78" cy="84.2" rx="2.4" ry="1"/></g>
+        </svg>
+        <div><h4>Priya, 38</h4><p class="p-place">Toronto, Ontario · Canada</p></div>
+      </header>
+      <ul class="p-tags"><li>Two savings goals</li><li>Planner</li><li>Family</li></ul>
+      <p class="p-situation">Saving for a car repair fund and a family trip; careful with money, but planning feels like a spreadsheet chore.</p>
+      <dl>
+        <div><dt>Needs</dt><dd>To see what setting more aside does to this month before she commits.</dd></div>
+        <div><dt>Where tools let her down</dt><dd>The most rigorous method asks her to assign every dollar by hand <a href="#ref-5">[5]</a>; plans show their effect only afterwards.</dd></div>
+        <div><dt>How Keel helps</dt><dd>Goals and Plan preview the new reading first: $100 more a paycheque, compared side by side.</dd></div>
+        <div><dt>To confirm</dt><dd>Whether the preview changes how much she sets aside, and whether the plan comparison is read correctly.</dd></div>
+      </dl>
+    </article>
+  </div>
+
+  <h3>Pain points the research points to</h3>
+  <div class="prose"><p class="small muted">Inferred from the published research and product material above, not from interviews. They’re the hypotheses the study in section 12 is designed to test.</p></div>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Pain point</th><th scope="col">Evidence</th><th scope="col">How Keel answers it</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Opening the app feels like bad news</th><td>People check their finances less when the news looks bad <a href="#ref-2">[2]</a> <a href="#ref-3">[3]</a>.</td><td>The first screen leads with what’s holding steady, so it’s safe to open on a bad week.</td></tr>
+        <tr><th scope="row">Money stress is the baseline, not the exception</th><td>72% of U.S. adults feel stressed about money at least some of the time <a href="#ref-1">[1]</a>; for 43% of Canadians it’s the leading source of stress <a href="#ref-10">[10]</a>.</td><td>A calm default: no alarm colors, no shaking errors, motion that settles.</td></tr>
+        <tr><th scope="row">The numbers don’t answer “am I okay?”</th><td>Well-being is about security over time <a href="#ref-4">[4]</a>, while the headlines reviewed are a balance, a remaining budget or category totals.</td><td>One forward-looking answer: steady through a date, drawn as a keel under payday.</td></tr>
+        <tr><th scope="row">Staying on top takes regular work</th><td>The most committed method asks you to give every dollar a job <a href="#ref-5">[5]</a>, which asks the most in the weeks people have the least to give.</td><td>Bills are set aside automatically and the reading needs nothing day to day.</td></tr>
+        <tr><th scope="row">Tools can disappear, and Canada has fewer of them</th><td>Mint was retired and members moved to Credit Karma <a href="#ref-7">[7]</a>; after Mint, comparable options in Canada were described as “slim” <a href="#ref-11">[11]</a>.</td><td>Built for both countries from the start, with export planned from day one so a habit never depends on one app.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>A bad week, step by step</h3>
+  <div class="prose"><p>The journey Keel is designed around. Each stage pairs what the person needs with where it tends to break, from the evidence above, and the screen that answers it. It’s a hypothesis built from research, not an observed journey.</p></div>
+  <div class="table-wrap figure wide">
+    <table class="t-min journey">
+      <thead><tr><th scope="col">Stage</th><th scope="col">What the person needs</th><th scope="col">Where it tends to break</th><th scope="col">What Keel does</th><th scope="col">Screen</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">1. Something happens</th><td>To know if a surprise bill or a heavy week is a problem.</td><td>Avoidance: checking less when it looks bad <a href="#ref-2">[2]</a>.</td><td>Makes opening the app safe: what’s steady comes first.</td><td>Steady</td></tr>
+        <tr><th scope="row">2. Open the app</th><td>One honest answer.</td><td>A balance or a remaining budget doesn’t say how long you’re covered <a href="#ref-4">[4]</a>.</td><td>Steady through a date, nine days past payday, drawn as the keel.</td><td>Steady</td></tr>
+        <tr><th scope="row">3. See what moved</th><td>What changed, without blame.</td><td>Overages framed as failure, for people already under money stress <a href="#ref-1">[1]</a> <a href="#ref-10">[10]</a>.</td><td>Spending in days: $16.80 is about a third of a day.</td><td>Spending</td></tr>
+        <tr><th scope="row">4. Decide</th><td>The effect of the next purchase, before it happens.</td><td>Tracking reports what already happened <a href="#ref-7">[7]</a> <a href="#ref-9">[9]</a>.</td><td>The purchase check moves the keel and the date first.</td><td>Steady</td></tr>
+        <tr><th scope="row">5. Act</th><td>A small step that helps.</td><td>Plans that only show results after the fact.</td><td>Move money to a goal or try a plan, previewed before anything changes.</td><td>Goals, Plan</td></tr>
+        <tr><th scope="row">6. Come back</th><td>A reason to open it next week too.</td><td>Methods that need regular upkeep <a href="#ref-5">[5]</a>.</td><td>The same one answer, nothing to catch up on.</td><td>Steady</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Key flows</h3>
+  <div class="flows figure">
+    <div><h4>First run</h4><ol><li><span>Welcome</span></li><li><span>Sample accounts</span></li><li><span>Bills: keep or pause</span></li><li><span>Payday</span></li><li><span>First reading</span></li></ol></div>
+    <div><h4>Can I afford this?</h4><ol><li><span>Steady</span></li><li><span>Type an amount</span></li><li><span>Check</span></li><li><span>The keel previews the new reading</span></li><li><span>Clear, or carry on</span></li></ol></div>
+    <div><h4>Where did it go?</h4><ol><li><span>Spending</span></li><li><span>A category, in days</span></li><li><span>A transaction</span></li><li><span>Recategorize</span></li><li><span>The reading updates</span></li></ol></div>
+    <div><h4>Set something aside</h4><ol><li><span>Goals</span></li><li><span>Add money</span></li><li><span>See the effect on the reading</span></li><li><span>Confirm</span></li></ol></div>
+  </div>
+
+  <h3>Where Keel does what the others don’t</h3>
+  <div class="prose"><p>A comparison of what each product leads with in its own public material, read in October 2026. Some may offer similar features deeper in the product; this compares positioning, not a feature audit.</p></div>
+  <div class="table-wrap figure wide">
+    <table class="t-min compare-apps">
+      <thead><tr><th scope="col"></th><th scope="col">YNAB</th><th scope="col">Monarch</th><th scope="col">Copilot</th><th scope="col">Mint, now Credit Karma</th><th scope="col">Keel</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">What you see first</th><td>Your budget, every dollar assigned <a href="#ref-5">[5]</a></td><td>Budget, progress and planning, ideally with a partner <a href="#ref-8">[8]</a></td><td>Accounts, spending and investments, organized <a href="#ref-9">[9]</a></td><td>Net worth, spending and cash flow <a href="#ref-7">[7]</a></td><td><b>One date: how long you’re covered</b></td></tr>
+        <tr><th scope="row">Direction</th><td>Age of Money looks back <a href="#ref-6">[6]</a></td><td>Not the headline</td><td>Not the headline</td><td>Not the headline</td><td><b>Looks forward from today</b></td></tr>
+        <tr><th scope="row">Spending shown as</th><td>Dollars by category</td><td>Dollars by category</td><td>Dollars, tagged by AI</td><td>Dollars reviewed</td><td><b>Days of usual spending</b></td></tr>
+        <tr><th scope="row">Before you spend</th><td colspan="4">Not featured in the public material reviewed</td><td><b>A purchase check moves the reading first</b></td></tr>
+        <tr><th scope="row">Day to day</th><td>Assign every dollar</td><td>Set up the full picture</td><td>Review and correct</td><td>Little: automatic</td><td><b>Nothing: bills set aside automatically</b></td></tr>
+        <tr><th scope="row">United States and Canada</th><td>Banks in both <a href="#ref-13">[13]</a></td><td>United States; came to Canada in December 2023 <a href="#ref-11">[11]</a></td><td>U.S. accounts only <a href="#ref-12">[12]</a></td><td>Not reviewed for Canada</td><td><b>Designed for both: chequing or checking, CAD or USD</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="prose">
+    <p><strong>What only Keel leads with,</strong> in the material reviewed:</p>
+    <ul>
+      <li>→ A forward-looking date as the first thing you see</li>
+      <li>→ Spending in days, not overages</li>
+      <li>→ A preview of any purchase or plan before anything changes</li>
+      <li>→ Both countries’ vocabulary and currency from the start</li>
+    </ul>
   </div>
 </section>
 
@@ -753,7 +892,7 @@
           <div class="b" style="height:70px"></div>
           <div class="tabs"><i></i><i></i><i></i></div>
         </div>
-        <img class="hi" src="assets/img/screens/m-light-home.webp?v=4" alt="The finished Steady screen: Oct 25 in large type, the keel below a waterline, and the purchase check." width="780" height="1688" loading="lazy">
+        <img class="hi" src="assets/img/screens/m-light-home.webp?v=5" alt="The finished Steady screen: Oct 25 in large type, the keel below a waterline, and the purchase check." width="780" height="1688" loading="lazy">
         <span class="seam" aria-hidden="true"></span>
       </div>
       <label class="small muted" for="lohi-range" style="display:block;margin-top:10px">Hover to watch the sketch become the screen, or drag to compare</label>
@@ -782,7 +921,7 @@
 
   <figure class="figure closing reveal" style="margin-top:8px">
     <keel-lottie name="signature" trigger="inview" poster="end" label="Keel">
-      <picture><source srcset="assets/fallbacks/signature-dark.svg?v=4" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/signature.svg?v=4" alt=""></picture>
+      <picture><source srcset="assets/fallbacks/signature-dark.svg?v=5" media="(prefers-color-scheme: dark)"><img src="assets/fallbacks/signature.svg?v=5" alt=""></picture>
     </keel-lottie>
     <figcaption class="caption">Brand Signature: the waterline draws, the hull drops onto it, the keel extends, and the wordmark rises into place. The letters are Switzer outlines, so the animation needs no font. <button class="btn-text" type="button" data-replay-prev style="font-size:14.5px">Replay</button></figcaption>
   </figure>
@@ -838,8 +977,8 @@
     <p>The first measurement of the home screen came back <strong>30% canvas, 68% surface, 2% accent</strong>: the reading lived in a card that filled most of the phone, so the structural color had become the background. I took the reading out of the card and set it directly on the canvas, let the water band carry the surface, and turned the tab bar into canvas with a hairline. The re-measure: <strong>64 / 34 / 2</strong>. These measurements and both images below are from the second identity, Mineral &amp; Ember; the layout fix carried over to Harbor &amp; Signal unchanged.</p>
   </div>
   <div class="ba figure">
-    <figure><img src="assets/img/home-v1-before-weight-fix.webp?v=4" alt="Home screen before: the reading sits inside a large mineral stone card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
-    <figure><img src="assets/img/home-v2-after-weight-fix.webp?v=4" alt="Home screen after: the reading date sits directly on the porcelain canvas, with a mineral water band below it." loading="lazy" width="780" height="1688"><figcaption><b>After: 64 / 34 / 2</b><span class="muted">Canvas leads, stone structures.</span></figcaption></figure>
+    <figure><img src="assets/img/home-v1-before-weight-fix.webp?v=5" alt="Home screen before: the reading sits inside a large mineral stone card that fills most of the screen." loading="lazy" width="780" height="1688"><figcaption><b>Before: 30 / 68 / 2</b><span class="muted">Stone became the background.</span></figcaption></figure>
+    <figure><img src="assets/img/home-v2-after-weight-fix.webp?v=5" alt="Home screen after: the reading date sits directly on the porcelain canvas, with a mineral water band below it." loading="lazy" width="780" height="1688"><figcaption><b>After: 64 / 34 / 2</b><span class="muted">Canvas leads, stone structures.</span></figcaption></figure>
   </div>
   <div class="table-wrap figure wide">
     <table class="num">
@@ -1201,14 +1340,14 @@
     <p class="lede">Four tabs, each built around one question. Steady: am I okay? Spending: where did it go? Goals: what am I setting aside? Plan: what if I changed something? These are live captures of the prototype in the next section, with its sample data.</p>
   </div>
   <div class="screens reveal">
-    <figure><img src="assets/img/screens/m-light-home.webp?v=4" alt="Steady: steady through Oct 25, the keel nine days past payday, the purchase check." width="780" height="1688" loading="lazy"><figcaption><b>Steady</b>The answer first. The keel is the Equilibrium Indicator; below it, spending pace and the coming-up timeline.</figcaption></figure>
-    <figure><img src="assets/img/screens/m-light-spending.webp?v=4" alt="Spending: category bars with ticks for last stretch." width="780" height="1688" loading="lazy"><figcaption><b>Spending</b>Weight, not walls: categories as shares with a tick for last stretch, never a limit.</figcaption></figure>
-    <figure><img src="assets/img/screens/m-light-goals.webp?v=4" alt="Goals: the car repair fund at $380 of $1,000." width="780" height="1688" loading="lazy"><figcaption><b>Goals</b>Progress as ballast filling a well, with a date estimate in words.</figcaption></figure>
-    <figure><img src="assets/img/screens/m-light-plan.webp?v=4" alt="Plan: two step lines comparing the current plan with $100 more each paycheck." width="780" height="1688" loading="lazy"><figcaption><b>Plan</b>Try a change first. The blue line is the change; the dashed line is today’s plan.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-home.webp?v=5" alt="Steady: steady through Oct 25, the keel nine days past payday, the purchase check." width="780" height="1688" loading="lazy"><figcaption><b>Steady</b>The answer first. The keel is the Equilibrium Indicator; below it, spending pace and the coming-up timeline.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-spending.webp?v=5" alt="Spending: category bars with ticks for last stretch." width="780" height="1688" loading="lazy"><figcaption><b>Spending</b>Weight, not walls: categories as shares with a tick for last stretch, never a limit.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-goals.webp?v=5" alt="Goals: the car repair fund at $380 of $1,000." width="780" height="1688" loading="lazy"><figcaption><b>Goals</b>Progress as ballast filling a well, with a date estimate in words.</figcaption></figure>
+    <figure><img src="assets/img/screens/m-light-plan.webp?v=5" alt="Plan: two step lines comparing the current plan with $100 more each paycheck." width="780" height="1688" loading="lazy"><figcaption><b>Plan</b>Try a change first. The blue line is the change; the dashed line is today’s plan.</figcaption></figure>
   </div>
   <div class="screens wide reveal">
-    <figure><img src="assets/img/screens/d-light-home.webp?v=4" alt="The Steady screen on a laptop: side rail, reading on the left, purchase check and timeline on the right." width="1600" height="1000" loading="lazy"><figcaption><b>The same app, wide</b>A side rail replaces the tab bar; the reading keeps the left column so it’s still read first.</figcaption></figure>
-    <figure><img src="assets/img/screens/d-dark-spending.webp?v=4" alt="The Spending screen in dark mode on a laptop." width="1600" height="1000" loading="lazy"><figcaption><b>Dark, by design</b>Layered navy surfaces, fog type, lime for action. The illustrations ship as separate dark files, not inverted.</figcaption></figure>
+    <figure><img src="assets/img/screens/d-light-home.webp?v=5" alt="The Steady screen on a laptop: side rail, reading on the left, purchase check and timeline on the right." width="1600" height="1000" loading="lazy"><figcaption><b>The same app, wide</b>A side rail replaces the tab bar; the reading keeps the left column so it’s still read first.</figcaption></figure>
+    <figure><img src="assets/img/screens/d-dark-spending.webp?v=5" alt="The Spending screen in dark mode on a laptop." width="1600" height="1000" loading="lazy"><figcaption><b>Dark, by design</b>Layered navy surfaces, fog type, lime for action. The illustrations ship as separate dark files, not inverted.</figcaption></figure>
   </div>
 </section>
 
@@ -1404,7 +1543,26 @@
     <p>The test I used at the end was to hide the name and ask whether this could be any budgeting app’s case study. I don’t think it could. The headline metric is a forward-looking date that ignores income on purpose. The visualization encodes exactly one thing, room past payday, as the depth of a keel below a waterline that always means payday. Spending is shown as days of room rather than overages. The motion is slower than a fintech default for a stated reason. Take away “Keel” and those choices still only belong to this idea.</p>
   </div>
 
-  <h3>What’s real and what’s illustrative</h3>
+    <h3>Reflection summary</h3>
+  <div class="prose">
+    <p>Keel set out to answer one question before anything else: if nothing else came in, how long are you covered? It now exists as a working prototype in React with a guided tour, a design system with 94 audited contrast pairings, and a motion system of Lottie and Rive files written in code, designed for people in the United States and Canada. What it doesn’t have yet is evidence from people using it. Everything below is what Keel could deliver in use, written as hypotheses with the measure that would prove or disprove each one.</p>
+  </div>
+  <h3>Outcomes Keel could provide in use</h3>
+  <div class="table-wrap figure wide">
+    <table class="t-min">
+      <thead><tr><th scope="col">Hypothesized outcome</th><th scope="col">For</th><th scope="col">How it would be measured</th><th scope="col">Status</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">People open Keel on bad weeks instead of avoiding it</th><td>Maya</td><td>Opens in the week after an expensive week, against each person’s own baseline</td><td>Hypothesis</td></tr>
+        <tr><th scope="row">Fewer surprises before payday</th><td>Maya, Jordan</td><td>Share of pay cycles where an account dips below zero before payday, before and after using Keel</td><td>Hypothesis, needs a live product</td></tr>
+        <tr><th scope="row">Purchase decisions in seconds, not guesses</th><td>Maya, Priya</td><td>Timed purchase-check task (target under 20 seconds, no help), and how often the check is used before larger purchases</td><td>Hypothesis</td></tr>
+        <tr><th scope="row">More set aside, on purpose</th><td>Priya</td><td>Goal contributions per pay cycle compared with each person’s starting plan</td><td>Hypothesis</td></tr>
+        <tr><th scope="row">People feel steadier about money</th><td>All three</td><td>CFPB Financial Well-Being Scale <a href="#ref-4">[4]</a> at the start and after eight weeks, against a group using their current tool</td><td>Hypothesis, needs a study</td></tr>
+        <tr><th scope="row">The reading works the same in both countries</th><td>Jordan, Priya, Maya</td><td>Five-second test with U.S. and Canadian participants: the same share answer “are you okay this week?” correctly</td><td>Hypothesis</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<h3>What’s real and what’s illustrative</h3>
   <div class="table-wrap figure wide">
     <table class="t-min">
       <thead><tr><th scope="col">Real</th><th scope="col">Illustrative</th></tr></thead>
@@ -1471,6 +1629,10 @@
     <li id="ref-7"><b>7</b><span>Intuit Credit Karma (October 31, 2023). Intuit Credit Karma welcomes all Minters! <a href="https://www.creditkarma.com/about/releases/intuit-credit-karma-welcomes-all-minters">creditkarma.com</a></span></li>
     <li id="ref-8"><b>8</b><span>Monarch. Homepage. <a href="https://www.monarch.com/">monarch.com</a>, read October 2026.</span></li>
     <li id="ref-9"><b>9</b><span>Copilot Money. Homepage. <a href="https://www.copilot.money/">copilot.money</a>, read October 2026.</span></li>
+    <li id="ref-10"><b>10</b><span>FP Canada (March 10, 2026). FP Canada 2026 Financial Stress Index: More Canadians are taking positive action to reduce financial stress. Survey of 2,002 Canadians by Leger, January 6 to 15, 2026. <a href="https://fpcanada.ca/newsdetail/fp-canada--2026-financial-stress-index--more-canadians-are-taking-positive-action-to-reduce-financial-stress">FP Canada 2026 Financial Stress Index, fpcanada.ca</a></span></li>
+    <li id="ref-11"><b>11</b><span>BetaKit (December 14, 2023). As Intuit winds down Mint, financial planning app Monarch Money comes to Canada. <a href="https://betakit.com/as-intuit-winds-down-mint-financial-planning-app-monarch-money-comes-to-canada/">Monarch Money comes to Canada, betakit.com</a></span></li>
+    <li id="ref-12"><b>12</b><span>Copilot Money. FAQ. <a href="https://www.copilot.money/faq">Copilot FAQ, copilot.money</a>, read October 2026.</span></li>
+    <li id="ref-13"><b>13</b><span>YNAB Support. My bank isn’t listed. <a href="https://support.ynab.com/en_us/my-bank-isnt-listed-HJivlLavle">YNAB supported countries, support.ynab.com</a>, read October 2026.</span></li>
   </ol>
   <p class="caption">Product notes reflect each company’s public material on the date read and may have changed since.</p>
 </section>
@@ -1485,9 +1647,9 @@
   </div>
 </footer>
 
-<script src="assets/js/keel-lottie.js?v=4" data-base="assets/"></script>
-<script src="assets/js/keel-charts.js?v=4"></script>
-<script src="assets/js/motion-registry.js?v=4"></script>
-<script src="assets/js/case-study.js?v=4"></script>
+<script src="assets/js/keel-lottie.js?v=5" data-base="assets/"></script>
+<script src="assets/js/keel-charts.js?v=5"></script>
+<script src="assets/js/motion-registry.js?v=5"></script>
+<script src="assets/js/case-study.js?v=5"></script>
 </body>
 </html>

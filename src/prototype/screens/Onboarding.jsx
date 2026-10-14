@@ -3,6 +3,7 @@ import Screen from '../Screen.jsx';
 import { Mark } from '../icons.jsx';
 import { money, payday, same, dayLabel, iso, ordinal, parse } from '../model.js';
 import { reduced } from '../util.js';
+import { useRegion } from '../region.js';
 
 // Onboarding Transition (Lottie 13): one object, one segment per step.
 const ONB = { accounts: 60, bills: 120, payday: 180, taking: 240 };
@@ -55,6 +56,7 @@ export function Welcome({ app }) {
 }
 
 export function Accounts({ app }) {
+  const R = useRegion();
   const { S, current, go } = app;
   const car = S.goals.find((g) => g.id === 'car');
   return (
@@ -62,9 +64,9 @@ export function Accounts({ app }) {
       <p className="step">Step 1 of 3</p>
       <h1 id="a-h">Start with what you have.</h1>
       <p className="lede" style={{ marginTop: 12 }}>In the real product this is where you’d connect a bank. Here the prototype uses two sample accounts.</p>
-      <div className="section-label">Sample accounts</div>
+      <div className="section-label">Sample accounts <span className="meta">· amounts in {R.currency}</span></div>
       <div className="rows">
-        <div className="row"><div className="grow"><div className="title">Everyday checking</div><div className="meta">Counts toward your reading</div></div><div className="amt" id="acct-checking">{money(S.checking, true)}</div></div>
+        <div className="row"><div className="grow"><div className="title">Everyday {R.checking}</div><div className="meta">Counts toward your reading</div></div><div className="amt" id="acct-checking">{money(S.checking, true)}</div></div>
         <div className="row"><div className="grow"><div className="title">Car repair fund</div><div className="meta">Savings goal, kept separate</div></div><div className="amt" id="acct-goal">{money(car ? car.saved : 0, true)}</div></div>
       </div>
       <div className="foot">

@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CATS, money, dayLabel, parse, weightPhrase, reading, fmtDate, fmtLong, daysWord, same, addDays, payday, TODAY } from './model.js';
 import { cssMs } from './util.js';
+import { useRegion } from './region.js';
 
 // The sheet: a modal dialog that rises from the bottom (a centered dialog on wide
 // screens). While open, the screens, the tab bar and the tour are inert, so focus
@@ -111,6 +112,7 @@ export function AddSheet({ S, g, onConfirm, onClose }) {
 
 // ---------------------------------------------------------------- new goal
 export function NewGoalSheet({ S, onCreate, onClose }) {
+  const R = useRegion();
   const [name, setName] = useState('');
   const [target, setTarget] = useState(1000);
   const [per, setPer] = useState(50);
@@ -150,10 +152,10 @@ export function NewGoalSheet({ S, onCreate, onClose }) {
         <fieldset><legend>Target</legend><div className="chips">
           {[500, 1000, 2500].map((v) => <label className="radio-chip" key={v}><input type="radio" name="target" value={v} checked={v === target} onChange={() => setTarget(v)} /><span className="chip">{money(v)}</span></label>)}
         </div></fieldset>
-        <fieldset><legend>Each paycheck</legend><div className="chips">
+        <fieldset><legend>Each {R.paycheck}</legend><div className="chips">
           {[25, 50, 100].map((v) => <label className="radio-chip" key={v}><input type="radio" name="per" value={v} checked={v === per} onChange={() => setPer(v)} /><span className="chip">{money(v)}</span></label>)}
         </div></fieldset>
-        <p className="lede" id="ng-est" style={{ marginTop: 16, fontSize: 15 }} aria-live="polite">At {money(per)} a paycheck, you’d get there around <b style={{ color: 'var(--ink)' }}>{fmtLong(addDays(payday(S), 14 * (n - 1)))}</b>. It starts with your next paycheck, so today’s reading doesn’t move.</p>
+        <p className="lede" id="ng-est" style={{ marginTop: 16, fontSize: 15 }} aria-live="polite">At {money(per)} a {R.paycheck}, you’d get there around <b style={{ color: 'var(--ink)' }}>{fmtLong(addDays(payday(S), 14 * (n - 1)))}</b>. It starts with your next paycheck, so today’s reading doesn’t move.</p>
         <div className="foot"><button className="btn btn-primary btn-block" type="submit">Set this goal</button><button className="btn-text" type="button" onClick={onClose}>Cancel</button></div>
       </form>
     </>
