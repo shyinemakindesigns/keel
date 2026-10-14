@@ -3,6 +3,7 @@ import Screen from '../Screen.jsx';
 import { GuideButton } from '../tour/GuideButton.jsx';
 import { goalEstimateText, money } from '../model.js';
 import { reduced, tween } from '../util.js';
+import { useRegion } from '../region.js';
 
 // A confirmation that settles in, says what happened in words, then leaves (4s).
 export function Confirm({ msg, id }) {
@@ -62,6 +63,7 @@ function GoalCard({ S, g, fresh, confirm, onAdd, active }) {
 }
 
 export default function Goals({ app }) {
+  const R = useRegion();   // re-render the goal sentences when the region changes
   const { S, current, freshGoal, goalConfirm, openAdd, openNewGoal, openGuide } = app;
   return (
     <Screen name="goals" current={current} className="tabbed" labelledBy="g-h">
@@ -77,7 +79,7 @@ export default function Goals({ app }) {
           <GoalCard key={g.id} S={S} g={g} fresh={freshGoal === g.id} confirm={goalConfirm} onAdd={openAdd} active={current === 'goals'} />
         ))}
       </div>
-      <p className="note">Moving money into a goal takes it out of checking, so Keel shows what it does to your reading before you confirm.</p>
+      <p className="note">Moving money into a goal takes it out of {R.checking}, so Keel shows what it does to your reading before you confirm.</p>
     </Screen>
   );
 }

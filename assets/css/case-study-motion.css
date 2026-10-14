@@ -293,3 +293,48 @@ a[href^="#ref-"] { padding: 6px 3px; margin: -6px -3px; }
   .top .by { display: none; }
 }
 @media (min-width: 1280px) { .top .by { display: inline; order: 1; } .site-nav { order: 0; } }
+
+/* Research synthesis: proto-personas and key flows */
+.personas { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .personas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.persona { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 22px 22px 20px; min-width: 0;
+  box-shadow: 0 1px 2px rgba(17, 35, 88, 0.04); transition: transform var(--dur-spring, 560ms) var(--ease-spring, ease), box-shadow var(--dur-hover) var(--ease-standard); }
+@media (hover: hover) { .persona:hover { transform: translateY(-3px); box-shadow: var(--lift); } }
+.p-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.p-head h4 { margin: 0; font-size: 21px; }
+.p-place { margin: 2px 0 0; font-size: 14px; color: var(--ink-2-on-surface); }
+.p-tags { list-style: none; margin: 0 0 14px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.p-tags li { font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 8px; background: var(--surface-2); color: var(--ink); }
+.persona .p-situation { margin: 0 0 14px; font-size: 15px; }
+
+/* Persona avatars: flat, brand colors, a slow breath, a head tilt, a blink and a bobbing keel badge.
+   Decorative (the card says who it is); still with reduced motion. */
+.av { width: 76px; height: 76px; flex: none; overflow: visible; }
+.av-bg { fill: var(--illo-water); }
+.av-eyes circle { fill: #112358; }
+.av-mouth { fill: none; stroke: #112358; stroke-width: 1.6; stroke-linecap: round; }
+.av-badge circle { fill: var(--color-deep); stroke: var(--surface); stroke-width: 2; }
+.av-badge path:first-of-type { fill: var(--color-signal); }
+.av-badge path + path, .av-badge ellipse { fill: var(--color-fog); }
+.av-body { transform-origin: 48px 96px; animation: av-breathe 5.2s var(--av-delay, 0s) ease-in-out infinite; }
+.av-head { transform-origin: 48px 66px; animation: av-tilt 7.4s var(--av-delay, 0s) ease-in-out infinite; }
+.av-eyes circle { transform-box: fill-box; transform-origin: center; animation: av-blink 5.6s var(--av-delay, 0s) infinite; }
+.av-badge { animation: av-bob 3.8s var(--av-delay, 0s) ease-in-out infinite; }
+@keyframes av-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, 1.03); } }
+@keyframes av-tilt { 0%, 100% { transform: rotate(0deg) translateY(0); } 35% { transform: rotate(-3deg) translateY(-0.6px); } 70% { transform: rotate(2deg) translateY(0.4px); } }
+@keyframes av-blink { 0%, 44%, 50%, 100% { transform: scaleY(1); } 47% { transform: scaleY(0.12); } }
+@keyframes av-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.5px); } }
+@media (prefers-reduced-motion: reduce) { :root:not([data-motion="full"]) .av * { animation: none; } }
+:root[data-motion="reduced"] .av * { animation: none; }
+.persona dl { margin: 0; display: grid; gap: 10px; }
+.persona dt { font-weight: 600; font-size: 14px; }
+.persona dd { margin: 2px 0 0; font-size: 14.5px; color: var(--ink-2-on-surface); }
+.flows { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .flows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.flows > div { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 18px 20px; min-width: 0; }
+.flows h4 { margin: 0 0 10px; font-size: 17px; }
+.flows ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; }
+.flows li { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; }
+.flows li span { padding: 6px 10px; border-radius: var(--r-sm); background: var(--surface-2); color: var(--ink); }
+.flows li + li::before { content: "→"; color: var(--ink-2-on-surface); }
+.compare-apps td b { color: var(--ink); }

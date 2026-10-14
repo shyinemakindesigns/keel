@@ -101,6 +101,15 @@ Every screen checked: a new `palette` suite in `npm test` visits 116 screens and
 
 Not re-measured: the 60/30/10 split. `source/weight_check.py` has the new palette, but it needs Pillow, which isn't installed; the case study labels its numbers as measured in the earlier palette.
 
+## Vercel, the US and Canada, and research synthesis (October 14, 2026)
+
+- **Hosting:** live on Vercel at keel-casestudy.vercel.app, rebuilt on every push to `main`. Vite 6.4.4 and plugin-react 4.7.0: `npm audit` 0 vulnerabilities; esbuild's install script approved for npm's `allowScripts` check. The one warning left in Vercel's build log (`npm warn Unknown env config "cache-dir"`) comes from Vercel's build image, not this project.
+- **US and Canada:** a region switch in the prototype (Guide, `?region=ca|us`, or the browser locale) changes chequing or checking, paycheque or paycheck, CAD or USD, and the page language (`en-CA` or `en-US`). Four journey checks cover it.
+- **Research synthesis:** proto-personas (labeled as assumptions), pain points, a bad-week journey, key flows and a competitor comparison including availability in Canada, added after the existing research, which is unchanged. New sources [10] to [13], each checked against the primary page: FP Canada's 2026 Financial Stress Index (43%), BetaKit on Monarch's Canadian launch, Copilot's FAQ (U.S. accounts only) and YNAB's supported countries.
+- **Reflection:** a summary and six hypothesized outcomes in use, each with the measure that would test it. None is presented as a result.
+- **Sketch to screen:** hovering the comparison sweeps the divider; 120fps on a Mac, a locked 60fps at 4x CPU slowdown; never with reduced motion.
+- **Assets:** an 8.2s animated Wix thumbnail that loops without a visible seam (start and end frames match within 15 of 1.92 million pixels after a 0.4s cross-fade into frame zero); carousel slide 2 and the showcase video cite both countries; both videos re-recorded from the current prototype.
+
 ## Advisory kept
 
 - **Switch height 28px (2.5.5, AAA).** Bill switches measure 46×28. They pass 2.5.8 (24px minimum) and their touch area is 46×46 through an invisible hit area, which the probe can’t see because it measures the element box.

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { STEPS, TOTAL } from './steps.jsx';
 import { ArrowLeft, ArrowRight, CloseIcon, GuideIcon, KeelIcon, TourIcon, Chevron } from '../icons.jsx';
 import { reduced, cssMs } from '../util.js';
+import { useRegion } from '../region.js';
 
 const SCREEN_NAME = { home: 'Steady', spending: 'Spending', goals: 'Goals', plan: 'Plan' };
 
@@ -10,6 +11,7 @@ const SCREEN_NAME = { home: 'Steady', spending: 'Spending', goals: 'Goals', plan
 // stays usable underneath. Phones: the panel docks above the tab bar and the
 // element is scrolled into the clear space above it. Wide: a popover beside it.
 export default function Tour({ ctx }) {
+  useRegion();   // step text uses the region's words
   const { tour, current, go, setStep, exitTour, skipTour, launch, review, backToOverview, startTour } = ctx;
   const isFinish = tour.mode === 'finish';
   const step = isFinish ? null : STEPS[tour.step];

@@ -264,6 +264,19 @@ async function journeys() {
       const m = /\$([\d,]+) set aside instead of \$([\d,]+)/.exec(g || ''); if (!m) return false;
       const gap = +m[1].replace(/,/g, '') - +m[2].replace(/,/g, ''); return gap > 0 && gap % 100 === 0 && /done around/.test(g);
     });
+    // region: the US by default in this browser; ?region=ca switches the words and the page language; the Guide switches back
+    await load(b, '/prototype/?screen=plan', visitor({ state: 'completed' }), 'light');
+    await check('region defaults to the US', `document.documentElement.lang + '|' + document.querySelector('label[for=pl-extra]').textContent`, 'en-US|Set aside more each paycheck');
+    await b.go(BASE + '/prototype/?screen=plan&region=ca', 1500);
+    await check('?region=ca uses Canadian words', `document.documentElement.lang + '|' + document.querySelector('label[for=pl-extra]').textContent`, 'en-CA|Set aside more each paycheque');
+    await b.go(BASE + '/prototype/?screen=welcome', 1500);
+    await click('button', 'Begin'); await sleep(400);
+    await check('region is remembered: chequing and CAD', `document.querySelector('[data-screen=accounts]').innerText`, (g) => /Everyday chequing/.test(g) && /CAD/.test(g));
+    await b.go(BASE + '/prototype/?screen=home', 1500);
+    await click('[data-screen=home] .guide-btn'); await sleep(400);
+    await click('input[name=region][value=us]'); await sleep(300);
+    await check('the Guide switches the region back', `document.documentElement.lang + '|' + localStorage.getItem('keel-region')`, 'en-US|us');
+    await b.run(`localStorage.removeItem('keel-region')`);
     // design system
     await b.viewport(1280, 900);
     await load(b, '/design-system/', null, 'light');
@@ -383,6 +396,11 @@ function media() {
     execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-showcase-1080x1350.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
     out.push({ name: 'showcase video decodes (AVFoundation)', ok: fs.statSync(tmp).size > 1e6 }); fs.rmSync(tmp);
   } catch (e) { out.push({ name: 'showcase video decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
+  try {
+    const tmp = path.join(OUT, 'loop-check.mov');
+    execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-thumbnail-loop-1600x1200.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
+    out.push({ name: 'thumbnail loop decodes (AVFoundation)', ok: fs.statSync(tmp).size > 2e5 }); fs.rmSync(tmp);
+  } catch (e) { out.push({ name: 'thumbnail loop decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
   return out;
 }
 

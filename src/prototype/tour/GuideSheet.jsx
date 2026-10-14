@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { TourIcon, ChartIcon, GuideIcon, KeelIcon, LedgerIcon, ReplayIcon, ResetIcon, ArrowLeft, Chevron } from '../icons.jsx';
 import { reading, fmtDate, money, daysWord, DAILY, payday, parse } from '../model.js';
+import { useRegion, setRegion, REGIONS } from '../region.js';
 
 const SCREEN_NAME = { home: 'Steady', spending: 'Spending', goals: 'Goals', plan: 'Plan' };
 
 // Help that stays out of the way: one sheet, a short menu, two plain explanations.
 export default function GuideSheet({ S, current, actions }) {
+  const R = useRegion();
   const [view, setView] = useState('menu');
   const back = useRef(null), firstItem = useRef(null);
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function GuideSheet({ S, current, actions }) {
         <p>Keel is a fictional concept. Nothing here connects to a bank, and nothing you do leaves this browser.</p>
         <dl className="guide-dl">
           <div><dt>Today</dt><dd>Thursday, Oct 8, 2026 (fixed, so the dates always make sense)</dd></div>
-          <div><dt>Checking</dt><dd>{money(S.checking, true)}</dd></div>
+          <div><dt>{R.Checking}</dt><dd>{money(S.checking, true)} {R.currency}</dd></div>
           <div><dt>Usual spending</dt><dd>${DAILY} a day, from the sample’s last 8 weeks</dd></div>
           <div><dt>Next payday</dt><dd>{fmtDate(payday(S))}, {S.cadence.toLowerCase()}</dd></div>
           <div><dt>Bills counted</dt><dd>{bills.map((b) => `${b.name} ${money(b.amt)} (${fmtDate(parse(b.day))})`).join(', ')}</dd></div>
@@ -76,6 +78,18 @@ export default function GuideSheet({ S, current, actions }) {
           </li>
         ))}
       </ul>
+      <fieldset className="guide-region">
+        <legend>Region</legend>
+        <p className="meta">Keel is designed for the United States and Canada. This changes words like {REGIONS.ca.checking} and {REGIONS.ca.paycheck}, and the currency label.</p>
+        <div className="chips">
+          {Object.values(REGIONS).map((r) => (
+            <label className="radio-chip" key={r.id}>
+              <input type="radio" name="region" value={r.id} checked={R.id === r.id} onChange={() => setRegion(r.id)} />
+              <span className="chip">{r.name} · {r.currency}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
       <div className="foot" style={{ paddingTop: 12 }}><button type="button" className="btn-text" onClick={actions.close}>Close</button></div>
     </>
   );

@@ -218,3 +218,8 @@
 
   .tour-panel { max-height: 70%; padding: 14px 18px 12px; }
 }
+
+/* Region switch in the Guide */
+.guide-region { border: 0; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--rule); min-width: 0; }
+.guide-region legend { font-weight: 600; font-size: 15px; padding: 0; margin-bottom: 4px; }
+.guide-region .meta { margin: 0 0 10px; }
