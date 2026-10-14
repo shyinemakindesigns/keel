@@ -92,8 +92,8 @@ async function draw(t) {
     const k = dt / life;
     const x = SCREEN.x + p.x * S, y = SCREEN.y + p.y * S;
     ctx.beginPath(); ctx.arc(x, y, 18 + 16 * ease(k), 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(32,39,37,${0.22 * (1 - k)})`; ctx.fill();
-    ctx.lineWidth = 2; ctx.strokeStyle = `rgba(32,39,37,${0.45 * (1 - k)})`; ctx.stroke();
+    ctx.fillStyle = `rgba(17,35,88,${0.22 * (1 - k)})`; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = `rgba(17,35,88,${0.45 * (1 - k)})`; ctx.stroke();
   }
   ctx.restore();
 

@@ -1,0 +1,293 @@
+<!doctype html>
+<!--
+  LinkedIn showcase video: the whole project in about a minute, 1080 x 1350 (4:5), 30fps.
+  Brand animation, the problem, the prototype walkthrough (the recording made by record.mjs),
+  the motion system (real Lottie files rendered frame by frame), the design system, and the links.
+  Serve a folder holding this file, rec/ (from record.mjs), node_modules/mp4-muxer,
+  lottie.min.js (assets/vendor) and lottie/*.json (assets/lottie), then:
+    node encode.mjs out.mp4 showcase.html
+-->
+
+<html><head><meta charset="utf-8">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#111}canvas{display:block}#lot{position:absolute;left:-9999px;top:0}#lot div{position:relative}</style>
+<script src="lottie.min.js"></script></head>
+<body><canvas id="c" width="1080" height="1350"></canvas><div id="lot"></div>
+<script type="module">
+import { Muxer, ArrayBufferTarget } from '/node_modules/mp4-muxer/build/mp4-muxer.mjs';
+
+const W = 1080, H = 1350, FPS = 30;
+const C = { canvas: '#0B1530', raised: '#112358', deep: '#1A2E66', text: '#F4F5FA', muted: '#AEB9D6', signal: '#F1FF62', ocean: '#3DB8EA' };   // Harbor & Signal, dark
+const SCREEN = { x: 456, y: 74, w: 556, h: 1203 };            // 390 x 844 app at 1.4256x
+const S = SCREEN.w / 390;
+const FRAME = { x: SCREEN.x - 12, y: SCREEN.y - 12, w: SCREEN.w + 24, h: SCREEN.h + 24 };
+const WATER_Y = 1040;
+const END_HOLD = 0;
+
+const CAPTIONS = {
+  hook:     ['Meet Keel.', 'This is the working prototype, running on sample data.'],
+  onboard:  ['Keel starts somewhere calmer.', 'Four short steps. Sample data only.'],
+  reading:  ['One answer first: how long you’re covered.', 'Steady through Oct 25, nine days past payday.'],
+  check:    ['Check a purchase before you buy.', 'A $250 spend moves the keel and the date before it happens.'],
+  spending: ['Spending in days, not red overages.', '$16.80 of sushi is about a third of a day.'],
+  goals:    ['Saving without the confetti.', 'Add $100 and see what it does to your reading.'],
+  plan:     ['Try a plan before you commit.', '$100 more a paycheck, compared side by side.'],
+  end:      ['Read the case study. Try the prototype.', 'Links in the comments.'],
+};
+
+const status = (m) => { document.title = m; window.__status = m; };
+const j = (u) => fetch(u).then((r) => r.json());
+const [frames, taps, scenes] = await Promise.all([j('rec/frames.json'), j('rec/taps.json'), j('rec/scenes.json')]);
+await document.fonts.load('400 50px Switzer'); await document.fonts.load('600 40px Switzer');
+await document.fonts.load('400 24px Switzer'); await document.fonts.load('500 22px Switzer');
+
+const endT = scenes.find((s) => s.id === 'end').t;
+const total = endT + END_HOLD;
+const sceneAt = (t) => { let cur = scenes[0]; for (const s of scenes) if (s.t <= t) cur = s; return cur; };
+
+const ctx = document.getElementById('c').getContext('2d');
+let curFrame = null, curName = null;
+async function appFrame(t) {
+  let f = frames[0];
+  for (let i = 0; i < frames.length && frames[i].t <= t; i++) f = frames[i];
+  if (f.f !== curName) {
+    const blob = await (await fetch('rec/frames/' + f.f)).blob();
+    if (curFrame) curFrame.close();
+    curFrame = await createImageBitmap(blob); curName = f.f;
+  }
+  return curFrame;
+}
+
+function wrap(text, font, maxW) {
+  ctx.font = font; const words = text.split(' '); const lines = []; let line = '';
+  for (const w of words) { const test = line ? line + ' ' + w : w; if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test; }
+  if (line) lines.push(line); return lines;
+}
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+const ease = (k) => { // cubic-bezier(.2,.7,.2,1) approximated by solving for t
+  let lo = 0, hi = 1, t = k; for (let i = 0; i < 20; i++) { t = (lo + hi) / 2; const x = 3 * (1 - t) * (1 - t) * t * 0.2 + 3 * (1 - t) * t * t * 0.2 + t * t * t; if (x < k) lo = t; else hi = t; }
+  return 3 * (1 - t) * (1 - t) * t * 0.7 + 3 * (1 - t) * t * t * 1 + t * t * t;
+};
+
+function keelMark(x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.strokeStyle = C.text; ctx.lineWidth = 1.6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(4, 15); ctx.lineTo(28, 15); ctx.stroke();
+  ctx.fillStyle = C.signal; ctx.fill(new Path2D('M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z'));
+  ctx.fillStyle = C.text; ctx.fill(new Path2D('M15 17.5h2l-.4 7h-1.2z')); ctx.beginPath(); ctx.ellipse(16, 25.2, 3, 1.3, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+async function drawWalk(t) {
+  // background with the waterline motif
+  ctx.fillStyle = C.canvas; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = C.raised; ctx.fillRect(0, WATER_Y, W, H - WATER_Y);
+  ctx.fillStyle = C.text; ctx.fillRect(0, WATER_Y - 1, W, 2);
+
+  // wordmark
+  keelMark(56, 64, 1.7);
+  ctx.fillStyle = C.text; ctx.font = '600 42px Switzer'; ctx.textBaseline = 'alphabetic'; ctx.fillText('Keel', 124, 104);
+
+  // phone
+  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.45)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 24;
+  rr(FRAME.x, FRAME.y, FRAME.w, FRAME.h, 66); ctx.fillStyle = C.deep; ctx.fill(); ctx.restore();
+  rr(FRAME.x + 0.75, FRAME.y + 0.75, FRAME.w - 1.5, FRAME.h - 1.5, 66); ctx.strokeStyle = 'rgba(244,245,250,0.16)'; ctx.lineWidth = 1.5; ctx.stroke();
+  const tApp = Math.min(t, endT);
+  const img = await appFrame(tApp);
+  ctx.save(); rr(SCREEN.x, SCREEN.y, SCREEN.w, SCREEN.h, 54); ctx.clip();
+  ctx.drawImage(img, SCREEN.x, SCREEN.y, SCREEN.w, SCREEN.h);
+  // touch indicators
+  for (const p of taps) {
+    const dt = tApp - p.t; const life = p.drag ? 0.35 : 0.55;
+    if (dt < 0 || dt > life) continue;
+    const k = dt / life;
+    const x = SCREEN.x + p.x * S, y = SCREEN.y + p.y * S;
+    ctx.beginPath(); ctx.arc(x, y, 18 + 16 * ease(k), 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(17,35,88,${0.22 * (1 - k)})`; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = `rgba(17,35,88,${0.45 * (1 - k)})`; ctx.stroke();
+  }
+  ctx.restore();
+
+  // caption: fades and rises in over 420ms (ease-settle) at each scene start
+  const sc = t >= endT ? { id: 'end', t: endT } : sceneAt(t);
+  const [head, sub] = CAPTIONS[sc.id];
+  const k = Math.min(1, (t - sc.t) / 0.42), e = sc.id === 'hook' ? 1 : ease(Math.max(0, k)); // the opening frame carries the hook, fully visible
+  const order = ['onboard', 'reading', 'check', 'spending', 'goals', 'plan'];
+  const colX = 56, colW = 352;
+  const hLines = wrap(head, '400 50px Switzer', colW), sLines = wrap(sub, '400 25px Switzer', colW);
+  const blockH = hLines.length * 56 + 22 + sLines.length * 34;
+  const baseY = WATER_Y - 64 - blockH + (1 - e) * 14;
+  ctx.globalAlpha = e;
+  const idx = order.indexOf(sc.id);
+  if (idx >= 0) { ctx.fillStyle = C.signal; ctx.font = '400 24px Switzer'; ctx.fillText(String(idx + 1).padStart(2, '0') + '  /  06', colX, baseY - 30); }
+  ctx.fillStyle = C.text; ctx.font = '400 50px Switzer';
+  hLines.forEach((l, i) => ctx.fillText(l, colX, baseY + 44 + i * 56));
+  ctx.fillStyle = C.muted; ctx.font = '400 25px Switzer';
+  sLines.forEach((l, i) => ctx.fillText(l, colX, baseY + hLines.length * 56 + 22 + 26 + i * 34));
+  ctx.globalAlpha = 1;
+
+  // footer in the water band
+  ctx.fillStyle = C.muted; ctx.font = '400 21px Switzer';
+  ctx.fillText('A calm money app concept.', colX, WATER_Y + 64);
+  ctx.fillText('UX and visual design case study', colX, WATER_Y + 94);
+  ctx.fillText('by Shyine Makin', colX, WATER_Y + 124);
+  if (t >= endT) {
+    const ke = ease(Math.min(1, (t - endT) / 0.5));
+    ctx.globalAlpha = ke; ctx.fillStyle = C.signal; ctx.font = '600 22px Switzer';
+    ctx.fillText('keel-casestudy.vercel.app', colX, WATER_Y + 176); ctx.globalAlpha = 1;
+  }
+}
+
+
+// ------------------------------------------------------------------ the showcase timeline
+const SEG = {}; { let t = 0; for (const [k, d] of [['brand', 4.2], ['problem', 4.6], ['walk', endT], ['motion', 7], ['system', 6.8], ['links', 5.6]]) { SEG[k] = [t, t + d]; t += d; } }
+const TOTAL = SEG.links[1];
+const segAt = (t) => Object.keys(SEG).find((k) => t >= SEG[k][0] && t < SEG[k][1]) || 'links';
+
+// Lottie, rendered on its own canvas and drawn in, one exact frame at a time
+const LOT = {};
+async function lottieAnim(name, w, h) {
+  const box = document.createElement('div'); box.style.width = w + 'px'; box.style.height = h + 'px';
+  document.getElementById('lot').appendChild(box);
+  const data = await j('lottie/' + name + '-dark.json');
+  const a = lottie.loadAnimation({ container: box, renderer: 'canvas', loop: false, autoplay: false, animationData: data,
+    rendererSettings: { preserveAspectRatio: 'xMidYMid meet', clearCanvas: true } });
+  await new Promise((r) => a.addEventListener('DOMLoaded', r));
+  LOT[name] = { a, box, w, h, fr: data.fr, op: data.op };
+}
+await lottieAnim('signature', 960, 360);
+for (const n of ['equilibrium', 'goal-created', 'onboarding', 'check']) await lottieAnim(n, 448, 300);
+function drawLottie(name, local, x, y, w, h) {
+  const L = LOT[name]; const f = Math.max(0, Math.min(L.op - 1, local * L.fr));
+  L.a.goToAndStop(f, true);
+  const cv = L.box.querySelector('canvas'); if (cv) ctx.drawImage(cv, x, y, w, h);
+}
+
+function base() {
+  ctx.fillStyle = C.canvas; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = C.raised; ctx.fillRect(0, WATER_Y, W, H - WATER_Y);
+  ctx.fillStyle = C.text; ctx.fillRect(0, WATER_Y - 1, W, 2);
+  keelMark(56, 64, 1.7);
+  ctx.fillStyle = C.text; ctx.font = '600 42px Switzer'; ctx.textBaseline = 'alphabetic'; ctx.fillText('Keel', 124, 104);
+  ctx.fillStyle = C.muted; ctx.font = '400 21px Switzer';
+  ctx.fillText('A calm money app concept.', 56, WATER_Y + 64);
+  ctx.fillText('UX and visual design case study by Shyine Makin', 56, WATER_Y + 94);
+}
+// text that rises in: [string, font, color, x, y, delay]
+function rise(local, items, maxW = 968) {
+  for (const [s, font, color, x, y, delay = 0] of items) {
+    const k = ease(Math.max(0, Math.min(1, (local - delay) / 0.5)));
+    ctx.globalAlpha = k; ctx.fillStyle = color; ctx.font = font;
+    const lh = parseInt(font.split(' ')[1], 10) * 1.12;
+    wrap(s, font, maxW).forEach((l, i) => ctx.fillText(l, x, y + (1 - k) * 18 + i * lh));
+  }
+  ctx.globalAlpha = 1;
+}
+function chapter(local, n, label) {
+  rise(local, [[label, '500 26px Switzer', C.signal, 56, 210]]);
+}
+
+function drawBrand(local) {
+  base();
+  drawLottie('signature', local, 60, 250, 960, 360);
+  rise(local, [
+    ['Budgeting apps punish you on the weeks you need them most.', '400 66px Switzer', C.text, 56, 760, 2.2],
+  ]);
+}
+function drawProblem(local) {
+  base(); chapter(local, 1, 'The problem');
+  rise(local, [
+    ['72%', '400 300px Switzer', C.signal, 44, 560, 0.1],
+    ['of U.S. adults said they feel stressed about money at least some of the time.', '400 46px Switzer', C.text, 56, 680, 0.5],
+    ['When the news is bad, people look away. Behavioral research calls it the ostrich effect.', '400 30px Switzer', C.muted, 56, 860, 1.1],
+    ['American Psychological Association, Stress in America (2015). Karlsson, Loewenstein and Seppi (2009).', '400 20px Switzer', C.muted, 56, WATER_Y - 40, 1.4],
+  ]);
+}
+function card(x, y, w, h) { rr(x, y, w, h, 28); ctx.fillStyle = C.raised; ctx.fill(); ctx.strokeStyle = 'rgba(244,245,250,0.12)'; ctx.lineWidth = 1.5; ctx.stroke(); }
+function drawMotion(local) {
+  base(); chapter(local, 3, 'Motion system');
+  rise(local, [['Motion that settles, not startles.', '400 60px Switzer', C.text, 56, 300]]);
+  const cells = [['equilibrium', 56, 360], ['goal-created', 576, 360], ['onboarding', 56, 690], ['check', 576, 690]];
+  cells.forEach(([n, x, y], i) => {
+    const k = ease(Math.max(0, Math.min(1, (local - 0.3 - i * 0.12) / 0.5)));
+    ctx.globalAlpha = k; card(x, y + (1 - k) * 20, 448, 300);
+    drawLottie(n, Math.max(0, local - 0.5 - i * 0.25), x + 10, y + 10 + (1 - k) * 20, 428, 280);
+    ctx.globalAlpha = 1;
+  });
+  rise(local, [['12 Lottie animations and 4 Rive state machines, all written in code, each with a dark version and a reduced-motion state.', '400 25px Switzer', C.muted, 56, WATER_Y + 150, 1.0]], 968);
+}
+function pill(x, y, w, h, fill, edge, label, labelColor) {
+  rr(x, y, w, h, h / 2); ctx.fillStyle = fill; ctx.fill();
+  if (edge) { ctx.strokeStyle = edge; ctx.lineWidth = 1.5; ctx.stroke(); }
+  ctx.fillStyle = 'rgba(255,255,255,0.22)'; ctx.fillRect(x + h / 2, y + 1, w - h, 1.5);   // glass highlight
+  ctx.fillStyle = labelColor; ctx.font = '600 26px Switzer'; ctx.textAlign = 'center'; ctx.fillText(label, x + w / 2, y + h / 2 + 9); ctx.textAlign = 'left';
+}
+function drawSystem(local) {
+  base(); chapter(local, 4, 'Design system');
+  rise(local, [['A design system that holds up.', '400 60px Switzer', C.text, 56, 300]]);
+  const sw = [['Fog', '#F4F5FA'], ['Mist', '#D4EAFF'], ['Signal', '#F1FF62'], ['Ocean', '#0192C6'], ['Harbor', '#004499'], ['Navy', '#112358']];
+  sw.forEach(([n, hex], i) => {
+    const k = ease(Math.max(0, Math.min(1, (local - 0.3 - i * 0.08) / 0.45)));
+    const x = 56 + i * 162, y = 370 + (1 - k) * 16;
+    ctx.globalAlpha = k; rr(x, y, 142, 142, 24); ctx.fillStyle = hex; ctx.fill();
+    ctx.strokeStyle = 'rgba(244,245,250,0.22)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = C.text; ctx.font = '500 22px Switzer'; ctx.fillText(n, x, y + 178);
+    ctx.fillStyle = C.muted; ctx.font = '400 19px Switzer'; ctx.fillText(hex, x, y + 204); ctx.globalAlpha = 1;
+  });
+  rise(local, [
+    ['Switzer', '400 120px Switzer', C.text, 56, 760, 0.8],
+    ['$1,284.60', '500 56px Switzer', C.signal, 600, 740, 1.0],
+    ['Display, data with tabular figures, body.', '400 24px Switzer', C.muted, 600, 786, 1.0],
+  ], 440);
+  const kb = ease(Math.max(0, Math.min(1, (local - 1.4) / 0.5)));
+  ctx.globalAlpha = kb;
+  pill(56, 850 + (1 - kb) * 16, 330, 76, 'rgba(241,255,98,0.92)', 'rgba(255,255,255,0.30)', 'Check a purchase', C.raised);
+  pill(410, 850 + (1 - kb) * 16, 330, 76, 'rgba(244,245,250,0.10)', 'rgba(244,245,250,0.50)', 'Explore on my own', C.text);
+  ctx.globalAlpha = 1;
+  rise(local, [['94 contrast pairings, 0 failing. Glass buttons measured on every surface they sit on.', '400 25px Switzer', C.muted, 56, WATER_Y + 150, 1.8]], 968);
+}
+function drawLinks(local) {
+  base(); chapter(local, 5, 'See it yourself');
+  rise(local, [['Read it. Try it. Take it apart.', '400 64px Switzer', C.text, 56, 320]]);
+  const rows = [['Case study', 'keel-casestudy.vercel.app'], ['Live demo', 'keel-casestudy.vercel.app/prototype'], ['Design system', 'keel-casestudy.vercel.app/design-system']];
+  rows.forEach(([a, b], i) => {
+    const k = ease(Math.max(0, Math.min(1, (local - 0.4 - i * 0.18) / 0.5)));
+    const y = 430 + i * 150 + (1 - k) * 16;
+    ctx.globalAlpha = k; card(56, y, 968, 120);
+    ctx.fillStyle = C.signal; ctx.font = '500 34px Switzer'; ctx.fillText(a, 96, y + 56);
+    ctx.fillStyle = C.muted; ctx.font = '400 25px Switzer'; ctx.fillText(b, 96, y + 94);
+    ctx.fillStyle = C.text; ctx.font = '400 40px Switzer'; ctx.fillText('→', 960, y + 74); ctx.globalAlpha = 1;
+  });
+  rise(local, [['Links in the comments.', '500 30px Switzer', C.text, 56, WATER_Y - 40, 1.2]]);
+}
+
+async function draw(t) {
+  const s = segAt(t), local = t - SEG[s][0];
+  if (s === 'walk') await drawWalk(local);
+  else ({ brand: drawBrand, problem: drawProblem, motion: drawMotion, system: drawSystem, links: drawLinks })[s](local);
+  // a short dip between scenes
+  const inK = Math.min(1, local / 0.3), outK = Math.min(1, (SEG[s][1] - t) / 0.3);
+  const veil = 1 - Math.min(inK, outK);
+  if (veil > 0 && t > 0.3 && t < TOTAL - 0.05) { ctx.globalAlpha = veil; ctx.fillStyle = C.canvas; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+}
+// --- render and encode -----------------------------------------------------
+const params = new URLSearchParams(location.search);
+if (params.has('still')) {           // render one moment for review: ?still=12.5
+  await draw(parseFloat(params.get('still'))); status('still-done');
+} else {
+  const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: 'avc', width: W, height: H, frameRate: FPS }, fastStart: 'in-memory' });
+  const encoder = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: (e) => status('encode-error ' + e.message) });
+  encoder.configure({ codec: 'avc1.640028', width: W, height: H, bitrate: 9_000_000, framerate: FPS, latencyMode: 'quality' });
+  const N = Math.round(TOTAL * FPS);
+  for (let i = 0; i < N; i++) {
+    await draw(i / FPS);
+    const vf = new VideoFrame(document.getElementById('c'), { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
+    encoder.encode(vf, { keyFrame: i % (FPS * 2) === 0 }); vf.close();
+    while (encoder.encodeQueueSize > 8) await new Promise((r) => setTimeout(r, 2));
+    if (i % 30 === 0) status(`frame ${i}/${N}`);
+  }
+  await encoder.flush(); muxer.finalize();
+  window.__mp4 = new Uint8Array(muxer.target.buffer);
+  window.__mp4b64 = (start, len) => { let s = ''; const a = window.__mp4.subarray(start, start + len); for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000)); return btoa(s); };
+  status('done ' + window.__mp4.length + ' bytes, ' + N + ' frames, ' + TOTAL.toFixed(2) + 's');
+}
+</script></body></html>

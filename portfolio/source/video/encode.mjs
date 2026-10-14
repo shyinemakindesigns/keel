@@ -12,7 +12,7 @@ const ev = async (e) => (await send('Runtime.evaluate', { expression: e, awaitPr
 try {
   await send('Page.enable'); await send('Runtime.enable');
   await send('Emulation.setDeviceMetricsOverride', { width: 1080, height: 1350, deviceScaleFactor: 1, mobile: false });
-  await send('Page.navigate', { url: 'http://127.0.0.1:4320/compose.html' });
+  await send('Page.navigate', { url: 'http://127.0.0.1:4320/' + (process.argv[3] || 'compose.html') });   // node encode.mjs out.mp4 [showcase.html]
   let st = '', last = '';
   for (;;) { await sleep(2000); st = await ev('window.__status || ""'); if (st !== last) { console.log(st); last = st; } if (st.startsWith('done') || st.startsWith('encode-error')) break; }
   if (!st.startsWith('done')) throw new Error(st);
