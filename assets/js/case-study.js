@@ -460,7 +460,7 @@
       if (r) { r.cleanup(); r = null; }
       var red = reduced();
       r = new window.rive.Rive({
-        src: 'assets/rive/keel-toggle' + (isDark() ? '-dark' : '') + '.riv?v=3', canvas: canvas,
+        src: 'assets/rive/keel-toggle' + (isDark() ? '-dark' : '') + '.riv?v=4', canvas: canvas,
         autoplay: !red, stateMachines: red ? undefined : 'Switch', animations: red ? ['Off', 'On'] : undefined,
         shouldDisableRiveListeners: true,
         onLoad: function () {
@@ -616,7 +616,7 @@
       if (inst[name]) { inst[name].cleanup(); inst[name] = null; }
       var fig = root.querySelector('[data-rv="' + name + '"]'), canvas = fig.querySelector('canvas');
       var r = new window.rive.Rive({
-        src: 'assets/rive/' + name + '.riv?v=3', canvas: canvas, artboard: isDark() ? 'dark' : 'light',
+        src: 'assets/rive/' + name + '.riv?v=4', canvas: canvas, artboard: isDark() ? 'dark' : 'light',
         stateMachines: SM[name], autoplay: true, shouldDisableRiveListeners: true,
         onLoad: function () {
           r.resizeDrawingSurfaceToCanvas(); r.__ready = true;

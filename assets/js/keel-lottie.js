@@ -35,7 +35,7 @@
 
   var BASE = (document.currentScript && document.currentScript.dataset.base) || 'assets/';
   // Asset version: bump when animation or fallback files are replaced, so browsers don't keep old copies.
-  var V = '?v=3';
+  var V = '?v=4';
   var runtime = null;
 
   function loadRuntime() {
