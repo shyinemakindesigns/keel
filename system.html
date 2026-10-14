@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
-<link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
-<link rel="stylesheet" href="assets/tokens.css?v=3">
-<link rel="stylesheet" href="assets/css/components.css?v=3">
+<link rel="icon" href="assets/favicon.svg?v=4" type="image/svg+xml">
+<link rel="stylesheet" href="assets/tokens.css?v=4">
+<link rel="stylesheet" href="assets/css/components.css?v=4">
 <script>
   (function () {
     var d = document.documentElement, t = null, m = null;
@@ -78,8 +78,8 @@
   @media (min-width: 561px) { .scale > div { grid-template-columns: 160px 1fr; gap: 16px; } .top .in, .wrap { padding: 0 24px; } .navrow { margin: 0 -24px; padding: 0 18px 6px; } }
   @media (min-width: 821px) { html { scroll-padding-top: 76px; } .top .in { flex-wrap: nowrap; padding-top: 0; } .navrow { order: 0; flex: 0 1 auto; overflow: visible; margin: 0; padding: 0; } .navrow nav { flex-wrap: wrap; } .site-nav { order: 2; border-right: 0; margin: 0 0 0 6px; padding: 0 0 0 8px; border-left: 1px solid var(--rule); } }
 </style>
-<link rel="stylesheet" href="assets/css/glass.css?v=3">
-<link rel="stylesheet" href="assets/css/motion.css?v=3">
+<link rel="stylesheet" href="assets/css/glass.css?v=4">
+<link rel="stylesheet" href="assets/css/motion.css?v=4">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -154,8 +154,8 @@
   </section>
 </main>
 
-<script src="assets/js/keel-lottie.js?v=3" data-base="assets/"></script>
-<script src="assets/js/motion-registry.js?v=3"></script>
+<script src="assets/js/keel-lottie.js?v=4" data-base="assets/"></script>
+<script src="assets/js/motion-registry.js?v=4"></script>
 <script>
 (function () {
   var $ = function (s) { return document.querySelector(s); };
@@ -186,7 +186,7 @@
       : '<div class="stage"><p style="margin:0;text-align:center;color:var(--ink-2);font-size:14px">Data-bound SVG chart.<br>See <a href="index.html#motion-' + m.id + '">' + esc(m.title) + ' in the gallery</a>, or live in the <a href="/prototype/">app</a>.</p></div>';
     c.innerHTML = stage + '<h3>' + m.n + ' · ' + esc(m.title) + '</h3><div class="tech">' + esc(m.tech) + '</div>' +
       '<dl><dt>Trigger</dt><dd>' + esc(m.trigger) + '</dd><dt>Timing</dt><dd>' + esc(m.timing) + '</dd><dt>Loop</dt><dd>' + (m.loop ? 'Only while loading' : 'No') + '</dd></dl>' +
-      '<div class="row2">' + (m.file ? '<button class="btn" type="button">Play ' + esc(m.title) + '</button><a href="assets/lottie/' + m.file + '.json">' + m.file + '.json</a><a href="assets/fallbacks/' + m.file + '.svg">' + m.file + '.svg fallback</a>' : '<a href="assets/js/keel-charts.js?v=3">keel-charts.js</a>') + '</div>';
+      '<div class="row2">' + (m.file ? '<button class="btn" type="button">Play ' + esc(m.title) + '</button><a href="assets/lottie/' + m.file + '.json">' + m.file + '.json</a><a href="assets/fallbacks/' + m.file + '.svg">' + m.file + '.svg fallback</a>' : '<a href="assets/js/keel-charts.js?v=4">keel-charts.js</a>') + '</div>';
     lib.appendChild(c);
     var b = c.querySelector('button');
     if (b) b.addEventListener('click', function () { var el = c.querySelector('keel-lottie'); if (m.loop && el.isPlaying) { el.stop(); b.textContent = 'Play ' + m.title; } else { el.replay(); if (m.loop) b.textContent = 'Stop ' + m.title; } });
