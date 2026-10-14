@@ -97,6 +97,8 @@ Accessibility, measured: `source/contrast_audit.py` checks 94 pairings in both t
 | H7 | Video recorder | Pointed at the removed `/prototype.html`, used selectors the React app no longer has, and set the slider in a way React ignores (the Plan scene stayed at $0) | New address, label-based taps, the native value setter, and the slider scrolled into view |
 | H8 | `assets/tokens.css` | `--illo-ballast` declared twice in the dark media block | One declaration |
 
+Every screen checked: a new `palette` suite in `npm test` visits 116 screens and states (onboarding, every tab, every sheet, the guide, each tour step, the finish dialog, the case study, design system and animation library) in both themes at phone and desktop widths, and scans every element, pseudo-element and SVG paint for a color from the earlier identities. The first run found one: the Slate material swatch in the case study's illustration section (fixed). The Lottie JSON, SVG fallbacks, favicon and Rive binaries were scanned as files too: clean. The only images left from before are the two 60/30/10 before-and-after screenshots, kept on purpose and labeled as the earlier identity.
+
 Not re-measured: the 60/30/10 split. `source/weight_check.py` has the new palette, but it needs Pillow, which isn't installed; the case study labels its numbers as measured in the earlier palette.
 
 ## Advisory kept

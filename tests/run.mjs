@@ -15,6 +15,7 @@ const BASE = process.env.BASE || 'http://127.0.0.1:4319';
 const OUT = path.join(HERE, 'results');
 fs.mkdirSync(OUT, { recursive: true });
 const AUDIT = fs.readFileSync(path.join(HERE, 'audit-page.js'), 'utf8');
+const PALETTE_SCAN = fs.readFileSync(path.join(HERE, 'palette-scan.js'), 'utf8');
 const WIDTHS = (process.env.WIDTHS || '320,390,768,1280').split(',').map(Number);
 
 const SCROLL = `(async () => { const H = document.documentElement.scrollHeight; for (let y = 0; y < H; y += 700) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 35)); } scrollTo(0, 0); await new Promise((r) => setTimeout(r, 400)); return H; })()`;
@@ -300,6 +301,54 @@ async function journeys() {
   return res;
 }
 
+// ------------------------------------------------------------------ palette: no color from an earlier identity on any screen
+async function palette() {
+  const b = await launch(); const res = [];
+  const byText = (sel, t) => `(() => { const e = [...document.querySelectorAll(${JSON.stringify(sel)})].find((x) => x.textContent.includes(${JSON.stringify(t)}) && x.getClientRects().length); if (e) e.click(); return !!e; })()`;
+  const setVal = (sel, v) => `(() => { const i = document.querySelector(${JSON.stringify(sel)}); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(i, ${JSON.stringify(v)}); i.dispatchEvent(new Event('input', { bubbles: true })); i.dispatchEvent(new Event('change', { bubbles: true })); })()`;
+  const done = visitor({ state: 'completed' });
+  // [label, url, setup, steps: [js, ...] run in order with a scan after the last]
+  const STATES = [
+    ['welcome intro', '/prototype/', 'localStorage.removeItem("keel-visitor")', []],
+    ['overview', '/prototype/', 'localStorage.removeItem("keel-visitor")', [byText('button', 'Take a guided tour')]],
+    ['onboarding: welcome', '/prototype/?screen=welcome', done, []],
+    ['onboarding: accounts', '/prototype/?screen=welcome', done, [byText('button', 'Begin')]],
+    ['onboarding: bills', '/prototype/?screen=welcome', done, [byText('button', 'Begin'), byText('button', 'Use sample accounts')]],
+    ['onboarding: payday', '/prototype/?screen=welcome', done, [byText('button', 'Begin'), byText('button', 'Use sample accounts'), byText('button', 'Continue')]],
+    ['onboarding: first reading', '/prototype/?screen=welcome', done, [byText('button', 'Begin'), byText('button', 'Use sample accounts'), byText('button', 'Continue'), byText('button', 'Take my first reading')]],
+    ['steady', '/prototype/?screen=home', done, []],
+    ['steady: purchase check', '/prototype/?screen=home', done, [setVal('#wi-amt', '250'), "document.querySelector('#whatif button[type=submit]').click()"]],
+    ['spending', '/prototype/?screen=spending', done, []],
+    ['spending: empty category', '/prototype/?screen=spending', done, ["document.querySelector('#cats [data-cat=\"Travel\"]').click()"]],
+    ['spending: transaction sheet', '/prototype/?screen=spending', done, ["document.querySelector('[data-tx=t3]').click()"]],
+    ['goals', '/prototype/?screen=goals', done, []],
+    ['goals: add money sheet', '/prototype/?screen=goals', done, ["document.querySelector('[data-goal-add=car]').click()"]],
+    ['goals: new goal sheet', '/prototype/?screen=goals', done, [byText('button', 'New goal')]],
+    ['plan', '/prototype/?screen=plan', done, [setVal('#pl-extra', '100')]],
+    ['guide sheet', '/prototype/?screen=home', done, ["document.querySelector('[data-screen=home] .guide-btn').click()"]],
+    ...[0, 1, 2, 3, 4, 5, 6, 7].map((n) => ['tour step ' + (n + 1), '/prototype/', visitor({ state: 'touring', step: n }), []]),
+    ['tour finish', '/prototype/', visitor({ state: 'touring', step: 8 }), []],
+    ['case study', '/', null, [SCROLL]],
+    ['design system', '/design-system/', null, [SCROLL]],
+    ['animation library', '/system.html', null, [SCROLL]],
+  ];
+  try {
+    for (const theme of ['light', 'dark']) {
+      await b.media({ reduced: true, scheme: theme });
+      for (const w of [390, 1280]) {
+        await b.viewport(w, w < 768 ? 844 : 900);
+        for (const [label, url, setup, steps] of STATES) {
+          await load(b, url, setup, theme);
+          for (const js of steps) { await b.run(js); await sleep(700); }
+          const hits = await b.run(PALETTE_SCAN);
+          res.push({ label, theme, width: w, hits });
+        }
+      }
+    }
+  } finally { b.close(); }
+  return res;
+}
+
 // ------------------------------------------------------------------ media
 function media() {
   const out = [];
@@ -338,6 +387,7 @@ const FAILS = {
   keyboard: (r) => r.flatMap((p) => [...p.problems, ...p.errors, ...(p.stuck > 2 ? [`focus stuck ${p.stuck} times`] : [])].map((e) => `${p.label} · ${p.width}px: ${e}`)),
   journeys: (r) => r.filter((j) => !j.ok).map((j) => `${j.name}: got ${JSON.stringify(j.got)}`),
   media: (r) => r.filter((j) => !j.ok).map((j) => `${j.name}: ${j.got || 'failed'}`),
+  palette: (r) => r.flatMap((p) => p.hits.map((h) => `${p.label} · ${p.theme} · ${p.width}px: ${h.color} on ${h.where} (${h.prop})`)),
 };
 const NOTES = {
   pages: (r) => `${r.length} page states, ${r.reduce((n, p) => n + p.textMeasured, 0)} text elements measured; ${r.reduce((n, p) => n + p.under44.length, 0)} targets between 24 and 44px (AA passes; AAA advisory)`,
@@ -346,9 +396,10 @@ const NOTES = {
   keyboard: (r) => `${r.reduce((n, p) => n + p.stops, 0)} tab stops across ${r.length} page runs`,
   journeys: (r) => `${r.filter((j) => j.ok).length} of ${r.length} checks pass`,
   media: (r) => `${r.filter((j) => j.ok).length} of ${r.length} files check out`,
+  palette: (r) => `${r.length} screens and states scanned for colors from the earlier identities`,
 };
 
-const SUITES = { pages, links, clicks, keyboard, journeys, media };
+const SUITES = { pages, links, clicks, keyboard, journeys, media, palette };
 const want = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(SUITES);
 let total = 0;
 for (const s of want) {
