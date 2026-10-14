@@ -49,10 +49,10 @@
 
 /* ---------- lo-fi to hi-fi comparison ---------- */
 .lohi { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center; }
-.lohi-stage { position: relative; width: 100%; max-width: 300px; aspect-ratio: 390 / 844; border-radius: 22px; overflow: hidden; border: 1px solid var(--rule); background: #fff; }
+.lohi-stage { position: relative; width: 100%; max-width: 300px; aspect-ratio: 390 / 844; border-radius: 22px; overflow: hidden; border: 1px solid var(--rule); background: #fff; contain: layout paint; }
 .lohi-stage img, .lohi-stage .wf { position: absolute; inset: 0; width: 100%; height: 100%; }
 .lohi-stage .wf { border: 0; border-radius: 0; aspect-ratio: auto; padding: 22px 16px; }
-.lohi-stage .hi { clip-path: inset(0 0 0 var(--cut, 50%)); }
+.lohi-stage .hi { clip-path: inset(0 0 0 var(--cut, 50%)); will-change: clip-path; }   /* own layer: the hover sweep repaints only this */
 .lohi-stage .seam { position: absolute; top: 0; bottom: 0; left: var(--cut, 50%); width: 2px; background: var(--accent); transform: translateX(-1px); pointer-events: none; }
 .lohi input[type=range] { width: 100%; max-width: 300px; accent-color: var(--accent); margin-top: 12px; }
 @media (min-width: 641px) { .lohi { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); } }

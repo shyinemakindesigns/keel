@@ -289,8 +289,20 @@ async function journeys() {
     await b.run(`document.getElementById('rive-four').scrollIntoView()`); await sleep(3500);
     await check('rive demos run', `JSON.stringify(window.__keelRiveFour && window.__keelRiveFour())`, (g) => g && !g.includes('null'));
     // redirect
-    // the old address is a Netlify rule (netlify.toml), so it only redirects on Netlify
-    if (/netlify\.app/.test(BASE)) {
+    // sketch to screen: hover plays the sweep, leaving settles back, reduced motion keeps it still
+    await b.media({ reduced: false });
+    await b.run(`document.getElementById('lohi').scrollIntoView({ block: 'center' })`); await sleep(400);
+    await b.run(`(() => { const r = document.getElementById('lohi-range'); r.value = 40; r.dispatchEvent(new Event('input', { bubbles: true })); document.getElementById('lohi').dispatchEvent(new PointerEvent('pointerenter')); })()`);
+    await sleep(2000);
+    await check('sketch to screen sweeps on hover', `+document.getElementById('lohi-range').value`, (g) => g >= 95);
+    await b.run(`document.getElementById('lohi').dispatchEvent(new PointerEvent('pointerleave'))`); await sleep(900);
+    await check('sweep settles back where the slider was', `+document.getElementById('lohi-range').value`, (g) => g === 40);
+    await b.media({ reduced: true });
+    await b.run(`document.getElementById('lohi').dispatchEvent(new PointerEvent('pointerenter'))`); await sleep(800);
+    await check('no sweep with reduced motion', `+document.getElementById('lohi-range').value`, (g) => g === 40);
+    await b.run(`document.getElementById('lohi').dispatchEvent(new PointerEvent('pointerleave'))`);
+    // the old address is a host rule (netlify.toml, vercel.json), so it only redirects on a live host
+    if (/^https:/.test(BASE)) {
       await b.go(BASE + '/prototype.html?screen=plan', 2500);
       await check('old prototype link redirects', `location.pathname + location.search`, '/prototype/?screen=plan');
     } else {
