@@ -366,7 +366,7 @@ function media() {
   const out = [];
   const pf = path.join(ROOT, 'portfolio');
   const dims = (f) => { const b = fs.readFileSync(f); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
-  for (const [f, w, h] of [['keel-thumbnail-1600x1200.png', 1600, 1200], ['keel-og-1200x630.png', 1200, 630], ['video/keel-prototype-demo-cover.png', 1080, 1350],
+  for (const [f, w, h] of [['keel-thumbnail-1600x1200.png', 1600, 1200], ['keel-og-1200x630.png', 1200, 630], ['video/keel-prototype-demo-cover.png', 1080, 1350], ['video/keel-showcase-cover.png', 1080, 1350],
     ...Array.from({ length: 9 }, (_, i) => [`linkedin-carousel/keel-carousel-0${i + 1}.png`, 1080, 1350])]) {
     const p = path.join(pf, f); const ok = fs.existsSync(p) && dims(p)[0] === w && dims(p)[1] === h;
     out.push({ name: f, ok, got: fs.existsSync(p) ? dims(p).join('x') : 'missing' });
@@ -378,6 +378,11 @@ function media() {
     execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-prototype-demo-1080x1350.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
     out.push({ name: 'video decodes (AVFoundation)', ok: fs.statSync(tmp).size > 1e6 }); fs.rmSync(tmp);
   } catch (e) { out.push({ name: 'video decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
+  try {
+    const tmp = path.join(OUT, 'showcase-check.mov');
+    execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-showcase-1080x1350.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
+    out.push({ name: 'showcase video decodes (AVFoundation)', ok: fs.statSync(tmp).size > 1e6 }); fs.rmSync(tmp);
+  } catch (e) { out.push({ name: 'showcase video decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
   return out;
 }
 
