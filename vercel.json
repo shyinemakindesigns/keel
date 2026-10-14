@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/prototype.html", "destination": "/prototype/", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/assets/rive/(.*)", "headers": [{ "key": "Content-Type", "value": "application/octet-stream" }] },
+    { "source": "/_app/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+  ]
+}

@@ -68,7 +68,7 @@ Seven suites: `pages` (every page and app state, light and dark, at 320, 390, 76
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 
-**Deploy:** connect the repo to Netlify; it runs `npm run build` and publishes `dist`, per `netlify.toml`. The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
+**Deploy:** Vercel (import the GitHub repo; `vercel.json` sets the build to `npm run build`, the output to `dist`, the old prototype redirect and the Rive headers) or Netlify (`netlify.toml` does the same). The link-preview tags in `index.html` assume the site is `keel-casestudy.netlify.app`; change them if you use another name.
 
 Regenerate the animations or rerun the audits:
 
