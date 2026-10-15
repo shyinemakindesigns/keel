@@ -98,7 +98,7 @@ Design system: https://keel-casestudy.vercel.app/design-system/
 
 Assets: `video/keel-showcase-1080x1350.mp4` (4:5, 69.1s, H.264, 30fps, 16.7 MB, AAC stereo) and `video/keel-showcase-cover.png`. Captions are on screen, so it reads with the sound off. With sound on, there’s a voiceover (ElevenLabs, voice “Lauren”, `source/audio/keel-voiceover-lauren.mp3`) over a light background track in the style of a bank commercial: D major at 96 bpm, felt piano, soft kick, shaker and snap. Each spoken line starts on its own scene (the cue sheet is `source/audio/keel-voiceover-cues.json`), and the music sits about 15 dB under the voice, dipping further while she speaks. The track is composed in code by `source/video/music.js`, so there’s no music license to clear. Rendering `showcase.html` without `?voice=` gives the earlier music-only version (calm, 70 bpm). Six parts: the brand animation and the hook, the problem (APA for the U.S. and FP Canada, cited on screen), the prototype walkthrough, the motion system (real Lottie files), the design system (palette, Switzer, glass buttons, contrast) and the three links.
 
-Post length: about 1,180 characters. Put the links in the first comment.
+Post length: about 1,205 characters. Put the links in the first comment.
 
 ```
 Most money apps are built like smoke alarms.
@@ -108,7 +108,7 @@ Loud, red, and only useful once something is already burning.
 
 Keel is a fintech concept for the U.S. and Canada, designed for the bad week. The home screen answers one question first: how long are you covered? One date, drawn as a keel under a waterline that always means payday. A $16.80 lunch reads as "about a third of a day," not an overage, and a purchase gets checked before it happens.
 
-The video walks the whole build in about a minute:
+The video walks the whole build in about a minute (sound on for the voiceover):
 → a working prototype on sample data
 → 12 Lottie and 4 Rive animations, written in code
 → a design system with 94 contrast pairings, 0 failing
