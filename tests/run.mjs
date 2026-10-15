@@ -197,7 +197,19 @@ async function journeys() {
     : `(() => { const e = document.querySelector(${JSON.stringify(sel)}); e.click(); return !!e; })()`);
   const type = (sel, v) => b.run(`(() => { const i = document.querySelector(${JSON.stringify(sel)}); const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; set.call(i, ${JSON.stringify(v)}); i.dispatchEvent(new Event('input', { bubbles: true })); i.dispatchEvent(new Event('change', { bubbles: true })); })()`);
   try {
-    await b.viewport(390, 844); await b.media({ reduced: true });
+    await b.viewport(390, 844);
+    // dark by default: nothing saved and the operating system set to light
+    await b.media({ reduced: true, scheme: 'light' });
+    for (const url of ['/', '/system.html', '/prototype/', '/design-system/']) {
+      await b.go(BASE + url, 500); await b.run('localStorage.clear()'); await b.go(BASE + url, 1500);
+      await check(`dark by default: ${url}`, `document.documentElement.dataset.theme + '|' + getComputedStyle(document.body).backgroundColor`,
+        (g) => { const m = /^dark\|rgba?\((\d+), (\d+), (\d+)/.exec(g || ''); return !!m && +m[1] + +m[2] + +m[3] < 150; });
+    }
+    await b.go(BASE + '/', 500); await b.run('localStorage.clear()'); await b.go(BASE + '/', 1500);
+    await check('hero still frame follows the page theme, not the OS', `(() => { const p = document.querySelector('#hero-lottie picture'); return !p ? 'no-still' : p.querySelector('source') ? 'source' : p.querySelector('img').src.includes('-dark') ? 'dark' : 'light'; })()`, (g) => g === 'dark' || g === 'no-still');
+    await check('favicons load', `Promise.all(['/assets/favicon.svg', '/assets/favicon-32.png', '/assets/apple-touch-icon.png', '/favicon.ico'].map((u) => fetch(u, { cache: 'no-store' }).then((r) => r.status))).then((a) => a.join())`, '200,200,200,200');
+    await check('favicon is linked', `[...document.querySelectorAll('link[rel~=icon], link[rel=apple-touch-icon]')].length`, (g) => g >= 3);
+    await b.media({ reduced: true });
     // first visit and the guided tour
     await load(b, '/prototype/', 'localStorage.clear()', 'light');
     await check('first visit shows the welcome', `document.querySelector('.screen.in')?.dataset.screen`, 'intro');
@@ -379,7 +391,7 @@ function media() {
   const out = [];
   const pf = path.join(ROOT, 'portfolio');
   const dims = (f) => { const b = fs.readFileSync(f); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
-  for (const [f, w, h] of [['keel-thumbnail-1600x1200.png', 1600, 1200], ['keel-og-1200x630.png', 1200, 630], ['video/keel-prototype-demo-cover.png', 1080, 1350], ['video/keel-showcase-cover.png', 1080, 1350],
+  for (const [f, w, h] of [['keel-thumbnail-1600x1200.png', 1600, 1200], ['keel-thumbnail-1184x826.png', 1184, 826], ['keel-og-1200x630.png', 1200, 630], ['video/keel-prototype-demo-cover.png', 1080, 1350], ['video/keel-showcase-cover.png', 1080, 1350],
     ...Array.from({ length: 9 }, (_, i) => [`linkedin-carousel/keel-carousel-0${i + 1}.png`, 1080, 1350])]) {
     const p = path.join(pf, f); const ok = fs.existsSync(p) && dims(p)[0] === w && dims(p)[1] === h;
     out.push({ name: f, ok, got: fs.existsSync(p) ? dims(p).join('x') : 'missing' });
@@ -396,11 +408,14 @@ function media() {
     execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-showcase-1080x1350.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
     out.push({ name: 'showcase video decodes (AVFoundation)', ok: fs.statSync(tmp).size > 1e6 }); fs.rmSync(tmp);
   } catch (e) { out.push({ name: 'showcase video decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
-  try {
-    const tmp = path.join(OUT, 'loop-check.mov');
-    execFileSync('avconvert', ['-s', path.join(pf, 'video/keel-thumbnail-loop-1600x1200.mp4'), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
-    out.push({ name: 'thumbnail loop decodes (AVFoundation)', ok: fs.statSync(tmp).size > 2e5 }); fs.rmSync(tmp);
-  } catch (e) { out.push({ name: 'thumbnail loop decodes (AVFoundation)', ok: false, got: e.message.slice(0, 120) }); }
+  for (const size of ['1600x1200', '1184x826']) {
+    const name = `thumbnail loop ${size} decodes (AVFoundation)`;
+    try {
+      const tmp = path.join(OUT, 'loop-check.mov');
+      execFileSync('avconvert', ['-s', path.join(pf, `video/keel-thumbnail-loop-${size}.mp4`), '-p', 'PresetPassthrough', '-o', tmp, '--replace'], { stdio: 'pipe' });
+      out.push({ name, ok: fs.statSync(tmp).size > 2e5 }); fs.rmSync(tmp);
+    } catch (e) { out.push({ name, ok: false, got: e.message.slice(0, 120) }); }
+  }
   return out;
 }
 

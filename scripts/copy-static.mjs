@@ -6,7 +6,7 @@ import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
-const items = ['index.html', 'system.html', 'assets', 'docs', 'portfolio'];
+const items = ['index.html', 'system.html', 'favicon.ico', 'assets', 'docs', 'portfolio'];
 for (const item of items) {
   const from = path.join(root, item);
   if (!existsSync(from)) continue;

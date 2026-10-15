@@ -1,7 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <style>.l{stroke:#112358}.k{fill:#112358}.h{stroke:#112358}@media (prefers-color-scheme:dark){.l{stroke:#F4F5FA}.k{fill:#F4F5FA}.h{stroke:#F1FF62}}</style>
-  <path class="l" d="M4 15h24" stroke-width="1.6" stroke-linecap="round"/>
-  <path class="h" d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#F1FF62" stroke-width="1.4" stroke-linejoin="round"/>
-  <path class="k" d="M15 17.5h2l-.4 7h-1.2z"/>
-  <ellipse class="k" cx="16" cy="25.2" rx="3" ry="1.5"/>
+  <!-- Keel mark on a Harbor navy tile: the waterline, the lime hull, the keel below -->
+  <rect width="32" height="32" rx="7" fill="#112358"/>
+  <g transform="translate(0 -3.4)">
+    <path d="M4.5 15h23" stroke="#AEB9D6" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M6 12.5h20c-.6 3.4-2.6 5-5.2 5H11.2c-2.6 0-4.6-1.6-5.2-5z" fill="#F1FF62"/>
+    <path d="M15 17.5h2l-.4 7h-1.2z" fill="#F4F5FA"/>
+    <ellipse cx="16" cy="25.2" rx="3" ry="1.5" fill="#F4F5FA"/>
+  </g>
 </svg>

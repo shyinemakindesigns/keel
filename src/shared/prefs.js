@@ -1,12 +1,11 @@
 // Theme and motion preferences, shared by every Keel page (React and not yet ported).
 // Storage keys match the existing pages, so a choice made anywhere follows you.
-//   keel-theme:  'light' | 'dark'      (absent: follow the operating system)
+//   keel-theme:  'light' | 'dark'      (absent: dark, the default)
 //   keel-motion: 'reduced' | 'full'    (absent: follow the operating system)
 // The inline script in each page's <head> applies these before first paint.
 import { useSyncExternalStore } from 'react';
 
 const root = document.documentElement;
-const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const listeners = new Set();
 
@@ -19,14 +18,14 @@ function write(key, value) {
 
 export function applyPrefs() {
   const t = read('keel-theme');
-  root.setAttribute('data-theme', t === 'dark' || t === 'light' ? t : darkQuery.matches ? 'dark' : 'light');
+  root.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
   const m = read('keel-motion');
   if (m === 'reduced' || m === 'full') root.setAttribute('data-motion', m);
   else root.removeAttribute('data-motion');
 }
 
 function snapshot() {
-  const theme = root.getAttribute('data-theme') || 'light';
+  const theme = root.getAttribute('data-theme') || 'dark';
   const m = root.getAttribute('data-motion');
   const reduced = m === 'reduced' || (m !== 'full' && motionQuery.matches);
   return theme + '|' + (reduced ? 'reduced' : 'full');
@@ -40,8 +39,6 @@ function emit() {
   document.dispatchEvent(new Event('keel-prefs'));
 }
 
-// Follow the operating system until the person chooses.
-darkQuery.addEventListener('change', () => { if (!read('keel-theme')) { applyPrefs(); emit(); } });
 motionQuery.addEventListener('change', emit);
 window.addEventListener('storage', (e) => { if (e.key === 'keel-theme' || e.key === 'keel-motion') { applyPrefs(); emit(); } });
 

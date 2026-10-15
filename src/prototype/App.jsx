@@ -216,7 +216,7 @@ export default function App() {
       if (d.keel === 'go' && d.name) go(d.name, { silent: true });
       if (d.keel === 'theme') {
         if (d.value === 'dark' || d.value === 'light') document.documentElement.setAttribute('data-theme', d.value);
-        else document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', 'dark');
         document.dispatchEvent(new Event('keel-theme'));
       }
       if (d.keel === 'motion') {

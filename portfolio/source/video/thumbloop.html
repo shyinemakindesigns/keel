@@ -6,10 +6,12 @@
   check a $250 purchase, the keel previews it (9 days of room to 4), clear, it settles back.
   Serve a folder holding this file, thumb-bg.png, rec-thumb/ and node_modules/mp4-muxer, then:
     node encode.mjs keel-thumbnail-loop.mp4 thumbloop.html
+  Other sizes: ?size=1184x826 scales the 1600 x 1200 layout to the output width and trims the
+  extra height from the empty navy above the phone (1184 x 826 is the Wix project card).
 -->
 <html><head><meta charset="utf-8">
 <style>body{margin:0;background:#111}canvas{display:block}</style></head>
-<body><canvas id="c" width="1600" height="1200"></canvas>
+<body><canvas id="c" width="1600" height="1200" hidden></canvas><canvas id="o"></canvas>
 <script type="module">
 import { Muxer, ArrayBufferTarget } from '/node_modules/mp4-muxer/build/mp4-muxer.mjs';
 
@@ -77,15 +79,22 @@ async function draw(t) {
 }
 
 const params = new URLSearchParams(location.search);
-if (params.has('still')) { await draw(parseFloat(params.get('still'))); status('still-done'); }
+// the output: the layout canvas as is, or scaled to the requested width and trimmed from the top
+const [OW, OH] = (params.get('size') || W + 'x' + H).split('x').map(Number);
+const k = OW / W, srcH = OH / k, srcY = H - srcH;          // keep the bottom; trim the top
+const outCanvas = document.getElementById('o'); outCanvas.width = OW; outCanvas.height = OH;
+const octx = outCanvas.getContext('2d'); octx.imageSmoothingQuality = 'high';
+const present = () => octx.drawImage(document.getElementById('c'), 0, srcY, W, srcH, 0, 0, OW, OH);
+window.__png = () => outCanvas.toDataURL('image/png').split(',')[1];
+if (params.has('still')) { await draw(parseFloat(params.get('still'))); present(); status('still-done'); }
 else {
-  const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: 'avc', width: W, height: H, frameRate: FPS }, fastStart: 'in-memory' });
+  const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: 'avc', width: OW, height: OH, frameRate: FPS }, fastStart: 'in-memory' });
   const encoder = new VideoEncoder({ output: (chunk, m) => muxer.addVideoChunk(chunk, m), error: (e) => status('encode-error ' + e.message) });
-  encoder.configure({ codec: 'avc1.640028', width: W, height: H, bitrate: 5_000_000, framerate: FPS, latencyMode: 'quality' });
+  encoder.configure({ codec: 'avc1.640028', width: OW, height: OH, bitrate: Math.round(5_000_000 * (OW * OH) / (W * H)) + 1_000_000, framerate: FPS, latencyMode: 'quality' });
   const N = Math.round(T * FPS);   // frame N would equal frame 0, so stop one short: the player's wrap is the seam
   for (let i = 0; i < N; i++) {
-    await draw(i / FPS);
-    const vf = new VideoFrame(document.getElementById('c'), { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
+    await draw(i / FPS); present();
+    const vf = new VideoFrame(outCanvas, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
     encoder.encode(vf, { keyFrame: i % (FPS * 2) === 0 }); vf.close();
     while (encoder.encodeQueueSize > 8) await new Promise((r) => setTimeout(r, 2));
     if (i % 30 === 0) status(`frame ${i}/${N}`);

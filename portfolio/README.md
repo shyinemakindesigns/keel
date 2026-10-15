@@ -12,7 +12,9 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 
 | File | Size | Use |
 | --- | --- | --- |
-| `keel-thumbnail-1600x1200.png` | 1600 × 1200 | Portfolio grid thumbnail (Wix) |
+| `keel-thumbnail-1184x826.png` | 1184 × 826 | Wix project card thumbnail |
+| `video/keel-thumbnail-loop-1184x826.mp4` | 1184 × 826, 8.2s loop, 0.6 MB | **Wix cover:** the animated thumbnail at 1184 × 826 |
+| `keel-thumbnail-1600x1200.png` | 1600 × 1200 | Larger 4:3 thumbnail |
 | `video/keel-thumbnail-loop-1600x1200.mp4` | 1600 × 1200, 8.2s loop, 0.8 MB | Animated version of the thumbnail: the keel previews a $250 purchase and settles back; loops without a seam |
 | `keel-og-1200x630.png` | 1200 × 630 | Link preview image (already wired into `index.html`) |
 | `linkedin-carousel/keel-carousel.pdf` | 9 pages | Upload to LinkedIn as a document: it becomes a swipeable carousel |
@@ -28,7 +30,7 @@ Every number on the slides is either a cited published figure (APA 2015; Karlsso
 
 ## Portfolio (Wix)
 
-**Cover:** `video/keel-thumbnail-loop-1600x1200.mp4`, the animated thumbnail (8.2s, loops without a seam, no audio). In Wix, upload it as a video in the gallery or project cover and turn on autoplay and loop, with sound off. If a slot only takes images, use `keel-thumbnail-1600x1200.png`, which is the loop's first frame. For a video on the project page, use `video/keel-showcase-1080x1350.mp4`.
+**Cover:** `video/keel-thumbnail-loop-1184x826.mp4`, the animated thumbnail at 1184 × 826 for the Wix project card (8.2s, loops without a seam, no audio). A 1600 × 1200 version is there too for 4:3 slots. In Wix, upload it as a video in the gallery or project cover and turn on autoplay and loop, with sound off. If a slot only takes images, use `keel-thumbnail-1184x826.png`, which is the loop's first frame. For a video on the project page, use `video/keel-showcase-1080x1350.mp4`.
 
 **Title:** Keel: A Calm Fintech App, UX and Visual Design Case Study
 

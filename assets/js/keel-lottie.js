@@ -35,7 +35,7 @@
 
   var BASE = (document.currentScript && document.currentScript.dataset.base) || 'assets/';
   // Asset version: bump when animation or fallback files are replaced, so browsers don't keep old copies.
-  var V = '?v=5';
+  var V = '?v=6';
   var runtime = null;
 
   function loadRuntime() {
@@ -58,7 +58,15 @@
   }
   function isDark() {
     var t = document.documentElement.getAttribute('data-theme');
-    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return t ? t === 'dark' : true;   // dark is the default theme
+  }
+  // The still frame follows the page theme, not the OS: drop the <source media> the HTML
+  // carries for no-JS visitors and point the img at the current theme's SVG.
+  function syncStill(el) {
+    var pic = el.querySelector(':scope > picture'); if (!pic) return;
+    var src = pic.querySelector('source'), img = pic.querySelector('img'), n = el.getAttribute('name');
+    if (src) src.remove();
+    if (img && n) img.src = BASE + 'fallbacks/' + n + (isDark() ? '-dark' : '') + '.svg' + V;
   }
   window.keelMotion = window.keelMotion || {};
   window.keelMotion.reduced = prefersReduced;
@@ -116,6 +124,7 @@
           '<img src="' + BASE + 'fallbacks/' + n + (isDark() ? '-dark' : '') + '.svg' + V + '" alt="" aria-hidden="true">';
         this.appendChild(pic);
       }
+      syncStill(this);
       var still = this.querySelector(':scope > picture img, :scope > img');
       if (still) still.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain';
       all.add(this);
@@ -227,6 +236,7 @@
       });
     }
     _retheme() {
+      syncStill(this);
       if (!this.anim) return;
       var frame = this.anim.currentFrame, playing = this._wantPlay && !this.anim.isPaused;
       this.anim.destroy(); if (this._box) this._box.remove();
