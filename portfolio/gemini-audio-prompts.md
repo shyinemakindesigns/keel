@@ -1,6 +1,6 @@
 # Keel showcase video: audio prompts for Gemini
 
-The showcase video (`video/keel-showcase-1080x1350.mp4`, 1:09) already has an original score, composed in code (`source/video/music.js`). Use these prompts if you'd rather generate your own music or add a voiceover. Timings match the video.
+The showcase video (`video/keel-showcase-1080x1350.mp4`, 1:09) now carries the ElevenLabs voiceover over a bank-commercial style background track, both mixed in code (`source/video/music.js`, cue sheet in `source/audio/keel-voiceover-cues.json`). Use these prompts if you'd rather generate your own music or add a voiceover. Timings match the video.
 
 ## Scene timings
 

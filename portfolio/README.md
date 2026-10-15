@@ -17,7 +17,7 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 | `keel-og-1200x630.png` | 1200 × 630 | Link preview image (already wired into `index.html`) |
 | `linkedin-carousel/keel-carousel.pdf` | 9 pages | Upload to LinkedIn as a document: it becomes a swipeable carousel |
 | `linkedin-carousel/keel-carousel-01.png` to `-09.png` | 1080 × 1350 each | The same slides as PNGs, for other platforms or a multi-image post |
-| `video/keel-showcase-1080x1350.mp4` | 4:5, 69.1s | **Main LinkedIn video:** the whole project in about a minute (brand animation, the problem, the prototype, the motion system, the design system, the links), captioned, with an original score |
+| `video/keel-showcase-1080x1350.mp4` | 4:5, 69.1s | **Main LinkedIn video:** the whole project in about a minute (brand animation, the problem, the prototype, the motion system, the design system, the links), captioned, with a voiceover over a soft background track |
 | `video/keel-showcase-cover.png` | 1080 × 1350 | Showcase video cover |
 | `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 45.1s | Shorter video: the prototype alone in a phone frame, captioned |
 | `video/keel-prototype-demo-cover.png` | 1080 × 1350 | Prototype video cover |
@@ -93,7 +93,7 @@ Design system: https://keel-casestudy.vercel.app/design-system/
 
 ## LinkedIn video post: the whole project in a minute (main post)
 
-Assets: `video/keel-showcase-1080x1350.mp4` (4:5, 69.1s, H.264, 30fps, 15.7 MB, AAC stereo music) and `video/keel-showcase-cover.png`. Captions are on screen, so it reads with the sound off; with sound on there’s an original score (calm, 70 bpm, a chime on each scene change), composed in code by `source/video/music.js`, so there’s no music license to clear. To use your own music or add a voiceover instead, see `gemini-audio-prompts.md`. Six parts: the brand animation and the hook, the problem (APA for the U.S. and FP Canada, cited on screen), the prototype walkthrough, the motion system (real Lottie files), the design system (palette, Switzer, glass buttons, contrast) and the three links.
+Assets: `video/keel-showcase-1080x1350.mp4` (4:5, 69.1s, H.264, 30fps, 16.7 MB, AAC stereo) and `video/keel-showcase-cover.png`. Captions are on screen, so it reads with the sound off. With sound on, there’s a voiceover (ElevenLabs, voice “Lauren”, `source/audio/keel-voiceover-lauren.mp3`) over a light background track in the style of a bank commercial: D major at 96 bpm, felt piano, soft kick, shaker and snap. Each spoken line starts on its own scene (the cue sheet is `source/audio/keel-voiceover-cues.json`), and the music sits about 15 dB under the voice, dipping further while she speaks. The track is composed in code by `source/video/music.js`, so there’s no music license to clear. Rendering `showcase.html` without `?voice=` gives the earlier music-only version (calm, 70 bpm). Six parts: the brand animation and the hook, the problem (APA for the U.S. and FP Canada, cited on screen), the prototype walkthrough, the motion system (real Lottie files), the design system (palette, Switzer, glass buttons, contrast) and the three links.
 
 Post length: about 1,180 characters. Put the links in the first comment.
 
@@ -181,7 +181,7 @@ Design system: https://keel-casestudy.vercel.app/design-system/
 
 Post the carousel and the video a few days apart: the carousel tells the argument, the video shows the product.
 
-To re-record after the app changes: serve the built site on port 4319 and run `portfolio/source/video/record.mjs`. Then serve a folder holding `compose.html`, `showcase.html`, the `rec/` recording, `mp4-muxer` (installed next to them), `assets/vendor/lottie.min.js` and `assets/lottie/*.json` (as `lottie/`) on port 4320, and run `node encode.mjs demo.mp4 compose.html` and `node encode.mjs showcase.mp4 showcase.html`. They need Chrome; no ffmpeg.
+To re-record after the app changes: serve the built site on port 4319 and run `portfolio/source/video/record.mjs`. Then serve a folder holding `compose.html`, `showcase.html`, the `rec/` recording, `mp4-muxer` (installed next to them), `assets/vendor/lottie.min.js` and `assets/lottie/*.json` (as `lottie/`) on port 4320, and run `node encode.mjs demo.mp4 compose.html` and `node encode.mjs showcase.mp4 "showcase.html?voice=audio/keel-voiceover-cues.json"` (with `portfolio/source/audio/` copied in as `audio/`). They need Chrome; no ffmpeg.
 
 ## Talking points: how to explain Keel
 

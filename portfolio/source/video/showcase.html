@@ -15,7 +15,7 @@
 <body><canvas id="c" width="1080" height="1350"></canvas><div id="lot"></div>
 <script type="module">
 import { Muxer, ArrayBufferTarget } from '/node_modules/mp4-muxer/build/mp4-muxer.mjs';
-import { renderScore } from './music.js';
+import { renderScore, renderVoiceMix } from './music.js';
 
 const W = 1080, H = 1350, FPS = 30;
 const C = { canvas: '#0B1530', raised: '#112358', deep: '#1A2E66', text: '#F4F5FA', muted: '#AEB9D6', signal: '#F1FF62', ocean: '#3DB8EA' };   // Harbor & Signal, dark
@@ -282,7 +282,14 @@ if (params.has('still')) {           // render one moment for review: ?still=12.
     ...(withMusic ? { audio: { codec: 'aac', numberOfChannels: 2, sampleRate: 48000 } } : {}), fastStart: 'in-memory' });
   if (withMusic) {
     status('composing the score');
-    const score = await renderScore(TOTAL, Object.values(SEG).map((s) => s[0]));
+    // ?voice=cues.json places the voiceover line by line over a quieter, ducked bed (music.js);
+    // otherwise the full score plays
+    let score;
+    if (params.get('voice')) {
+      const cueUrl = params.get('voice'), cues = await (await fetch(cueUrl)).json();
+      const mix = await renderVoiceMix(TOTAL, new URL(cues.voice, new URL(cueUrl, location.href)).href, cues);
+      score = mix.buffer; window.__voice = mix.segments;
+    } else score = await renderScore(TOTAL, Object.values(SEG).map((s) => s[0]));
     const aenc = new AudioEncoder({ output: (chunk, m) => muxer.addAudioChunk(chunk, m), error: (e) => status('encode-error audio ' + e.message) });
     aenc.configure({ codec: 'mp4a.40.2', sampleRate: 48000, numberOfChannels: 2, bitrate: 192000 });
     const L = score.getChannelData(0), R = score.getChannelData(1), STEP = 1024;
