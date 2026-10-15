@@ -65,7 +65,7 @@ npm test                         # or: node tests/run.mjs journeys keyboard   (V
 
 Seven suites: `pages` (every page and app state, light and dark, at 320, 390, 768 and 1280px: script errors, failed requests, sideways scrolling, text contrast, accessible names, target size, alt text, headings), `links` (every internal URL returns 200; external links reported), `clicks` (presses every control and watches for errors), `keyboard` (tabs through each page: focus visible, on screen, never stuck), `journeys` (the guided tour, explore, returning visitor and the app's numbers, design system interactions, the case study embed) `media` (portfolio image sizes, carousel PDF pages, the video decodes) and `palette` (116 screens and states, both themes, scanned element by element for any color from the earlier identities). Results go to `tests/results/`; the command exits non-zero on any problem.
 
-**Replacing an image, animation or Rive file:** static assets keep their file names, so every reference carries a version tag (`?v=5`). When you replace files, bump it in the HTML pages, `assets/js/keel-lottie.js` (`V`), the Rive `src` values in `assets/js/case-study.js` and the tour preview images in `src/prototype/tour/Overview.jsx`, or browsers may keep showing the old copies.
+**Replacing an image, animation or Rive file:** static assets keep their file names, so every reference carries a version tag (`?v=6`). When you replace files, bump it in the HTML pages, `assets/js/keel-lottie.js` (`V`), the Rive `src` values in `assets/js/case-study.js` and the tour preview images in `src/prototype/tour/Overview.jsx`, or browsers may keep showing the old copies.
 
 **Responsive:** every page is written mobile-first (phone styles first, `min-width` layers for wider screens) and checked from 320px to 1440px; see `docs/motion-system/qa-report.md`.
 
@@ -119,7 +119,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 - **Type:** Switzer in three levels: display Regular, data Medium with tabular figures, body Regular
 - **Motif:** a waterline (always payday), a hull resting on it, and a weighted keel whose depth means room past payday. Used for the brand mark, the reading, loading, goal progress, section breaks and the tab icon
 - **Motion:** calm and decelerating. Screens and sheets use a 420ms settle curve, and the reading uses a damped spring. No shakes, flashes or success bursts
-- **Theme:** follows the OS by default; the case study has a toggle, remembered per browser, that also drives the embedded prototype and swaps the Lottie files
+- **Theme:** dark by default on every page (light only once chosen); the case study has a toggle, remembered per browser, that also drives the embedded prototype and swaps the Lottie files
 - **Accessibility:** WCAG 2.2 AA contrast on all text, controls and chart marks in both themes, keyboard focus rings, switches with `role="switch"`, live regions for reading changes, and full `prefers-reduced-motion` support
 
 ## Motion: what each animation is made of

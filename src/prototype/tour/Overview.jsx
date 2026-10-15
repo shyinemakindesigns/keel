@@ -39,7 +39,7 @@ export default function Overview({ app }) {
               <button className="btn-text ov-go" type="button" onClick={(e) => exploreArea(screen, e.currentTarget)}>Explore {name}<ArrowRight /></button>
             </div>
             <figure className="ov-shot">
-              <img src={`/assets/img/overview/${screen}-${theme === 'dark' ? 'dark' : 'light'}.jpg?v=5`} width="240" height="420" loading="lazy" decoding="async"
+              <img src={`/assets/img/overview/${screen}-${theme === 'dark' ? 'dark' : 'light'}.jpg?v=6`} width="240" height="420" loading="lazy" decoding="async"
                 alt={`The ${name} screen of the prototype, with sample data.`} />
             </figure>
           </li>

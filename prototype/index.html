@@ -7,28 +7,32 @@
 <meta name="description" content="Interactive prototype of Keel, a fictional budgeting app built around steadiness. Guided tour included. Sample data only.">
 <meta property="og:title" content="Keel prototype">
 <meta property="og:description" content="A calm fintech app concept you can try: a guided tour, then the working prototype with sample data.">
-<meta property="og:image" content="https://keel-casestudy.vercel.app/portfolio/keel-og-1200x630.png?v=5">
+<meta property="og:image" content="https://keel-casestudy.vercel.app/portfolio/keel-og-1200x630.png?v=6">
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,401,500,501,600&amp;display=swap" rel="stylesheet">
-<link rel="icon" href="/assets/favicon.svg?v=5" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/tokens.css?v=5">
-<link rel="stylesheet" href="/assets/css/components.css?v=5">
-<link rel="stylesheet" href="/assets/css/app.css?v=5">
-<link rel="stylesheet" href="/assets/css/glass.css?v=5">
-<link rel="stylesheet" href="/assets/css/motion.css?v=5">
+<link rel="icon" href="/assets/favicon.svg?v=6" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png?v=6" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=6">
+<meta name="theme-color" content="#0B1530">
+<link rel="stylesheet" href="/assets/tokens.css?v=6">
+<link rel="stylesheet" href="/assets/css/components.css?v=6">
+<link rel="stylesheet" href="/assets/css/app.css?v=6">
+<link rel="stylesheet" href="/assets/css/glass.css?v=6">
+<link rel="stylesheet" href="/assets/css/motion.css?v=6">
 <script>
-  // Theme and motion before first paint: ?theme= / ?motion= win, then saved choices, else the OS.
+  // Theme and motion before first paint: ?theme= / ?motion= win, then saved choices. Theme: dark
+  // unless light was chosen. Motion: the OS unless chosen.
   (function () {
     var q = new URLSearchParams(location.search), t = q.get('theme'), m = q.get('motion');
     try { t = t || localStorage.getItem('keel-theme'); m = m || localStorage.getItem('keel-motion'); } catch (e) {}
-    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
     if (m === 'reduced') document.documentElement.setAttribute('data-motion', 'reduced');
   })();
 </script>
 <!-- Shared, framework-free modules: the Lottie player custom element and the data-bound charts -->
-<script src="/assets/js/keel-lottie.js?v=5" data-base="/assets/"></script>
-<script src="/assets/js/keel-charts.js?v=5"></script>
+<script src="/assets/js/keel-lottie.js?v=6" data-base="/assets/"></script>
+<script src="/assets/js/keel-charts.js?v=6"></script>
 </head>
 <body>
 <noscript><p style="padding:24px;font-family:Georgia,serif">The Keel prototype needs JavaScript. The <a href="/">case study</a> works without it.</p></noscript>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-// The resolved theme: the data-theme attribute if set (saved choice, ?theme=, or the
-// case study's switch), otherwise the operating system.
+// The resolved theme: the data-theme attribute (saved choice, ?theme=, or the case study's
+// switch); dark when it is missing, matching the page default.
 function resolve() {
   const t = document.documentElement.getAttribute('data-theme');
   if (t === 'dark' || t === 'light') return t;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'dark';
 }
 export function usePrefsTheme() {
   const [theme, setTheme] = useState(resolve);
