@@ -1,0 +1,51 @@
+1
+00:00:00,400 --> 00:00:04,560
+What if budgeting apps made us feel supported, instead of stressed?
+
+2
+00:00:04,750 --> 00:00:09,830
+Money is already stressful. Traditional budgeting tools can make it worse.
+
+3
+00:00:10,200 --> 00:00:18,540
+Introducing Keel. A personal finance concept I designed to make managing money feel simpler, calmer, and more human.
+
+4
+00:00:20,000 --> 00:00:22,920
+Instead of your balance, see how long you're covered.
+
+5
+00:00:23,200 --> 00:00:27,020
+Check how a purchase affects your financial outlook before spending.
+
+6
+00:00:27,700 --> 00:00:32,700
+Understand your spending in days, not overwhelming numbers or red warnings.
+
+7
+00:00:35,600 --> 00:00:40,880
+Build savings goals, track your progress, and see how each decision shapes your future.
+
+8
+00:00:42,600 --> 00:00:46,380
+Explore different financial scenarios before making a commitment.
+
+9
+00:00:46,750 --> 00:00:49,490
+Because better decisions start with clarity.
+
+10
+00:00:49,800 --> 00:00:55,820
+I designed a motion system where every interaction feels intentional, fluid, and reassuring.
+
+11
+00:00:56,800 --> 00:01:02,460
+Supported by an accessible design system, custom animations, and a functional React prototype.
+
+12
+00:01:03,600 --> 00:01:06,060
+Keel. A steadier way forward.
+
+13
+00:01:06,400 --> 00:01:08,620
+Explore my case study and live demo.
