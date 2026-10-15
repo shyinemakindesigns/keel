@@ -19,6 +19,7 @@ Everything needed to publish Keel: the portfolio thumbnail and copy, the LinkedI
 | `linkedin-carousel/keel-carousel-01.png` to `-09.png` | 1080 × 1350 each | The same slides as PNGs, for other platforms or a multi-image post |
 | `video/keel-showcase-1080x1350.mp4` | 4:5, 69.1s | **Main LinkedIn video:** the whole project in about a minute (brand animation, the problem, the prototype, the motion system, the design system, the links), captioned, with a voiceover over a soft background track |
 | `video/keel-showcase-cover.png` | 1080 × 1350 | Showcase video cover |
+| `video/keel-showcase-1080x1350.srt` | | The voiceover as a caption file, timed to the video |
 | `video/keel-prototype-demo-1080x1350.mp4` | 4:5, 45.1s | Shorter video: the prototype alone in a phone frame, captioned |
 | `video/keel-prototype-demo-cover.png` | 1080 × 1350 | Prototype video cover |
 | `source/` | | Editable HTML for every image and the video pipeline. Re-export images with `node portfolio/source/export.mjs` |
@@ -125,20 +126,20 @@ Live demo: https://keel-casestudy.vercel.app/prototype/
 Design system: https://keel-casestudy.vercel.app/design-system/
 ```
 
-**Alt text:** "A one-minute video about Keel, a fintech app concept. The Keel logo animates in, then two statistics: 72% of U.S. adults feel stressed about money, and for 43% of Canadians it's the leading source of stress. The working prototype plays in a phone frame: a first reading of steady through Oct 25, a purchase check, spending in days, adding to a goal and comparing a plan. Then four of the project's animations, the design system's palette, typeface and buttons, and links to the case study, live demo and design system."
+**Alt text:** "A one-minute video about Keel, a fintech app concept. The Keel logo animates in, then two statistics: 72% of U.S. adults feel stressed about money, and for 43% of Canadians it's the leading source of stress. The working prototype plays in a phone frame: a first reading of steady through Oct 25, a purchase check, spending in days, adding to a goal and comparing a plan. Then four of the project's animations, the design system's palette, typeface and buttons, and links to the case study, live demo and design system. A calm voiceover narrates over light background music, and captions are on screen."
 
 ### Why this should travel
 
 - **The hook is contrarian and visual.** "Built like smoke alarms" is a picture people can argue with, and the second line pays it off.
 - **One stat per country, cited.** The APA figure for the U.S. and FP Canada's for Canada speak to both audiences; the ostrich effect carries the argument.
-- **The video holds attention without sound.** Every scene has a caption, and something new appears every few seconds.
+- **The video works with or without sound.** Every scene has a caption and something new appears every few seconds; with sound on, the voiceover walks through it.
 - **The arrows make the build scannable**: prototype, motion, design system, three proofs in three lines.
 - **Links in the first comment** keep the post from being treated as outbound; the closing question gives people a reason to comment.
 
 ### Posting checklist
 
 1. Upload `keel-showcase-1080x1350.mp4` natively, not as a link, so it autoplays in the feed.
-2. Set `keel-showcase-cover.png` as the thumbnail if LinkedIn offers it, and paste the alt text.
+2. Set `keel-showcase-cover.png` as the thumbnail if LinkedIn offers it, and paste the alt text. Optional: add `keel-showcase-1080x1350.srt` as the caption file (the voiceover word for word). LinkedIn may show it on top of the burned-in captions, so preview before posting and skip it if the two stack.
 3. Paste the post and publish; add the first comment with all three links straight away.
 4. Reply to early comments in the first hour.
 5. Space it from the carousel post by a few days: the carousel tells the argument, the video shows the work.

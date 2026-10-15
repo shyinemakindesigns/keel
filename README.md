@@ -96,7 +96,7 @@ Turning a bill off during onboarding, choosing a different payday, checking a pu
 
 - The cited research and competitor positioning, linked in the case study’s references
 - The prototype’s logic: the reading, the purchase check and the goal preview all compute live
-- The contrast audit (68 pairings across light and dark, 0 failing) and the 60/30/10 measurements, with the scripts that produced them
+- The contrast audit (94 pairings across light and dark, 0 failing) and the 60/30/10 measurements, with the scripts that produced them
 - The Lottie animation, written by hand against the Lottie schema and rendered frame by frame for review
 - The design changes listed in section 12 of the case study, which came from my own review of rendered screens
 
