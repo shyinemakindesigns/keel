@@ -1,0 +1,19 @@
+{
+  "voice": "keel-voiceover-lauren.mp3",
+  "note": "Each line of the ElevenLabs voiceover (from/to: seconds in the mp3) is placed at its scene in the showcase video (at: seconds in the video). Lines are moved whole, never cut inside a word or retimed.",
+  "lines": [
+    { "from": 0.10,  "to": 4.06,  "at": 0.40,  "scene": "brand",    "text": "What if budgeting apps made us feel supported, instead of stressed?" },
+    { "from": 4.74,  "to": 9.62,  "at": 4.75,  "scene": "problem",  "text": "Money is already stressful. Traditional budgeting tools can make it worse." },
+    { "from": 10.26, "to": 18.40, "at": 10.20, "scene": "hook, onboarding", "text": "Introducing Keel. A personal finance concept I designed to make managing money feel simpler, calmer, and more human." },
+    { "from": 19.02, "to": 21.74, "at": 20.00, "scene": "reading",  "text": "Instead of your balance, see how long you're covered." },
+    { "from": 22.32, "to": 25.94, "at": 23.20, "scene": "check",    "text": "Check how a purchase affects your financial outlook before spending." },
+    { "from": 26.40, "to": 31.20, "at": 27.70, "scene": "spending", "text": "Understand your spending in days, not overwhelming numbers or red warnings." },
+    { "from": 31.70, "to": 36.78, "at": 35.60, "scene": "goals",    "text": "Build savings goals, track your progress, and see how each decision shapes your future." },
+    { "from": 37.26, "to": 40.84, "at": 42.60, "scene": "plan",     "text": "Explore different financial scenarios before making a commitment." },
+    { "from": 41.34, "to": 43.88, "at": 46.75, "scene": "plan",     "text": "Because better decisions start with clarity." },
+    { "from": 44.60, "to": 50.42, "at": 49.80, "scene": "motion",   "text": "I designed a motion system where every interaction feels intentional, fluid, and reassuring." },
+    { "from": 50.80, "to": 56.26, "at": 56.80, "scene": "system",   "text": "Supported by an accessible design system, custom animations, and a functional React prototype." },
+    { "from": 56.90, "to": 59.16, "at": 63.60, "scene": "links",    "text": "Keel. A steadier way forward." },
+    { "from": 59.70, "to": 61.72, "at": 66.40, "scene": "links",    "text": "Explore my case study and live demo." }
+  ]
+}
